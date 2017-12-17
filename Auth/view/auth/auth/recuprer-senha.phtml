@@ -1,0 +1,25 @@
+<div class="register-box">
+	<div class="register-logo">
+		<a href="<?=$this->url('home')?>"><b>Admin</b>LTE</a>
+	</div>
+
+	<div class="register-box-body">
+		<p class="login-box-msg">Recuperar minha senha</p>
+
+		<form action="<?=$this->url('home')?>" method="post">
+			<div class="form-group has-feedback">
+				<input type="email" class="form-control" placeholder="Email">
+				<span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+			</div>
+			<div class="row">
+				<!-- /.col -->
+				<div class="col-xs-4">
+					<button type="submit" class="btn btn-primary btn-block btn-flat">Register</button>
+				</div>
+				<!-- /.col -->
+			</div>
+		</form>
+		<a href="<?=$this->url('auth')?>" class="text-center">Voltar para o loginp</a>
+	</div>
+	<!-- /.form-box -->
+</div>
