@@ -34,6 +34,18 @@ return [
 							   'action' => 'register',
 						   ],
 					   ],
+					   'may_terminate' => true,
+					   'child_routes' => [
+						   'form' => [
+							   'type' => Literal::class,
+							   'options' => [
+								   'route' => '/form',
+								   'defaults' => [
+									   'action' => 'registerform',
+								   ],
+							   ],
+						   ],
+					   ]
 				   ],
 				   'forgout' => [
 					   'type' => Literal::class,

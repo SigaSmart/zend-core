@@ -34,6 +34,8 @@ abstract class AbstractController extends AbstractActionController
 	 */
 	protected $model;
 
+	protected $data=[];
+
 	abstract 	public  function __construct(ContainerInterface $container);
 
 	public function indexAction()
@@ -49,6 +51,7 @@ abstract class AbstractController extends AbstractActionController
 	public function getForm()
 	{
 		$this->form = $this->container->get($this->form);
+		$this->form->setData($this->model->getArrayCopy());
 		return $this;
 	}
 
@@ -58,6 +61,13 @@ abstract class AbstractController extends AbstractActionController
 	public function getModel()
 	{
 		$this->model = $this->container->get($this->model);
+		$this->model->exchangeArray($this->data);
+		return $this;
+	}
+
+	public function setData()
+	{
+		$this->data = $this->params()->fromPost();
 		return $this;
 	}
 

@@ -40,20 +40,23 @@ class AuthController extends AbstractController
 	}
 
 	public function registerAction(){
-		 $this->getForm()->getModel();
+
+	}
+
+	public function registerformAction(){
+		$this->setData()
+				->getModel()
+					->getForm();
 		if($this->params()->fromPost()):
-			$this->form->setData($this->params()->fromPost());
-			$this->model->
-            $this->form->setInputFilter($this->model->getInputFilter());
+			$this->form->setInputFilter($this->model->getInputFilter());
 			if ($this->form->isValid()):
-				var_dump($this->params()->fromPost());
-				die;
+
 			endif;
-			var_dump($this->form->getMessages());
 		endif;
 		$view = new ViewModel([
 			'form'=>$this->form
 		]);
+		$view->setTerminal(true);
 		return $view;
 	}
 
