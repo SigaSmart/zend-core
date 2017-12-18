@@ -6,20 +6,23 @@
 	<div class="register-box-body">
 		<p class="login-box-msg">Recuperar minha senha</p>
 
-		<form action="<?=$this->url('home')?>" method="post">
-			<div class="form-group has-feedback">
-				<input type="email" class="form-control" placeholder="Email">
-				<span class="glyphicon glyphicon-envelope form-control-feedback"></span>
-			</div>
-			<div class="row">
-				<!-- /.col -->
-				<div class="col-xs-4">
-					<button type="submit" class="btn btn-primary btn-block btn-flat">Register</button>
-				</div>
-				<!-- /.col -->
-			</div>
-		</form>
-		<a href="<?=$this->url('auth')?>" class="text-center">Voltar para o loginp</a>
+		<?=$this->form()->openTag($this->form);?>
+        <div class="form-group has-feedback">
+			<?=$this->formRow($this->form->get('email'));?>
+            <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+        </div>
+         <div class="row">
+            <div class="col-xs-12">
+				<?=$this->formSubmit($this->form->get('submit')->setValue("Recuperar Senha"));?>
+            </div>
+            <!-- /.col -->
+        </div>
+		<?=$this->form()->closeTag();?>
+
+        <div class="social-auth-links text-center">
+            <p>- OR -</p>
+        </div>
+		<a href="<?=$this->url('auth')?>" class="text-center">Voltar para o login</a>
 	</div>
 	<!-- /.form-box -->
 </div>

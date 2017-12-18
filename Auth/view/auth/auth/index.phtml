@@ -4,7 +4,7 @@
 	</div>
 	<!-- /.login-logo -->
 	<div class="login-box-body">
-		<p class="login-box-msg">Iniciar sessão</p>
+		<p class="login-box-msg">Faça o Login Para Iniciar A Sessão</p>
 
 		<?=$this->form()->openTag($this->form);?>
 			<div class="form-group has-feedback">
@@ -16,27 +16,15 @@
 				<span class="glyphicon glyphicon-lock form-control-feedback"></span>
 			</div>
 			<div class="row">
-				<div class="col-xs-8">
-					<div class="checkbox icheck">
-						<label>
-							<input type="checkbox"> Remember Me
-						</label>
-					</div>
-				</div>
-				<!-- /.col -->
-				<div class="col-xs-4">
-					<button type="submit" class="btn btn-primary btn-block btn-flat">Sign In</button>
+				<div class="col-xs-12">
+					<?=$this->formSubmit($this->form->get('submit')->setValue("Iniciar Sessão"));?>
 				</div>
 				<!-- /.col -->
 			</div>
-		</form>
+		<?=$this->form()->closeTag();?>
 
 		<div class="social-auth-links text-center">
 			<p>- OR -</p>
-			<a href="#" class="btn btn-block btn-social btn-facebook btn-flat"><i class="fa fa-facebook"></i> Sign in using
-				Facebook</a>
-			<a href="#" class="btn btn-block btn-social btn-google btn-flat"><i class="fa fa-google-plus"></i> Sign in using
-				Google+</a>
 		</div>
 		<!-- /.social-auth-links -->
 

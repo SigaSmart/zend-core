@@ -7,6 +7,8 @@
 
 namespace Core\Controller;
 
+use Core\Form\AbstractForm;
+use Core\Model\AbstractModel;
 use Interop\Container\ContainerInterface;
 use Zend\Db\Adapter\AdapterInterface;
 use Zend\Mvc\Controller\AbstractActionController;
@@ -23,24 +25,43 @@ abstract class AbstractController extends AbstractActionController
 	 */
 	protected $container;
 
+	/**
+	 * @var $form AbstractForm
+	 */
 	protected $form;
+	/**
+	 * @var $model AbstractModel
+	 */
+	protected $model;
 
-  abstract 	public  function __construct(ContainerInterface $container);
+	abstract 	public  function __construct(ContainerInterface $container);
 
 	public function indexAction()
-    {
+	{
 
-    	//var_dump($this->adapter->query("SELECT * FROM users"));
-    	return new ViewModel();
-    }
+		//var_dump($this->adapter->query("SELECT * FROM users"));
+		return new ViewModel();
+	}
 
 	/**
 	 * @return mixed
 	 */
 	public function getForm()
 	{
-		return $this->container->get($this->form);
+		$this->form = $this->container->get($this->form);
+		return $this;
 	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getModel()
+	{
+		$this->model = $this->container->get($this->model);
+		return $this;
+	}
+
+
 
 
 }

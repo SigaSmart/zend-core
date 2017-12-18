@@ -11,6 +11,7 @@ namespace Auth\Controller;
 
 use Auth\Adapter\Authentication;
 use Auth\Form\LoginForm;
+use Auth\Model\LoginModel;
 use Core\Controller\AbstractController;
 use Interop\Container\ContainerInterface;
 use Zend\Db\Adapter\AdapterInterface;
@@ -24,6 +25,7 @@ class AuthController extends AbstractController
 		$this->container = $container;
 		$this->adapter = $this->container->get(AdapterInterface::class);
 		$this->form = LoginForm::class;
+		$this->model = LoginModel::class;
 	}
 
 	public function indexAction()
@@ -38,19 +40,21 @@ class AuthController extends AbstractController
 	}
 
 	public function registerAction(){
-// Build a query to insert a row for which authentication may succeed
-	$sqlInsert = "INSERT INTO users (
-		empresa, 
-		first_name,
-		last_name,
-		email,
-		password,
-		status,
-		role
-		) VALUES ('1', 'Claudio', 'Campos','callcocam@gmail.com','123',1,'admin')";
-		// Insert the data
-		$this->adapter->query($sqlInsert, $this->adapter::QUERY_MODE_EXECUTE);
-
+		 $this->getForm()->getModel();
+		if($this->params()->fromPost()):
+			$this->form->setData($this->params()->fromPost());
+			$this->model->
+            $this->form->setInputFilter($this->model->getInputFilter());
+			if ($this->form->isValid()):
+				var_dump($this->params()->fromPost());
+				die;
+			endif;
+			var_dump($this->form->getMessages());
+		endif;
+		$view = new ViewModel([
+			'form'=>$this->form
+		]);
+		return $view;
 	}
 
 	public function loginAction(){
@@ -63,7 +67,11 @@ class AuthController extends AbstractController
 
 
 	public function recuprersenhaAction(){
+		$view = new ViewModel([
+			'form'=>$this->getForm()
+		]);
 
+		return $view;
 
 	}
 }
