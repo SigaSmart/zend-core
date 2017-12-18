@@ -31,7 +31,8 @@ class LoginForm extends AbstractForm
 			"attributes"=>[
 				'id'=>"first_name",
 				'class'=>'form-control validate',
-				'placeholder'=>"Digite seu nome"
+				'placeholder'=>"Digite seu nome",
+				'ico'=>"glyphicon glyphicon-user",
 			]
 
 		]);
@@ -46,7 +47,8 @@ class LoginForm extends AbstractForm
 			"attributes"=>[
 				'id'=>"last_name",
 				'class'=>'form-control validate',
-				'placeholder'=>"Sobre nome"
+				'placeholder'=>"Sobre nome",
+				'ico'=>"glyphicon glyphicon-user",
 			]
 
 		]);
@@ -61,7 +63,8 @@ class LoginForm extends AbstractForm
 			"attributes"=>[
 				'id'=>"email",
 				'class'=>'form-control validate',
-				'placeholder'=>"Image"
+				'placeholder'=>"Image",
+				'ico'=>"glyphicon glyphicon-image",
 			]
 
 		]);
@@ -114,7 +117,8 @@ class LoginForm extends AbstractForm
 			"attributes"=>[
 				'id'=>"email",
 				'class'=>'form-control validate',
-				'placeholder'=>"Digite seu email"
+				'placeholder'=>"Digite seu email",
+				'ico'=>'glyphicon glyphicon-envelope'
 			]
 
 		]);
@@ -130,7 +134,8 @@ class LoginForm extends AbstractForm
 			"attributes"=>[
 				'id'=>"password",
 				'class'=>'form-control validate',
-				'placeholder'=>"Digite sua senha"
+				'placeholder'=>"Digite sua senha",
+				'ico'=>'glyphicon glyphicon-lock'
 			]
 
 		]);

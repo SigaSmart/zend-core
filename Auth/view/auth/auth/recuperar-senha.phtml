@@ -1,0 +1,24 @@
+<div class="register-box">
+	<div class="register-logo">
+		<a href="<?=$this->url('home')?>"><b>Admin</b>LTE</a>
+	</div>
+
+	<div class="register-box-body">
+		<p class="login-box-msg">Recuperar minha senha</p>
+
+        <div id="formContainer">
+
+        </div>
+        <script>
+            $(function () {
+                $("#formContainer").zfForm('<?=$this->url('auth/register/form')?>');
+            })
+        </script>
+
+        <div class="social-auth-links text-center">
+            <p>- OR -</p>
+        </div>
+		<a href="<?=$this->url('auth')?>" class="text-center">Voltar para o login</a>
+	</div>
+	<!-- /.form-box -->
+</div>

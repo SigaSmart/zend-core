@@ -1,0 +1,22 @@
+<?=$this->partial('partial/admin-lte/form-error',['form'=>$this->form]);?>
+<?=$this->form()->openTag($this->form->setAttribute('action',$this->url('auth/register/form')));?>
+    	<?=$this->partial('partial/admin-lte/form/input-form-group',[
+    	        'field'=>$this->form->get('first_name')->setLabel("")
+        ]);?>
+        <?=$this->partial('partial/admin-lte/form/input-form-group',[
+            'field'=>$this->form->get('last_name')->setLabel("")
+        ]);?>
+        <?=$this->partial('partial/admin-lte/form/input-form-group',[
+            'field'=>$this->form->get('email')->setLabel("")
+        ]);?>
+        <?=$this->partial('partial/admin-lte/form/input-form-group',[
+            'field'=>$this->form->get('password')->setLabel("")
+        ]);?>
+    <div class="row">
+        <!-- /.col -->
+        <div class="col-xs-12">
+            <?=$this->formSubmit($this->form->get('submit')->setValue('Criar Conta'));?>
+         </div>
+        <!-- /.col -->
+    </div>
+	<?=$this->form()->closeTag();?>

@@ -25,6 +25,15 @@ return [
                 ],
 			   'may_terminate' => true,
 			   'child_routes' => [
+				   'login-form' => [
+					   'type' => Literal::class,
+					   'options' => [
+						   'route' => '/login-form',
+						   'defaults' => [
+							   'action' => 'login-form',
+						   ],
+					   ],
+				   ],
 				   // Segment route for viewing one blog post
 				   'register' => [
 					   'type' => Literal::class,
@@ -36,35 +45,39 @@ return [
 					   ],
 					   'may_terminate' => true,
 					   'child_routes' => [
-						   'form' => [
+						   'register-form' => [
 							   'type' => Literal::class,
 							   'options' => [
-								   'route' => '/form',
+								   'route' => '/register-form',
 								   'defaults' => [
-									   'action' => 'registerform',
+									   'action' => 'register-form',
 								   ],
 							   ],
 						   ],
 					   ]
 				   ],
-				   'forgout' => [
+				    'recuperar-senha' => [
 					   'type' => Literal::class,
 					   'options' => [
-						   'route' => '/recuprer-senha',
+						   'route' => '/recuperar-senha',
 						   'defaults' => [
-							   'action' => 'recuprer-senha',
+							   'action' => 'recuperar-senha',
 						   ],
 					   ],
+						'may_terminate' => true,
+						'child_routes' => [
+							'recuperar-senha-form' => [
+								'type' => Literal::class,
+								'options' => [
+									'route' => '/recuperar-senha-form',
+									'defaults' => [
+										'action' => 'recuperar-senha-form',
+									],
+								],
+							],
+						]
 				   ],
-				   'login' => [
-					   'type' => Literal::class,
-					   'options' => [
-						   'route' => '/login',
-						   'defaults' => [
-							   'action' => 'login',
-						   ],
-					   ],
-				   ],
+
 			   ]
             ],
 

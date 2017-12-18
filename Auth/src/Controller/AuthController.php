@@ -27,27 +27,36 @@ class AuthController extends AbstractController
 		$this->form = LoginForm::class;
 		$this->model = LoginModel::class;
 	}
-
 	public function indexAction()
 	{
-
-     $view = new ViewModel([
-     	'form'=>$this->getForm()
-	 ]);
-
-     return $view;
-
+	}
+	public function loginformAction(){
+		$this->setData()
+			->getModel()
+			->getForm();
+		if($this->data):
+			$this->form->setInputFilter($this->model->getInputFilter());
+			if ($this->form->isValid()):
+				$auth = $this->container->get(Authentication::class);
+				$result = $auth->login($this->params()->fromPost('email'),$this->params()->fromPost('password'));
+				echo $auth->getResult();
+			endif;
+		endif;
+		$view = new ViewModel([
+			'form'=>$this->form
+		]);
+		$view->setTerminal(true);
+		return $view;
 	}
 
 	public function registerAction(){
-
 	}
 
 	public function registerformAction(){
 		$this->setData()
-				->getModel()
-					->getForm();
-		if($this->params()->fromPost()):
+			->getModel()
+			->getForm();
+		if($this->data):
 			$this->form->setInputFilter($this->model->getInputFilter());
 			if ($this->form->isValid()):
 
@@ -60,20 +69,23 @@ class AuthController extends AbstractController
 		return $view;
 	}
 
-	public function loginAction(){
-
-		$auth = $this->container->get(Authentication::class);
-		$result = $auth->login($this->params()->fromPost('email'),$this->params()->fromPost('password'));
-		echo $auth->getResult();
-
+	public function recuperarsenhaAction(){
 	}
 
+	public function recuperarsenhaformAction(){
+		$this->setData()
+			->getModel()
+			->getForm();
+		if($this->params()->fromPost()):
+			$this->form->setInputFilter($this->model->getInputFilter());
+			if ($this->form->isValid()):
 
-	public function recuprersenhaAction(){
+			endif;
+		endif;
 		$view = new ViewModel([
-			'form'=>$this->getForm()
+			'form'=>$this->form
 		]);
-
+		$view->setTerminal(true);
 		return $view;
 
 	}
