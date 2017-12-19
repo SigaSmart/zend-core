@@ -13,6 +13,8 @@ use Auth\Form\Factory\LoginFactory;
 use Auth\Form\LoginForm;
 use Auth\Model\Factory\LoginModelFactory;
 use Auth\Model\LoginModel;
+use Auth\Table\Factory\LoginTableFactory;
+use Auth\Table\LoginTable;
 use Zend\ModuleManager\Feature\ServiceProviderInterface;
 
 class Module implements ServiceProviderInterface
@@ -38,7 +40,9 @@ class Module implements ServiceProviderInterface
 
 				LoginForm::class => LoginFactory::class,
 
-				LoginModel::class => LoginModelFactory::class
+				LoginModel::class => LoginModelFactory::class,
+
+				LoginTable::class => LoginTableFactory::class
 			]
 
 		];

@@ -12,6 +12,7 @@ namespace Auth\Controller;
 use Auth\Adapter\Authentication;
 use Auth\Form\LoginForm;
 use Auth\Model\LoginModel;
+use Auth\Table\LoginTable;
 use Core\Controller\AbstractController;
 use Interop\Container\ContainerInterface;
 use Zend\Db\Adapter\AdapterInterface;
@@ -26,8 +27,10 @@ class AuthController extends AbstractController
 		$this->adapter = $this->container->get(AdapterInterface::class);
 		$this->form = LoginForm::class;
 		$this->model = LoginModel::class;
+		$this->table = LoginTable::class;
+		$this->getHelper();
 	}
-	public function indexAction()
+	public function loginAction()
 	{
 	}
 	public function loginformAction(){
@@ -35,7 +38,7 @@ class AuthController extends AbstractController
 			->getModel()
 			->getForm();
 		if($this->data):
-			$this->form->setInputFilter($this->model->getInputFilter());
+			$this->form->setInputFilter($this->model->getInputFilterLogin());
 			if ($this->form->isValid()):
 				$auth = $this->container->get(Authentication::class);
 				$result = $auth->login($this->params()->fromPost('email'),$this->params()->fromPost('password'));
@@ -50,16 +53,25 @@ class AuthController extends AbstractController
 	}
 
 	public function registerAction(){
+		$this->helper->addSuccessMessage('Un message de réussite');
+		$this->helper->addErrorMessage('Erreur avec le système.');
+		$this->helper->addInfoMessage('Info message');
+		$this->helper->addWarningMessage("Message d'avertissement.");
+
+
+
 	}
 
 	public function registerformAction(){
 		$this->setData()
 			->getModel()
-			->getForm();
+			->getForm()
+			->getTable();
 		if($this->data):
 			$this->form->setInputFilter($this->model->getInputFilter());
 			if ($this->form->isValid()):
-
+                 $Result = $this->table->insert($this->model);
+				$this->helper->addMessage($Result['msg'],$Result['type']);
 			endif;
 		endif;
 		$view = new ViewModel([
@@ -77,7 +89,7 @@ class AuthController extends AbstractController
 			->getModel()
 			->getForm();
 		if($this->params()->fromPost()):
-			$this->form->setInputFilter($this->model->getInputFilter());
+			$this->form->setInputFilter($this->model->getInputFilterRecuperarSenha());
 			if ($this->form->isValid()):
 
 			endif;

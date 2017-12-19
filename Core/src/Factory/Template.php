@@ -1,22 +1,15 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: caltj
- * Date: 18/12/2017
- * Time: 08:12
- */
 
-namespace Auth\Model\Factory;
+namespace Core\Factory;
 
-
-use Auth\Model\LoginModel;
+use  Core\Service\Template as ServiceTemplate;
 use Interop\Container\ContainerInterface;
 use Interop\Container\Exception\ContainerException;
 use Zend\ServiceManager\Exception\ServiceNotCreatedException;
 use Zend\ServiceManager\Exception\ServiceNotFoundException;
 use Zend\ServiceManager\Factory\FactoryInterface;
 
-class LoginModelFactory implements FactoryInterface
+class Template implements FactoryInterface
 {
 
 	/**
@@ -34,5 +27,6 @@ class LoginModelFactory implements FactoryInterface
 	 */
 	public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
 	{
-		return new LoginModel($container);
-}}
+		return new ServiceTemplate($container);
+	}
+}

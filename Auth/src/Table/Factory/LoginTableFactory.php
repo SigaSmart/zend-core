@@ -3,20 +3,21 @@
  * Created by PhpStorm.
  * User: caltj
  * Date: 18/12/2017
- * Time: 08:12
+ * Time: 19:31
  */
 
-namespace Auth\Model\Factory;
+namespace Auth\Table\Factory;
 
 
-use Auth\Model\LoginModel;
+use Auth\Table\LoginTable;
 use Interop\Container\ContainerInterface;
 use Interop\Container\Exception\ContainerException;
+use Zend\Db\Adapter\AdapterInterface;
 use Zend\ServiceManager\Exception\ServiceNotCreatedException;
 use Zend\ServiceManager\Exception\ServiceNotFoundException;
 use Zend\ServiceManager\Factory\FactoryInterface;
 
-class LoginModelFactory implements FactoryInterface
+class LoginTableFactory implements FactoryInterface
 {
 
 	/**
@@ -34,5 +35,5 @@ class LoginModelFactory implements FactoryInterface
 	 */
 	public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
 	{
-		return new LoginModel($container);
+		return new LoginTable($container->get(AdapterInterface::class));
 }}

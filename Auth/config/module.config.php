@@ -9,7 +9,6 @@ namespace Auth;
 
 use Auth\Controller\Factory\AuthControllerFactoy;
 use Zend\Router\Http\Literal;
-use Zend\Router\Http\Segment;
 
 return [
     'router' => [
@@ -20,7 +19,7 @@ return [
                     'route'    => '/admin/auth',
                     'defaults' => [
                         'controller' => Controller\AuthController::class,
-                        'action'     => 'index',
+                        'action'     => 'login',
                     ],
                 ],
 			   'may_terminate' => true,

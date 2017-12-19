@@ -9,9 +9,11 @@ namespace Core\Controller;
 
 use Core\Form\AbstractForm;
 use Core\Model\AbstractModel;
+use Core\Table\AbstractTable;
 use Interop\Container\ContainerInterface;
 use Zend\Db\Adapter\AdapterInterface;
 use Zend\Mvc\Controller\AbstractActionController;
+use Zend\Mvc\Plugin\FlashMessenger\FlashMessenger;
 use Zend\View\Model\ViewModel;
 
 abstract class AbstractController extends AbstractActionController
@@ -34,9 +36,19 @@ abstract class AbstractController extends AbstractActionController
 	 */
 	protected $model;
 
+	/**
+	 * @var $table AbstractTable
+	 */
+	protected $table;
+
 	protected $data=[];
 
-	abstract 	public  function __construct(ContainerInterface $container);
+
+	protected $helper;
+
+
+
+	abstract public  function __construct(ContainerInterface $container);
 
 	public function indexAction()
 	{
@@ -46,7 +58,7 @@ abstract class AbstractController extends AbstractActionController
 	}
 
 	/**
-	 * @return mixed
+	 * @return $this
 	 */
 	public function getForm()
 	{
@@ -56,7 +68,7 @@ abstract class AbstractController extends AbstractActionController
 	}
 
 	/**
-	 * @return mixed
+	 * @return $this
 	 */
 	public function getModel()
 	{
@@ -65,11 +77,33 @@ abstract class AbstractController extends AbstractActionController
 		return $this;
 	}
 
+	/**
+	 * @return $this
+	 */
+	public function getTable()
+	{
+		$this->table = $this->container->get($this->table);
+		return $this;
+	}
+
+
+
 	public function setData()
 	{
 		$this->data = $this->params()->fromPost();
+		unset($this->data['submit']);
 		return $this;
 	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getHelper()
+	{
+		$this->helper = new FlashMessenger();
+		return $this;
+	}
+
 
 
 

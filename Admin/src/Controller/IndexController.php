@@ -18,6 +18,12 @@ class IndexController extends AbstractActionController
     	//var_dump($this->params()->fromRoute('id', 1));
         return new ViewModel();
     }
+	public function opaAction()
+	{
+
+		//var_dump($this->params()->fromRoute('id', 1));
+		return new ViewModel();
+	}
 
    
 }
