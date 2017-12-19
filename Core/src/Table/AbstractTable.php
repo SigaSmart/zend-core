@@ -394,7 +394,7 @@ class AbstractTable extends Utils
 			$this->Result['result'] = TRUE;
 			$this->Result['msg'] = $msg;
 		} catch (\Exception $e) {
-			$this->Result['type'] = FlashMessenger::NAMESPACE_SUCCESS;
+			$this->Result['type'] = FlashMessenger::NAMESPACE_ERROR;
 			$this->Result['result'] = FALSE;
 			$this->Result['msg'] = sprintf("OPSS! %s<br />%s!", $e->getCode(), $e->getMessage());
 		}
