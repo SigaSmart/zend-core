@@ -1,0 +1,52 @@
+<?php
+/**
+ * Core ( Module for Zend Framework 2)
+ *
+ * @copyright Copyright (c) 2013 Piotr Duda dudapiotrek@gmail.com
+ * @license   MIT License
+ */
+
+
+namespace Core\Decorator\Row;
+
+use Core\Decorator\AbstractDecorator;
+use Core\Decorator\DataAccessInterface;
+
+abstract class AbstractRowDecorator extends AbstractDecorator implements DataAccessInterface
+{
+
+    /**
+     * Row object
+     * @var \Core\Row
+     */
+    protected $row;
+
+    /**
+     *
+     * @return \Core\Row
+     */
+    public function getRow()
+    {
+        return $this->row;
+    }
+
+    /**
+     *
+     * @param \Core\Row $row
+     * @return $this
+     */
+    public function setRow($row)
+    {
+        $this->row = $row;
+        return $this;
+    }
+
+    /**
+     * Get actual row
+     * @return array
+     */
+    public function getActualRow()
+    {
+        return $this->getRow()->getActualRow();
+    }
+}

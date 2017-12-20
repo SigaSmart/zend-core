@@ -45,11 +45,34 @@ return [
                     ],
                 ],
             ],
+			'cidades' => [
+				'type' => Literal::class,
+				'options' => [
+					'route'    => '/admin/cidade',
+					'defaults' => [
+						'controller' => Controller\CidadeController::class,
+						'action'     => 'index',
+					],
+				],
+				'may_terminate' => true,
+				'child_routes' => [
+					'cidades-table' => [
+						'type' => Literal::class,
+						'options' => [
+							'route' => '/cidades-table',
+							'defaults' => [
+								'action' => 'test',
+							],
+						],
+					],
+				]
+			],
         ],
     ],
     'controllers' => [
         'factories' => [
             Controller\AdminController::class => ControllerFactory::class,
+            Controller\CidadeController::class => ControllerFactory::class,
         ],
     ],
     'view_manager' => [

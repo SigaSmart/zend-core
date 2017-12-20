@@ -38,7 +38,6 @@ class AuthController extends AbstractController
 	public function loginformAction(){
 
 		$this->quest();
-
 		$this->setData()
 			->getModel()
 			->getForm();
@@ -49,7 +48,7 @@ class AuthController extends AbstractController
 			    $password = $this->encryptPassword($this->params()->fromPost('email'),$this->params()->fromPost('password'));
 				$Result = $auth->login($this->params()->fromPost('email'),$password);
 				$this->helper->addMessage($auth->getResult(),$auth->getType());
-				if($Result->getCode()):
+				if($Result->isValid()):
 					$this->helper->addRedirect("admin");
 				endif;
 			endif;

@@ -51,6 +51,9 @@ abstract class AbstractController extends AbstractActionController
 
 	abstract public  function __construct(ContainerInterface $container);
 
+	/**
+	 * @return ViewModel
+	 */
 	public function indexAction()
 	{
         $this->auth();
@@ -103,6 +106,16 @@ abstract class AbstractController extends AbstractActionController
 		$this->helper = new Messages();
 		return $this;
 	}
+
+	/**
+	 * @return AdapterInterface
+	 */
+	public function getAdapter()
+	{
+		$this->adapter = $this->container->get(AdapterInterface::class);
+		return $this->adapter;
+	}
+
 
 	protected function auth(){
 		if(!$this->identity()):

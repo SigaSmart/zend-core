@@ -8,10 +8,12 @@
 namespace Core;
 
 use Core\View\Helper\FlashMsg;
+use Interop\Container\ContainerInterface;
 use Zend\EventManager\EventInterface;
 use Zend\ModuleManager\Feature\BootstrapListenerInterface;
+use Zend\ModuleManager\Feature\ViewHelperProviderInterface;
 
-class Module implements BootstrapListenerInterface
+class Module implements BootstrapListenerInterface, ViewHelperProviderInterface
 {
 	const VERSION = '3.0.3-dev';
 
@@ -63,15 +65,43 @@ class Module implements BootstrapListenerInterface
 			}
 		});
 
-		$ViewHelperManager=$e->getApplication()->getServiceManager()->get('ViewHelperManager');
-		$e->getApplication()->getServiceManager()->get('ViewHelperManager')->setFactory('FlashMsg', function($sm) use ($ViewHelperManager) {
-			$viewHelper = new FlashMsg(
-				$ViewHelperManager->get('FlashMessenger'),
-				$ViewHelperManager->get('inlinescript'),
-				$ViewHelperManager->get('HeadLink'),
-				$ViewHelperManager->get('url'));
-			return $viewHelper;
-		});
+		$e->getApplication()
+			->getEventManager()
+				->getSharedManager()
+					->attach('Zend\Mvc\Controller\AbstractActionController', 'dispatch', function($e) {
+						$controller      = $e->getTarget();
+						$controllerClass = get_class($controller);
+						$moduleNamespace = substr($controllerClass, 0, strpos($controllerClass, '\\'));
+						$config          = $e->getApplication()->getServiceManager()->get('config');
 
+						if (isset($config['module_layouts'][$moduleNamespace])) {
+							$controller->layout($config['module_layouts'][$moduleNamespace]);
+						}
+
+		}, 100);
+
+	}
+
+	/**
+	 * Expected to return \Zend\ServiceManager\Config object or array to
+	 * seed such an object.
+	 *
+	 * @return array|\Zend\ServiceManager\Config
+	 */
+	public function getViewHelperConfig()
+	{
+		return [
+			'factories'=>[
+				"FlashMsg" =>function(ContainerInterface $container){
+					$ViewHelperManager=$container->get('ViewHelperManager');
+					$viewHelper = new FlashMsg(
+						$ViewHelperManager->get('FlashMessenger'),
+						$ViewHelperManager->get('inlinescript'),
+						$ViewHelperManager->get('HeadLink'),
+						$ViewHelperManager->get('url'));
+					  return $viewHelper;
+				}
+			]
+		];
 	}
 }

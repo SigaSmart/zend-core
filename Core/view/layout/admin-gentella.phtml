@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<!-- Meta, title, CSS, favicons, etc. -->
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="icon" href="images/favicon.ico" type="image/ico" />
+
+	<?= $this->headTitle('Gentelella Alela! |')->setSeparator(' - ')->setAutoEscape(false) ?>
+
+	<?= $this->headMeta()
+		->appendName('viewport', 'width=device-width, initial-scale=1.0')
+		->appendHttpEquiv('X-UA-Compatible', 'IE=edge')
+	?>
+
+	<!-- Le styles -->
+	<?= $this->headLink(['rel' => 'shortcut icon', 'type' => 'image/vnd.microsoft.icon', 'href' => $this->basePath() . '/images/favicon.ico'])
+		->prependStylesheet($this->basePath('css/style.css'))
+		->prependStylesheet($this->basePath('css/zf-table.css'))
+		->prependStylesheet($this->basePath('gentella-admin/css/custom.min.css'))
+		->prependStylesheet($this->basePath('gentella-admin/iCheck/skins/flat/green.css'))
+		->prependStylesheet($this->basePath('gentella-admin/nprogress/nprogress.css'))
+		->prependStylesheet($this->basePath('gentella-admin/font-awesome/css/font-awesome.min.css'))
+		->prependStylesheet($this->basePath('gentella-admin/bootstrap/dist/css/bootstrap.min.css'))
+	?>
+    <!-- Scripts -->
+	<?= $this->headScript()
+		->prependFile($this->basePath('js/app.js'))
+		->prependFile($this->basePath('js/zf-table.js'))
+		->prependFile($this->basePath('gentella-admin/jquery/dist/jquery.min.js'))
+	?>
+	</head>
+
+<body class="nav-md">
+<div class="container body">
+	<div class="main_container">
+		<?=$this->partial('partial/admin-gentella/operacional/sidebar');?>
+		<!-- top navigation -->
+		<div class="top_nav">
+			<?=$this->partial('partial/admin-gentella/operacional/main-header');?>
+		</div>
+		<!-- /top navigation -->
+
+		<!-- page content -->
+		<div class="right_col" role="main">
+			<?= $this->content ?>
+		</div>
+		<!-- /page content -->
+
+		<!-- footer content -->
+		<footer>
+			<div class="pull-right">
+				Gentelella - Bootstrap Admin Template by <a href="https://colorlib.com">Colorlib</a>
+			</div>
+			<div class="clearfix"></div>
+		</footer>
+		<!-- /footer content -->
+	</div>
+</div>
+<div class="body-processing">
+    <div class="processing">
+
+    </div>
+</div>
+<?= $this->inlineScript()
+	->prependFile($this->basePath('gentella-admin/js/custom.min.js'))
+	->prependFile($this->basePath('gentella-admin/iCheck/icheck.min.js'))
+	->prependFile($this->basePath('gentella-admin/nprogress/nprogress.js'))
+	->prependFile($this->basePath('gentella-admin/fastclick/lib/fastclick.js'))
+	->prependFile($this->basePath('gentella-admin/bootstrap/dist/js/bootstrap.min.js'))
+?>
+</body>
+</html>
