@@ -31,7 +31,13 @@ class FlashMsg extends AbstractHelper
     public function __invoke()
     {
         $Url = $this->Url;
+        $Route=[];
         $plugin   = $this->flashMessenger->getPluginFlashMessenger();
+		if($plugin->hasMessages('redirect')):
+			$Route=$plugin->getMessagesFromNamespace('redirect');
+			$plugin->clearCurrentMessages('redirect');
+		endif;
+
         $noty     = [
             'alert'       => array_merge($plugin->getMessages(), $plugin->getCurrentMessages()),
             'information' => array_merge($plugin->getInfoMessages(), $plugin->getCurrentInfoMessages()),
@@ -45,10 +51,10 @@ class FlashMsg extends AbstractHelper
         $plugin->clearCurrentMessages('success');
         $plugin->clearCurrentMessages('warning');
         $plugin->clearCurrentMessages('error');
+
+        $this->inlineScript->appendFile($Url('FlashMessenger', ["action"=>"js"]));
         
-        $this->inlineScript->appendFile($Url('FlashMessenger',array("action"=>"js")));
-        
-        echo '<link href="'.$Url('FlashMessenger',array("action"=>"css")).'" media="screen" rel="stylesheet" type="text/css">';
+        echo '<link href="'.$Url('FlashMessenger', ["action"=>"css"]).'" media="screen" rel="stylesheet" type="text/css">';
         $this->inlineScript->captureStart();
         foreach(array_filter($noty) as $type => $messages){
             $message = implode('<br/><br/>', $messages);
@@ -59,9 +65,14 @@ class FlashMsg extends AbstractHelper
                 case "success":echo 'toastr.success("'.$message.'");';break;
                 case "warning":echo 'toastr.warning("'.$message.'");';break;
                 case "error":echo 'toastr.error("'.$message.'");';break;
-            }
+              }
             
         }
+    		if($Route):
+				echo 'setTimeout(function () {
+					window.location.href = "'.$this->view->url($Route[0]).'";
+				 }, 3000);';
+			endif;
         $this->inlineScript->captureEnd();
     }
     

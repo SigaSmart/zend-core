@@ -40,7 +40,9 @@ class Module implements BootstrapListenerInterface
 			if ($exception) {
 				$sm = $event->getApplication()->getServiceManager();
 				$serviceLog = $sm->get('prj-errorhandling');
-				$serviceLog->logException($exception);
+				if($exception instanceof \Exception):
+					$serviceLog->logException($exception);
+				endif;
 			}
 
 			$this->finishLog = false;

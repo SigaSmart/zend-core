@@ -9,6 +9,7 @@ namespace Core\Controller;
 
 use Core\Form\AbstractForm;
 use Core\Model\AbstractModel;
+use Core\Service\Messages;
 use Core\Table\AbstractTable;
 use Interop\Container\ContainerInterface;
 use Zend\Db\Adapter\AdapterInterface;
@@ -52,8 +53,7 @@ abstract class AbstractController extends AbstractActionController
 
 	public function indexAction()
 	{
-
-		//var_dump($this->adapter->query("SELECT * FROM users"));
+        $this->auth();
 		return new ViewModel();
 	}
 
@@ -100,10 +100,20 @@ abstract class AbstractController extends AbstractActionController
 	 */
 	public function getHelper()
 	{
-		$this->helper = new FlashMessenger();
+		$this->helper = new Messages();
 		return $this;
 	}
 
+	protected function auth(){
+		if(!$this->identity()):
+			return $this->redirect()->toRoute("auth");
+		endif;
+	}
+	protected function quest(){
+		if($this->identity()):
+			return $this->redirect()->toRoute("admin");
+		endif;
+	}
 
 
 

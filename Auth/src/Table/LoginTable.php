@@ -14,5 +14,5 @@ use Core\Table\AbstractTable;
 class LoginTable extends AbstractTable
 {
 
-	protected $table = "user";
+	protected $table = "users";
 }

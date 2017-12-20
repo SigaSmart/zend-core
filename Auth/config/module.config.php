@@ -7,7 +7,7 @@
 
 namespace Auth;
 
-use Auth\Controller\Factory\AuthControllerFactoy;
+use Auth\Controller\Factory\ControllerFactoy;
 use Zend\Router\Http\Literal;
 
 return [
@@ -30,6 +30,15 @@ return [
 						   'route' => '/login-form',
 						   'defaults' => [
 							   'action' => 'login-form',
+						   ],
+					   ],
+				   ],
+				   'sair' => [
+					   'type' => Literal::class,
+					   'options' => [
+						   'route' => '/sair',
+						   'defaults' => [
+							   'action' => 'sair',
 						   ],
 					   ],
 				   ],
@@ -84,7 +93,7 @@ return [
     ],
     'controllers' => [
         'factories' => [
-            Controller\AuthController::class => AuthControllerFactoy::class,
+            Controller\AuthController::class => ControllerFactoy::class,
         ],
     ],
     'view_manager' => [

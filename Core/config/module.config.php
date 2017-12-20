@@ -7,6 +7,9 @@
 
 namespace Core;
 
+use Auth\Adapter\Authentication;
+use Auth\Adapter\AuthenticationFactory;
+use Zend\Authentication\AuthenticationService;
 use Zend\Router\Http\Segment;
 use Zend\ServiceManager\Factory\InvokableFactory;
 
@@ -73,13 +76,17 @@ return [
 		]
 	],
 	'service_manager' => [
+		'invokables' => [
+			AuthenticationService::class =>AuthenticationService::class,
+		],
 		'factories' => [
 			'prj-log' => 'Core\Factory\Log',
 			'prj-errorhandling' => 'Core\Factory\ErrorHandling',
 			'mail-transport' => 'Core\Factory\SmtpTransport',
 			'mail-template'  => 'Core\Factory\Template',
 			'mail-options'  => 'Core\Factory\Options',
-		]
+		],
+
 	],
 
 

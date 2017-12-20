@@ -7,9 +7,9 @@
 
 namespace Admin;
 
+use Admin\Controller\Factory\ControllerFactory;
 use Zend\Router\Http\Literal;
 use Zend\Router\Http\Segment;
-use Zend\ServiceManager\Factory\InvokableFactory;
 
 return [
     'router' => [
@@ -19,7 +19,7 @@ return [
 				'options' => [
 					'route'    => '/',
 					'defaults' => [
-						'controller' => Controller\IndexController::class,
+						'controller' => Controller\AdminController::class,
 						'action'     => 'index',
 					],
 				],
@@ -29,7 +29,7 @@ return [
                 'options' => [
                     'route'    => '/admin',
                     'defaults' => [
-                        'controller' => Controller\IndexController::class,
+                        'controller' => Controller\AdminController::class,
                         'action'     => 'index',
                     ],
                 ],
@@ -40,7 +40,7 @@ return [
                 'options' => [
                     'route'    => '/admin[/:action[/:id]]',
                     'defaults' => [
-                        'controller' => Controller\IndexController::class,
+                        'controller' => Controller\AdminController::class,
                         'action'     => 'index',
                     ],
                 ],
@@ -49,7 +49,7 @@ return [
     ],
     'controllers' => [
         'factories' => [
-            Controller\IndexController::class => InvokableFactory::class,
+            Controller\AdminController::class => ControllerFactory::class,
         ],
     ],
     'view_manager' => [
