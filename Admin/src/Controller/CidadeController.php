@@ -23,16 +23,21 @@ class CidadeController extends AbstractController
 		$this->container = $container;
 		$this->table = CidadeTable::class;
 		$this->model = CidadeModel::class;
+		$this->apiModel = Cidade::class;
 	}
 
 	public function testAction(){
 
-		$this->getTable();
-		$table = new Cidade();
-		$table->setAdapter($this->getAdapter())
-			->setSource($this->table->getSelect())
+		$this->getTable()
+			->getApiModel();
+		$this->apiModel->setAdapter($this->getAdapter())
+			->setSource($this->table->setTableModel($this->apiModel)->getSelect($this->params()->fromPost()))
 			->setParamAdapter($this->getRequest()->getPost());
-		return $this->htmlResponse($table->render());
+		//return $table->render();
+		return $this->apiModel->render('custom',sprintf('admin/cidade/%s/listar', LAYOUT));
+		//return $table->render('dataTableAjaxInit');
+		//return $table->render('dataTableJson');
+		//return $table->render('newDataTableJson');
 	}
 
 	public function htmlResponse($html)

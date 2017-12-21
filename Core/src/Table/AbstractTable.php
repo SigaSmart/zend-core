@@ -87,6 +87,17 @@ class AbstractTable extends Utils
 	private $Model;
 	private $tableModel;
 
+	/**
+	 * @param mixed $tableModel
+	 *
+	 * @return AbstractTable
+	 */
+	public function setTableModel($tableModel)
+	{
+		$this->tableModel = $tableModel;
+		return $this;
+	}
+
 
 	public function __construct(AdapterInterface $adapter)
 	{

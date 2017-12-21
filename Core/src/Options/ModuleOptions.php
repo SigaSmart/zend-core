@@ -94,17 +94,39 @@ class ModuleOptions extends AbstractOptions implements
      */
     protected $templateMap = array();
 
+	/**
+	 * Template Map
+	 * @var array
+	 */
+	protected $Module = 'Core';
+
+	/**
+	 * Value to specify items status
+	 * @var array
+	 */
+	protected $valuesOfState = [null => 'All' , 1 => 'Active' , 2 => 'Inactive', 3 => 'Trash'];
+
+	/**
+	 * Value to specify items $valueButtonsActions
+	 * @var array
+	 */
+	protected $valueButtonsActions = ['add'=>"Adicionar",'active'=>'Ativar','inactive'=>"Desabilitar","trash"=>"Enviar p/ Lixeira",'trashall'=>'Esvaziar Lixeira','csv'=>'Exportar'];
+
+	/**
+	 * Show or hide exporter to showButtonsActions
+	 * @var boolean
+	 */
+	protected $showButtonsActions = true;
 
 
     public function __construct($options = null)
     {
         $this->templateMap = array(
-                'paginator-slide' => __DIR__ . '/../../view/templates/slide-paginator.phtml',
-                'default-params' => __DIR__ . '/../../view/templates/default-params.phtml',
-                'container' => __DIR__ . '/../../view/templates/container-b3.phtml',
-                'data-table-init' => __DIR__ . '/../../view/templates/data-table-init.phtml',
-                'custom-b2' => __DIR__ . '/../../view/templates/custom-b2.phtml',
-                'custom-b3' => __DIR__ . '/../../view/templates/custom-b3.phtml',
+                'paginator-slide' =>sprintf('%s/../../view/layout/%s/templates/slide-paginator.phtml',__DIR__, LAYOUT),
+                'default-params' =>sprintf('%s/../../view/layout/%s/templates/default-params.phtml',__DIR__, LAYOUT),
+                'container' => sprintf('%s/../../view/layout/%s/templates/container-b3.phtml',__DIR__, LAYOUT),
+                'data-table-init' => sprintf('%s/../../view/layout/%s/templates/data-table-init.phtml',__DIR__, LAYOUT),
+                'custom-b3' => sprintf('%s/../../view/layout/%s/templates/custom-b3.phtml',__DIR__, LAYOUT)
         );
 
         parent::__construct($options);
@@ -130,7 +152,7 @@ class ModuleOptions extends AbstractOptions implements
      */
     public function setTemplateMap($templateMap)
     {
-        $this->templateMap = $templateMap;
+        $this->templateMap = array_merge( $this->templateMap, $templateMap);
     }
 
 
@@ -143,6 +165,79 @@ class ModuleOptions extends AbstractOptions implements
     {
         return $this->templateMap;
     }
+
+	/**
+	 * @return array
+	 */
+	public function getModule()
+	{
+		return $this->Module;
+	}
+
+	/**
+	 * @param  $Module
+	 *
+	 * @return ModuleOptions
+	 */
+	public function setModule($Module)
+	{
+		$this->Module = $Module;
+		return $this;
+	}
+	/**
+	 * Get Array of values to set items status
+	 * @return array
+	 */
+	public function getValuesOfState() {
+		return $this->valuesOfState;
+	}
+
+	/**
+	 * Get Array of values to set items showButtonsActios
+	 * @return array
+	 */
+	public function getShowButtonsActions() {
+		return $this->showButtonsActions;
+	}
+
+	/**
+	 * Set Array of values to set items showButtonsActions
+	 * @return $this
+	 */
+	public function setShowButtonsActions($showButtonsActions) {
+		$this->showButtonsActions = $showButtonsActions;
+		return $this;
+	}
+
+	/**
+	 * Get Array of values to set items showButtonsActios
+	 * @return array
+	 */
+	public function getValueButtonsActions() {
+		return $this->valueButtonsActions;
+	}
+
+	/**
+	 * Set Array of values to set items valueButtonsActions
+	 * @return array
+	 */
+	public function setValueButtonsActions($valueButtonsActions) {
+		$this->valueButtonsActions = array_merge($this->valueButtonsActions, $valueButtonsActions);
+		return $this;
+	}
+	/**
+	 *
+	 * Set Array of values to set items status
+	 *
+	 * @param array $valuesOfState
+	 * @return $this
+	 */
+	public function setValuesOfState($valuesOfState) {
+		$this->valuesOfState = $valuesOfState;
+		return $this;
+	}
+
+
 
     /**
      * Get maximal rows to returning

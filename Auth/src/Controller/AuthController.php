@@ -34,6 +34,9 @@ class AuthController extends AbstractController
 	public function loginAction()
 	{
 		$this->quest();
+		$view = new ViewModel();
+		$view->setTemplate(sprintf("auth/%s/login", LAYOUT));
+		return $view;
 	}
 	public function loginformAction(){
 
@@ -57,11 +60,15 @@ class AuthController extends AbstractController
 			'form'=>$this->form
 		]);
 		$view->setTerminal(true);
+		$view->setTemplate(sprintf("auth/%s/login-form", LAYOUT));
 		return $view;
 	}
 
 	public function registerAction(){
 		$this->quest();
+		$view = new ViewModel();
+		$view->setTemplate(sprintf("auth/%s/register", LAYOUT));
+		return $view;
 	}
 
 	public function registerformAction(){
@@ -85,11 +92,15 @@ class AuthController extends AbstractController
 			'form'=>$this->form
 		]);
 		$view->setTerminal(true);
+		$view->setTemplate(sprintf("auth/%s/register-form", LAYOUT));
 		return $view;
 	}
 
 	public function recuperarsenhaAction(){
 		$this->quest();
+		$view = new ViewModel();
+		$view->setTemplate(sprintf("auth/%s/recuperar-senha", LAYOUT));
+		return $view;
 	}
 
 	public function recuperarsenhaformAction(){
@@ -107,6 +118,7 @@ class AuthController extends AbstractController
 			'form'=>$this->form
 		]);
 		$view->setTerminal(true);
+		$view->setTemplate(sprintf("auth/%s/recuperar-senha-form", LAYOUT));
 		return $view;
 
 	}

@@ -38,6 +38,11 @@ abstract class AbstractController extends AbstractActionController
 	protected $model;
 
 	/**
+	 * @var $apiModel \Core\AbstractTable
+	 */
+	protected $apiModel;
+
+	/**
 	 * @var $table AbstractTable
 	 */
 	protected $table;
@@ -89,7 +94,14 @@ abstract class AbstractController extends AbstractActionController
 		return $this;
 	}
 
-
+	/**
+	 * @return \Core\AbstractTable
+	 */
+	public function getApiModel()
+	{
+		$this->apiModel = $this->container->get($this->apiModel);
+		return $this;
+	}
 
 	public function setData()
 	{

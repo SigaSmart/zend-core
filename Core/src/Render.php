@@ -8,6 +8,8 @@
 
 namespace Core;
 
+use Zend\View\Model\JsonModel;
+use Zend\View\Model\ViewModel;
 use Zend\View\Resolver;
 use Zend\View\Renderer\PhpRenderer;
 use Core\Options\ModuleOptions;
@@ -45,7 +47,7 @@ class Render extends AbstractCommon
     {
         $paginator = $this->getTable()->getSource()->getPaginator();
         $paginator->setView($this->getRenderer());
-        $res = $this->getRenderer()->paginationControl($paginator, 'Sliding', 'paginator-slide');
+		$res = $this->getRenderer()->paginationControl($paginator, 'Sliding', 'paginator-slide');
         return $res;
     }
 
@@ -62,7 +64,7 @@ class Render extends AbstractCommon
         $res['iTotalDisplayRecords'] = $this->getTable()->getSource()->getPaginator()->getTotalItemCount();
         $res['aaData'] = $render;
 
-        return json_encode($res);
+        return new JsonModel($res);
     }
 
 
@@ -76,8 +78,7 @@ class Render extends AbstractCommon
             'recordsFiltered' => $this->getTable()->getSource()->getPaginator()->getTotalItemCount(),
             'data' => $render,
         );
-
-        return json_encode($res);
+		return new JsonModel($res);
     }
 
     /**
@@ -89,39 +90,40 @@ class Render extends AbstractCommon
     {
         $renderedHeads = $this->renderHead();
 
-        $view = new \Zend\View\Model\ViewModel();
-        $view->setTemplate('data-table-init');
-        $view->setVariable('headers', $renderedHeads);
-        $view->setVariable('attributes', $this->getTable()->getAttributes());
+        $view = new ViewModel();
+      	$view->setTemplate(sprintf('layout/%s/templates/data-table-init', LAYOUT));
 
-        return $this->getRenderer()->render($view);
+		$view->setVariable('headers', $renderedHeads);
+        $view->setVariable('attributes', $this->getTable()->getAttributes());
+		$view->setTerminal(true);
+        return $view;
 
     }
 
 
     public function renderCustom($template)
     {
-
         $tableConfig = $this->getTable()->getOptions();
-        $rowsArray = $this->getTable()->getRow()->renderRows('array_assc');
-
-        $view = new \Zend\View\Model\ViewModel();
+		$rowsArray = $this->getTable()->getRow()->renderRows('array_assc');
+        $view = new ViewModel();
         $view->setTemplate($template);
-
         $view->setVariable('rows', $rowsArray);
 
-        $view->setVariable('paginator', $this->renderPaginator());
-        $view->setVariable('paramsWrap', $this->renderParamsWrap());
-        $view->setVariable('itemCountPerPage', $this->getTable()->getParamAdapter()->getItemCountPerPage());
-        $view->setVariable('quickSearch', $this->getTable()->getParamAdapter()->getQuickSearch());
-        $view->setVariable('name', $tableConfig->getName());
-        $view->setVariable('itemCountPerPageValues', $tableConfig->getValuesOfItemPerPage());
-        $view->setVariable('showQuickSearch', $tableConfig->getShowQuickSearch());
-        $view->setVariable('showPagination', $tableConfig->getShowPagination());
-        $view->setVariable('showItemPerPage', $tableConfig->getShowItemPerPage());
-        $view->setVariable('showExportToCSV', $tableConfig->getShowExportToCSV());
-
-        return $this->getRenderer()->render($view);
+		$Top = new ViewModel();
+		$Top->setTemplate(sprintf('layout/%s/templates/custom-b3', LAYOUT));
+		$Top->setVariable('paginator', $this->renderPaginator());
+		$Top->setVariable('paramsWrap', $this->renderParamsWrap());
+		$Top->setVariable('itemCountPerPage', $this->getTable()->getParamAdapter()->getItemCountPerPage());
+		$Top->setVariable('quickSearch', $this->getTable()->getParamAdapter()->getQuickSearch());
+		$Top->setVariable('name', $tableConfig->getName());
+		$Top->setVariable('itemCountPerPageValues', $tableConfig->getValuesOfItemPerPage());
+		$Top->setVariable('showQuickSearch', $tableConfig->getShowQuickSearch());
+		$Top->setVariable('showPagination', $tableConfig->getShowPagination());
+		$Top->setVariable('showItemPerPage', $tableConfig->getShowItemPerPage());
+		$Top->setVariable('showExportToCSV', $tableConfig->getShowExportToCSV());
+		$Top->addChild($view, 'listar');
+		$Top->setTerminal(true);
+        return $Top;
     }
 
     /**
@@ -143,8 +145,8 @@ class Render extends AbstractCommon
         $render .= $this->getTable()->getRow()->renderRows();
         $table = sprintf('<table %s>%s</table>', $this->getTable()->getAttributes(), $render);
 
-        $view = new \Zend\View\Model\ViewModel();
-        $view->setTemplate('container');
+        $view = new ViewModel();
+        $view->setTemplate(sprintf('layout/%s/templates/container-b3', LAYOUT));
 
         $view->setVariable('table', $table);
 
@@ -158,8 +160,8 @@ class Render extends AbstractCommon
         $view->setVariable('showPagination', $tableConfig->getShowPagination());
         $view->setVariable('showItemPerPage', $tableConfig->getShowItemPerPage());
         $view->setVariable('showExportToCSV', $tableConfig->getShowExportToCSV());
-
-        return $this->getRenderer()->render($view);
+		$view->setTerminal(true);
+        return $view;
     }
 
 
@@ -221,8 +223,7 @@ class Render extends AbstractCommon
      */
     public function renderParamsWrap()
     {
-        $view = new \Zend\View\Model\ViewModel();
-
+        $view = new ViewModel();
         $view->setTemplate('default-params');
         $view->setVariable('column', $this->getTable()->getParamAdapter()->getColumn());
         $view->setVariable('itemCountPerPage', $this->getTable()->getParamAdapter()->getItemCountPerPage());

@@ -9,7 +9,6 @@
 
 namespace Core;
 
-use Core\AbstractCommon;
 
 abstract class AbstractElement extends AbstractCommon
 {

@@ -98,15 +98,13 @@ return [
 		'not_found_template'       => 'error/404',
 		'exception_template'       => 'error/index',
 		'template_map' => [
-			//'layout/layout'           => __DIR__ . '/../view/layout/layout.phtml',
-			// 'layout/gentella'           => __DIR__ . '/../view/layout/gentella.phtml',
-			// 'layout/layout'           => __DIR__ . '/../view/layout/gentella.phtml',
-			//'layout/admin-lte'           => __DIR__ . '/../view/layout/admin-lte.phtml',
-			//'layout/layout'           => __DIR__ . '/../view/layout/admin-lte.phtml',
-			'layout/layout'           => __DIR__ . '/../view/layout/admin-lte-login.phtml',
+			'layout/layout'           => __DIR__ . '/../view/layout/login.phtml',
 			'core/index/index' => __DIR__ . '/../view/core/index/index.phtml',
 			'error/404'               => __DIR__ . '/../view/error/404.phtml',
 			'error/index'             => __DIR__ . '/../view/error/index.phtml',
+		],
+		'strategies' => [
+			'ViewJsonStrategy',
 		],
 		'template_path_stack' => [
 			__DIR__ . '/../view',

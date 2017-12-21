@@ -1,0 +1,31 @@
+<?=$this->partial('partial/form-error',['form'=>$this->form]);?>
+
+<?=$this->form()->openTag($this->form->setAttribute('action',$this->url('auth/login-form')));?>
+<h1>Login Form</h1>
+<?=$this->partial(sprintf('partial/%s/form/input-form-group', LAYOUT),[
+	'field'=>$this->form->get('email')->setLabel("")
+]);?>
+
+<?=$this->partial(sprintf('partial/%s/form/input-form-group', LAYOUT),[
+	'field'=>$this->form->get('password')->setLabel("")
+]);?>
+
+<div>
+    <?=$this->formSubmit($this->form->get('submit')->setValue('Iniciar Sessão')->setAttribute('style','margin-left:0'));?>
+</div>
+<div class="clearfix"></div>
+<div class="separator">
+    <p class="change_link">New to site?
+        <a href="<?=$this->url('auth/register')?>" class="to_register"> Create Account </a>
+    </p>
+
+    <div class="clearfix"></div>
+    <br />
+
+    <div>
+        <h1><i class="fa fa-paw"></i> Gentelella Alela!</h1>
+        <p>©2016 All Rights Reserved. Gentelella Alela! is a Bootstrap 3 template. Privacy and Terms</p>
+    </div>
+</div>
+<?=$this->form()->closeTag();?>
+<?=$this->partial('partial/messages');?>

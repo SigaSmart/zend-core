@@ -16,29 +16,7 @@
             </div>
         <?php endif; ?>
     </div>
-    
-    <div class="content">
-        <?php foreach($this->rows as $row):?>
-        <article class="row" style="margin-bottom: 10px;">
-            <div class="col-sm-2">
-                <div style="height: 50px; border: 1px solid black; text-align: center;">
-                    Place for Avatar
-                </div>
-            </div>
-            <div class="col-sm-8">
-                <a href="">
-                    Box /article title - Mr <?php echo $row['surname']?> 
-                </a>
-                <br />
-                <?php echo $row['surname']?> <br />
-                <?php echo $row['idcustomer']?> <br />
-            </div>
-            <div class="span2">
-                City - <?php echo $row['city']?>
-            </div>
-        </article>
-        <?php endforeach;?>
-    </div>
+    <?php echo $this->table; ?>
     <div class="row">
         <div class="col-sm-6 text-left">
             <?php if ($this->showItemPerPage): ?>
@@ -65,5 +43,5 @@
         <div class="processing">
         </div>
     </div>
-    <?php echo $this->paramsWrap;?>
+    <?php echo $this->paramsWrap; ?>
 </div>

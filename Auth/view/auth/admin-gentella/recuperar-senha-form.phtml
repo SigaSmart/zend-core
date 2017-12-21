@@ -1,8 +1,8 @@
-<?=$this->partial('partial/admin-lte/form-error',['form'=>$this->form]);?>
+<?=$this->partial('partial/form-error',['form'=>$this->form]);?>
 
 <?=$this->form()->openTag($this->form->setAttribute('action',$this->url('auth/recuperar-senha/recuperar-senha-form')));?>
 
-<?=$this->partial('partial/admin-lte/form/input-form-group',[
+<?=$this->partial(sprintf('partial/%s/form/input-form-group', LAYOUT),[
 	'field'=>$this->form->get('email')->setLabel("")
 ]);?>
   <div class="row">

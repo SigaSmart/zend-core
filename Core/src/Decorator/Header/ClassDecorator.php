@@ -8,6 +8,8 @@
 
 namespace Core\Decorator\Header;
 
+use Core\Decorator\Cell\AbstractCellDecorator;
+
 class ClassDecorator extends AbstractCellDecorator
 {
 

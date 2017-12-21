@@ -1,0 +1,16 @@
+<?=$this->partial('partial/form-error',['form'=>$this->form]);?>
+
+<?=$this->form()->openTag($this->form->setAttribute('action',$this->url('auth/recuperar-senha/recuperar-senha-form')));?>
+
+<?=$this->partial(sprintf('partial/%s/form/input-form-group', LAYOUT),[
+	'field'=>$this->form->get('email')->setLabel("")
+]);?>
+  <div class="row">
+        <!-- /.col -->
+        <div class="col-xs-12">
+			<?=$this->formSubmit($this->form->get('submit')->setValue('Solicitar Nova Senha'));?>
+        </div>
+        <!-- /.col -->
+    </div>
+<?=$this->form()->closeTag();?>
+<?=$this->partial('partial/messages');?>

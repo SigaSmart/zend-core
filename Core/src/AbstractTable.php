@@ -17,10 +17,12 @@ use Core\Options\ModuleOptions;
 use Core\Form\TableForm;
 use Core\Form\TableFilter;
 
+
 abstract class AbstractTable extends AbstractElement implements TableInterface
 {
 
-    /**
+
+	/**
      * Collection on headers objects
      * @var array
      */

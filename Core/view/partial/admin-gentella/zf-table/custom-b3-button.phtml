@@ -1,0 +1,28 @@
+ <div class="row">
+        <div class="col-sm-6 text-left">
+            <?php if ($this->showItemPerPage): ?>
+                <label class="pull-left">
+                    <select class="itemPerPage form-control">
+                        <?php foreach ($this->itemCountPerPageValues as $item): ?>
+                            <?php $selected = ($item == $this->itemCountPerPage) ? 'selected="selected"' : '""'; ?>
+                            <option <?php echo $selected ?>><?php echo $item ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                </label>
+           <?php endif; ?>
+           <?php if($this->showExportToCSV): ?>
+             <a href="#" style="margin-left: 10px;" class="export-csv">Export to CSV</a>
+           <?php endif;?>
+        </div>
+        <div class="col-sm-6 text-right">
+            <?php if ($this->showPagination): ?>
+                <div class="dataTables_paginate paging_bootstrap pagination">
+                    <?php echo $this->paginator; ?>
+                </div>
+            <?php endif; ?>
+        </div>
+        <div class="processing">
+        </div>
+    </div>
+    <?php echo $this->paramsWrap;?>
+</div>
