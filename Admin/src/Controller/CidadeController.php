@@ -33,11 +33,11 @@ class CidadeController extends AbstractController
 		$this->apiModel->setAdapter($this->getAdapter())
 			->setSource($this->table->setTableModel($this->apiModel)->getSelect($this->params()->fromPost()))
 			->setParamAdapter($this->getRequest()->getPost());
-		//return $table->render();
-		return $this->apiModel->render('custom',sprintf('admin/cidade/%s/listar', LAYOUT));
-		//return $table->render('dataTableAjaxInit');
-		//return $table->render('dataTableJson');
-		//return $table->render('newDataTableJson');
+		return $this->apiModel->render();
+		//return $this->apiModel->render('custom',sprintf('admin/cidade/%s/listar', LAYOUT));
+		//return $this->apiModel->render('dataTableAjaxInit');
+		//return $this->apiModel->render('dataTableJson');
+		return $this->apiModel->render('newDataTableJson');
 	}
 
 	public function htmlResponse($html)
