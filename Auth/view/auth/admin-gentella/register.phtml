@@ -3,10 +3,6 @@
                 <div id="formContainer">
 
                 </div>
-                <script>
-                    $(function () {
-                        $("#formContainer").zfForm('<?=$this->url('auth/register/register-form')?>');
-                    })
-                </script>
+				<?=$this->ZfForm()->form();?>
             </section>
         </div>

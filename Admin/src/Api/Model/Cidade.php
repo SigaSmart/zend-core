@@ -14,25 +14,30 @@ use Zend\Db\Sql\Select;
 
 class Cidade extends AbstractTable
 {
-	protected $config = array(
-		'name' => 'Base table',
-		'Module' => 'Admin',
+	protected $config = [
+		'name' => 'Titulo Da Tabela',
 		'showPagination' => true,
 		'showQuickSearch' => true,
 		'showItemPerPage' => true,
 		'itemCountPerPage' => 12,
-		'showColumnFilters' => false,
-		'showExportToCSV' => false,
-		'valuesOfItemPerPage' => array(6, 12, 24, 48 , 96 , 192),
+		'showColumnFilters' => true,
+		'showExportToCSV' => true,
+		'valuesOfItemPerPage' => [6, 12, 24, 48 , 96 , 192],
 		//'valuesOfItemPerPage' => array(5, 10, 20, 50 , 100 , 200),
+		'showButtonsActions' => true,
+		'valueButtonsActions' => ['add'=>"Adicionar",'active'=>'Ativar','inactive'=>"Desabilitar","trash"=>"Enviar p/ Lixeira",'trashall'=>'Esvaziar Lixeira','csv'=>'Exportar'],
+		'Module' => 'Admin',
+		'Route' => 'admin',
+		'Controller' => 'cidade',
+		'numberColls' => 3,
 		'rowAction' => ''
-	);
+	];
 
 	/**
 	 * @var array Definition of headers
 	 */
 	protected $headers = [
-		'id' => ['title' => 'Id', 'width' => '50'],
+		'id' => ['title' => 'check-all', 'width' => '50'],
 		'title' => ['title' => 'Name'],
 		'cover' => ['title' => 'Imagem'],
 		'uf' => ['title' => 'Surname'],
@@ -52,7 +57,9 @@ class Cidade extends AbstractTable
 
 		]);
 		$this->getHeader('title')->getCell()->addDecorator('link', [
-			'url' =>  $this->getUrl('admin', [
+			'url' =>  $this->getUrl('admin/default', [
+				'controller'=>'cidade',
+				'action'=>'editar',
 				'id' => "%s"
 			]),
 			'vars' => ['id'],

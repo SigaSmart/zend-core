@@ -13,87 +13,37 @@ use Zend\Router\Http\Literal;
 return [
     'router' => [
         'routes' => [
-		   'auth' => [
-                'type' => Literal::class,
-                'options' => [
-                    'route'    => '/admin/auth',
-                    'defaults' => [
-                        'controller' => Controller\AuthController::class,
-                        'action'     => 'login',
-                    ],
-                ],
-			   'may_terminate' => true,
-			   'child_routes' => [
-				   'login-form' => [
-					   'type' => Literal::class,
-					   'options' => [
-						   'route' => '/login-form',
-						   'defaults' => [
-							   'action' => 'login-form',
-						   ],
-					   ],
-				   ],
-				   'sair' => [
-					   'type' => Literal::class,
-					   'options' => [
-						   'route' => '/sair',
-						   'defaults' => [
-							   'action' => 'sair',
-						   ],
-					   ],
-				   ],
-				   // Segment route for viewing one blog post
-				   'register' => [
-					   'type' => Literal::class,
-					   'options' => [
-						   'route' => '/register',
-						   'defaults' => [
-							   'action' => 'register',
-						   ],
-					   ],
-					   'may_terminate' => true,
-					   'child_routes' => [
-						   'register-form' => [
-							   'type' => Literal::class,
-							   'options' => [
-								   'route' => '/register-form',
-								   'defaults' => [
-									   'action' => 'register-form',
-								   ],
-							   ],
-						   ],
-					   ]
-				   ],
-				    'recuperar-senha' => [
-					   'type' => Literal::class,
-					   'options' => [
-						   'route' => '/recuperar-senha',
-						   'defaults' => [
-							   'action' => 'recuperar-senha',
-						   ],
-					   ],
-						'may_terminate' => true,
-						'child_routes' => [
-							'recuperar-senha-form' => [
-								'type' => Literal::class,
-								'options' => [
-									'route' => '/recuperar-senha-form',
-									'defaults' => [
-										'action' => 'recuperar-senha-form',
-									],
-								],
+			"auth" => [
+				"type" => Literal::class,
+				"options" => [
+					"route" => "/admin-auth",
+					"defaults" => [
+						"__NAMESPACE__" => "Auth\Controller",
+						"controller" => "Auth",
+						"action" => "login",
+					],
+				],
+				"may_terminate" => true,
+				"child_routes" => [
+					"default" => [
+						"type" => "Segment",
+						"options" => [
+							"route" => "/[:controller[/:action[/:id]]]",
+							"constraints" => [
+								"controller" => "[a-zA-Z][a-zA-Z0-9_-]*",
+								"action" => "[a-zA-Z][a-zA-Z0-9_-]*",
 							],
-						]
-				   ],
-
-			   ]
-            ],
-
+							"defaults" => [
+							],
+						],
+					],
+				],
+			],
         ],
     ],
     'controllers' => [
         'factories' => [
-            Controller\AuthController::class => ControllerFactoy::class,
+			'Auth\Controller\Auth' => ControllerFactoy::class,
         ],
     ],
     'view_manager' => [

@@ -1,6 +1,9 @@
 <?=$this->partial('partial/form-error',['form'=>$this->form]);?>
 
-<?=$this->form()->openTag($this->form->setAttribute('action',$this->url('auth/login-form')));?>
+<?=$this->form()->openTag($this->form->setAttribute('action',$this->url('auth/default', [
+	'controller'=>'auth',
+	'action'=>'login-form'
+])));?>
 <h1>Login Form</h1>
 <?=$this->partial(sprintf('partial/%s/form/input-form-group', LAYOUT),[
 	'field'=>$this->form->get('email')->setLabel("")
@@ -16,7 +19,10 @@
 <div class="clearfix"></div>
 <div class="separator">
     <p class="change_link">New to site?
-        <a href="<?=$this->url('auth/register')?>" class="to_register"> Create Account </a>
+        <a href="<?=$this->url('auth/default', [
+			'controller'=>'auth',
+			'action'=>'register'
+		])?>" class="to_register"> Create Account </a>
     </p>
 
     <div class="clearfix"></div>

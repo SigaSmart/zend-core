@@ -9,16 +9,14 @@
         <div id="formContainer">
 
         </div>
-        <script>
-            $(function () {
-                $("#formContainer").zfForm('<?=$this->url('auth/recuperar-senha/recuperar-senha-form')?>');
-            })
-        </script>
-
+		<?=$this->ZfForm()->form();?>
         <div class="social-auth-links text-center">
             <p>- OR -</p>
         </div>
-		<a href="<?=$this->url('auth')?>" class="text-center">Voltar para o login</a>
+		<a href="<?=$this->url('auth/default', [
+			'controller'=>'auth',
+			'action'=>'login'
+		])?>" class="text-center">Voltar para o login</a>
 	</div>
 	<!-- /.form-box -->
 </div>

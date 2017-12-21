@@ -5,23 +5,23 @@
     <!-- /.login-logo -->
     <div class="login-box-body">
         <p class="login-box-msg">Faça o Login Para Iniciar A Sessão</p>
-
         <div id="formContainer">
 
         </div>
-        <script>
-            $(function () {
-                $("#formContainer").zfForm('<?=$this->url('auth/login-form')?>');
-            })
-        </script>
-
+		<?=$this->ZfForm()->person('formContainer',"auth/default",'auth','login-form');?>
         <div class="social-auth-links text-center">
             <p>- OR -</p>
         </div>
         <!-- /.social-auth-links -->
 
-        <a href="<?=$this->url('auth/recuperar-senha')?>">Esqueci minha senha</a><br>
-        <a href="<?=$this->url('auth/register')?>" class="text-center">Não sou cadastrado</a>
+        <a href="<?=$this->url('auth/default', [
+			'controller'=>'auth',
+			'action'=>'recupera-senha'
+		])?>">Esqueci minha senha</a><br>
+        <a href="<?=$this->url('auth/default', [
+			'controller'=>'auth',
+			'action'=>'register'
+		])?>" class="text-center">Não sou cadastrado</a>
 
     </div>
     <!-- /.login-box-body -->

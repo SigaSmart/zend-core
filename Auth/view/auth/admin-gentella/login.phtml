@@ -2,10 +2,6 @@
 			<section class="login_content">
 				<div id="formContainer">
 				</div>
-					<script>
-                        $(function () {
-                            $("#formContainer").zfForm('<?=$this->url('auth/login-form')?>');
-                        })
-					</script>
+				<?=$this->ZfForm()->person('formContainer',"auth/default",'auth','login-form');?>
 			</section>
 		</div>

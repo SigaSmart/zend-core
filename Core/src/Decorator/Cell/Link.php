@@ -56,10 +56,10 @@ class Link extends AbstractCellDecorator
         if (count($this->vars)) {
             $actualRow = $this->getCell()->getActualRow();
             foreach ($this->vars as $var) {
-                $values[] = $actualRow[$var];
+                $values[] = trim($actualRow[$var]);
             }
         }
         $url = vsprintf($this->url, $values);
-        return sprintf('<a  href="%s">%s</a>', $url, $context);
+        return sprintf('<a  href="%s">%s</a>', str_replace(" ","",$url), $context);
     }
 }

@@ -108,9 +108,12 @@ class Render extends AbstractCommon
         $view = new ViewModel();
         $view->setTemplate($template);
         $view->setVariable('rows', $rowsArray);
+		$view->setVariable('route', $tableConfig->getRoute());
+		$view->setVariable('controller', $tableConfig->getController());
+		$view->setVariable('pages', get_object_vars($this->getTable()->getSource()->getPaginator()->getPages()));
 
 		$Top = new ViewModel();
-		$Top->setTemplate(sprintf('layout/%s/templates/custom-b3', LAYOUT));
+		$Top->setTemplate(sprintf('layout/%s/templates/container-b3', LAYOUT));
 		$Top->setVariable('paginator', $this->renderPaginator());
 		$Top->setVariable('paramsWrap', $this->renderParamsWrap());
 		$Top->setVariable('itemCountPerPage', $this->getTable()->getParamAdapter()->getItemCountPerPage());
@@ -121,7 +124,13 @@ class Render extends AbstractCommon
 		$Top->setVariable('showPagination', $tableConfig->getShowPagination());
 		$Top->setVariable('showItemPerPage', $tableConfig->getShowItemPerPage());
 		$Top->setVariable('showExportToCSV', $tableConfig->getShowExportToCSV());
-		$Top->addChild($view, 'listar');
+		$Top->setVariable('valuesOfState', $tableConfig->getValuesOfState());
+		$Top->setVariable('valuesState', $this->getTable()->getParamAdapter()->getValuesState());
+		$Top->setVariable('route', $tableConfig->getRoute());
+		$Top->setVariable('controller', $tableConfig->getController());
+		$Top->setVariable('valueButtonsActions', $tableConfig->getValueButtonsActions());
+		$Top->setVariable('pages', get_object_vars($this->getTable()->getSource()->getPaginator()->getPages()));
+		$Top->addChild($view, 'table');
 		$Top->setTerminal(true);
         return $Top;
     }
@@ -160,6 +169,13 @@ class Render extends AbstractCommon
         $view->setVariable('showPagination', $tableConfig->getShowPagination());
         $view->setVariable('showItemPerPage', $tableConfig->getShowItemPerPage());
         $view->setVariable('showExportToCSV', $tableConfig->getShowExportToCSV());
+        $view->setVariable('valuesOfState', $tableConfig->getValuesOfState());
+		$view->setVariable('valuesState', $this->getTable()->getParamAdapter()->getValuesState());
+		$view->setVariable('route', $tableConfig->getRoute());
+		$view->setVariable('controller', $tableConfig->getController());
+		$view->setVariable('valueButtonsActions', $tableConfig->getValueButtonsActions());
+		$view->setVariable('pages', get_object_vars($this->getTable()->getSource()->getPaginator()->getPages()));
+
 		$view->setTerminal(true);
         return $view;
     }
@@ -230,6 +246,7 @@ class Render extends AbstractCommon
         $view->setVariable('order', $this->getTable()->getParamAdapter()->getOrder());
         $view->setVariable('page', $this->getTable()->getParamAdapter()->getPage());
         $view->setVariable('quickSearch', $this->getTable()->getParamAdapter()->getQuickSearch());
+        $view->setVariable('valuesState', $this->getTable()->getParamAdapter()->getValuesState());
         $view->setVariable('rowAction', $this->getTable()->getOptions()->getRowAction());
 
         return $this->getRenderer()->render($view);

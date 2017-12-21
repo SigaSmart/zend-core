@@ -57,6 +57,11 @@ class AdapterArrayObject extends AbstractAdapter implements AdapterInterface, \Z
      * @var array
      */
     protected $filters;
+	/**
+	 *
+	 * @var string
+	 */
+	protected $valuesState;
 
     const DEFAULT_PAGE = 1;
     const DEFAULT_ORDER = 'asc';
@@ -87,8 +92,9 @@ class AdapterArrayObject extends AbstractAdapter implements AdapterInterface, \Z
         $this->itemCountPerPage = (isset($array['zfTableItemPerPage']))
             ? $array['zfTableItemPerPage'] : $this->getOptions()->getItemCountPerPage();
         $this->quickSearch = (isset($array['zfTableQuickSearch'])) ? $array['zfTableQuickSearch'] : '';
+		$this->valuesState = (isset($array['valuesState'])) ? $array['valuesState'] : NULL;
 
-        //Init filters value
+		//Init filters value
         if ($this->getTable()->getOptions('showColumnFilters')) {
             foreach ($array as $key => $value) {
                 if (substr($key, 0, 4) == 'zff_') {
@@ -209,4 +215,23 @@ class AdapterArrayObject extends AbstractAdapter implements AdapterInterface, \Z
     {
         return $this->quickSearch;
     }
+
+	/**
+	 * Get item value status
+	 *
+	 * @return int
+	 */
+	public function getValuesState()
+	{
+		return $this->valuesState;
+	}
+
+	/**
+	 *
+	 * @param int $valuesState
+	 */
+	public function setValuesState($valuesState)
+	{
+		$this->valuesState = $valuesState;
+	}
 }

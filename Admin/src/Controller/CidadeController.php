@@ -14,6 +14,7 @@ use Admin\Model\CidadeModel;
 use Admin\Table\CidadeTable;
 use Core\Controller\AbstractController;
 use Interop\Container\ContainerInterface;
+use Zend\View\Model\JsonModel;
 
 class CidadeController extends AbstractController
 {
@@ -26,25 +27,30 @@ class CidadeController extends AbstractController
 		$this->apiModel = Cidade::class;
 	}
 
-	public function testAction(){
+	public function listarAction(){
 
 		$this->getTable()
 			->getApiModel();
 		$this->apiModel->setAdapter($this->getAdapter())
-			->setSource($this->table->setTableModel($this->apiModel)->getSelect($this->params()->fromPost()))
+			->setSource($this->table->setTableModel($this->apiModel)
+				->getSelect($this->params()->fromPost()))
 			->setParamAdapter($this->getRequest()->getPost());
-		return $this->apiModel->render();
-		//return $this->apiModel->render('custom',sprintf('admin/cidade/%s/listar', LAYOUT));
-		//return $this->apiModel->render('dataTableAjaxInit');
-		//return $this->apiModel->render('dataTableJson');
-		return $this->apiModel->render('newDataTableJson');
+
+		$view = $this->apiModel->render();
+		//$view = $this->apiModel->render('custom',sprintf('admin/cidade/%s/listar', LAYOUT));
+		//$view = $this->apiModel->render('dataTableAjaxInit');
+		//$view = $this->apiModel->render('dataTableJson');
+		//$view = $this->apiModel->render('newDataTableJson');
+		$view->setVariable('route',"admin");
+		$view->setVariable('controller',"cidade");
+		return $view;
 	}
 
-	public function htmlResponse($html)
+	public function stateAction()
 	{
-		$response = $this->getResponse();
-		$response->setStatusCode(200);
-		$response->setContent($html);
-		return $response;
+		$this->getTable();
+		$Resul = $this->table->state(['status'=>$this->params()->fromRoute('id')], $this->params()->fromPost('id'));
+		return new JsonModel($Resul);
 	}
+
 }

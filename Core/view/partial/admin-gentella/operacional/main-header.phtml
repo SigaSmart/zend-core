@@ -19,7 +19,10 @@
                         </a>
                     </li>
                     <li><a href="javascript:;">Help</a></li>
-                    <li><a href="<?=$this->url('auth/sair')?>"><i class="fa fa-sign-out pull-right"></i> Sair </a></li>
+                    <li><a href="<?=$this->url('auth/default', [
+							'controller'=>'auth',
+							'action'=>'sair'
+						])?>"><i class="fa fa-sign-out pull-right"></i> Sair </a></li>
                 </ul>
             </li>
         </ul>

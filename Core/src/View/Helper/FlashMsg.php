@@ -52,9 +52,6 @@ class FlashMsg extends AbstractHelper
         $plugin->clearCurrentMessages('warning');
         $plugin->clearCurrentMessages('error');
 
-        $this->inlineScript->appendFile($Url('FlashMessenger', ["action"=>"js"]));
-        
-        echo '<link href="'.$Url('FlashMessenger', ["action"=>"css"]).'" media="screen" rel="stylesheet" type="text/css">';
         $this->inlineScript->captureStart();
         foreach(array_filter($noty) as $type => $messages){
             $message = implode('<br/><br/>', $messages);

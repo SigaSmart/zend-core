@@ -92,13 +92,7 @@ class ModuleOptions extends AbstractOptions implements
      * Template Map
      * @var array
      */
-    protected $templateMap = array();
-
-	/**
-	 * Template Map
-	 * @var array
-	 */
-	protected $Module = 'Core';
+    protected $templateMap = [];
 
 	/**
 	 * Value to specify items status
@@ -117,6 +111,28 @@ class ModuleOptions extends AbstractOptions implements
 	 * @var boolean
 	 */
 	protected $showButtonsActions = true;
+
+	/**
+	 * Nome do modulo
+	 * @var string
+	 */
+	protected $Module = 'Core';
+
+	/**
+	 * Nome da rota
+	 * @var string
+	 */
+	protected $Route = "admin";
+
+	/**
+	 * Nome do controller
+	 * @var string
+	 */
+	protected $Controller = "admin";
+	/**
+	 * @var int
+	 */
+	protected $numberColls = 3;
 
 
     public function __construct($options = null)
@@ -184,6 +200,65 @@ class ModuleOptions extends AbstractOptions implements
 		$this->Module = $Module;
 		return $this;
 	}
+
+	/**
+	 * @return string
+	 */
+	public function getRoute()
+	{
+		return $this->Route;
+	}
+
+	/**
+	 * @param string $Route
+	 *
+	 * @return ModuleOptions
+	 */
+	public function setRoute(string $Route)
+	{
+		$this->Route = $Route;
+		return $this;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getController()
+	{
+		return $this->Controller;
+	}
+
+	/**
+	 * @param string $Controller
+	 *
+	 * @return ModuleOptions
+	 */
+	public function setController(string $Controller)
+	{
+		$this->Controller = $Controller;
+		return $this;
+	}
+
+	/**
+	 * @return int
+	 */
+	public function getNumberColls()
+	{
+		return $this->numberColls;
+	}
+
+	/**
+	 * @param int $numberColls
+	 *
+	 * @return ModuleOptions
+	 */
+	public function setNumberColls(int $numberColls)
+	{
+		$this->numberColls = $numberColls;
+		return $this;
+	}
+
+
 	/**
 	 * Get Array of values to set items status
 	 * @return array

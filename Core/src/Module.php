@@ -8,10 +8,14 @@
 namespace Core;
 
 use Core\View\Helper\FlashMsg;
+use Core\View\Helper\RouteHelper;
+use Core\View\Helper\ZfForm;
+use Core\View\Helper\ZfTable;
 use Interop\Container\ContainerInterface;
 use Zend\EventManager\EventInterface;
 use Zend\ModuleManager\Feature\BootstrapListenerInterface;
 use Zend\ModuleManager\Feature\ViewHelperProviderInterface;
+use Zend\Mvc\ModuleRouteListener;
 
 class Module implements BootstrapListenerInterface, ViewHelperProviderInterface
 {
@@ -36,34 +40,39 @@ class Module implements BootstrapListenerInterface, ViewHelperProviderInterface
 	{
 
 		$eventManager = $e->getApplication()->getEventManager();
-		$eventManager->attach('dispatch.error', function($event)
-		{
-			$exception = $event->getResult()->exception;
-			if ($exception) {
-				$sm = $event->getApplication()->getServiceManager();
-				$serviceLog = $sm->get('prj-errorhandling');
-				if($exception instanceof \Exception):
-					$serviceLog->logException($exception);
-				endif;
-			}
+		$serviceManager = $e->getApplication()->getServiceManager();
 
-			$this->finishLog = false;
-		});
+		$moduleRouteListener = new ModuleRouteListener();
+		$moduleRouteListener->attach($eventManager);
+		$eventManager = $e->getApplication()->getEventManager();
+//		$eventManager->attach('dispatch.error', function($event)
+//		{
+//			$exception = $event->getResult()->exception;
+//			if ($exception) {
+//				$sm = $event->getApplication()->getServiceManager();
+//				$serviceLog = $sm->get('prj-errorhandling');
+//				if($exception instanceof \Exception):
+//					$serviceLog->logException($exception);
+//				endif;
+//			}
+//
+//			$this->finishLog = false;
+//		});
 
-		$eventManager->attach('finish', function($event)
-		{
-			if ($this->finishLog)
-			{
-				$result = $event->getResult();
-				$events = method_exists($result, 'getVariables') ? $result->getVariables() : false;
-				$exception = isset($events['exception']) ? $events['exception'] : false;
-				if ($exception) {
-					$sm = $event->getApplication()->getServiceManager();
-					$serviceLog = $sm->get('prj-errorhandling');
-					$serviceLog->logException($exception);
-				}
-			}
-		});
+//		$eventManager->attach('finish', function($event)
+//		{
+//			if ($this->finishLog)
+//			{
+//				$result = $event->getResult();
+//				$events = method_exists($result, 'getVariables') ? $result->getVariables() : false;
+//				$exception = isset($events['exception']) ? $events['exception'] : false;
+//				if ($exception) {
+//					$sm = $event->getApplication()->getServiceManager();
+//					$serviceLog = $sm->get('prj-errorhandling');
+//					$serviceLog->logException($exception);
+//				}
+//			}
+//		});
 
 		$e->getApplication()
 			->getEventManager()
@@ -100,6 +109,26 @@ class Module implements BootstrapListenerInterface, ViewHelperProviderInterface
 						$ViewHelperManager->get('HeadLink'),
 						$ViewHelperManager->get('url'));
 					  return $viewHelper;
+				},
+				"Route" =>function(ContainerInterface $container){
+						$Route = new RouteHelper($container);
+					return $Route;
+				},
+				"ZfTable" =>function(ContainerInterface $container){
+					    $ViewHelperManager=$container->get('ViewHelperManager');
+						$ZfTable = new ZfTable(
+							$ViewHelperManager->get('inlinescript'),
+							$ViewHelperManager->get('HeadLink'),
+							$ViewHelperManager->get('url'));
+					return $ZfTable;
+				},
+				"ZfForm" =>function(ContainerInterface $container){
+					    $ViewHelperManager=$container->get('ViewHelperManager');
+						$ZfTable = new ZfForm(
+							$ViewHelperManager->get('inlinescript'),
+							$ViewHelperManager->get('HeadLink'),
+							$ViewHelperManager->get('url'));
+					return $ZfTable;
 				}
 			]
 		];

@@ -42,7 +42,10 @@
 			</ul>
 		</li>
         <li class="divider"></li>
-        <li><a href="<?=$this->url('auth/sair');?>"><i class="fa fa-sign-out"></i> <span>Sair Do Sistema</span></a></li>
+        <li><a href="<?=$this->url('auth/default', [
+				'controller'=>'auth',
+				'action'=>'sair'
+			]);?>"><i class="fa fa-sign-out"></i> <span>Sair Do Sistema</span></a></li>
     </ul>
 	<!-- /.sidebar-menu -->
 </section>

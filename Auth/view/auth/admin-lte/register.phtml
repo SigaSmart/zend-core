@@ -8,11 +8,7 @@
 	<div id="formContainer">
 
     </div>
-    <script>
-        $(function () {
-            $("#formContainer").zfForm('<?=$this->url('auth/register/register-form')?>');
-        })
-    </script>
+	<?=$this->ZfForm()->form();?>
 	<div class="social-auth-links text-center">
 		<p>- OR -</p>
 	</div>

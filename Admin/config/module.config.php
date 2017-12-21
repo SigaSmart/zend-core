@@ -17,62 +17,47 @@ return [
 			'home' => [
 				'type' => Literal::class,
 				'options' => [
-					'route'    => '/',
-					'defaults' => [
-						'controller' => Controller\AdminController::class,
-						'action'     => 'index',
+					"route" => "/",
+					"defaults" => [
+						"__NAMESPACE__" => "Admin\Controller",
+						"controller" => "Admin",
+						"action" => "index",
 					],
 				],
 			],
-            'admin' => [
-                'type' => Literal::class,
-                'options' => [
-                    'route'    => '/admin',
-                    'defaults' => [
-                        'controller' => Controller\AdminController::class,
-                        'action'     => 'index',
-                    ],
-                ],
-				
-            ],
-            'default' => [
-                'type'    => Segment::class,
-                'options' => [
-                    'route'    => '/admin[/:action[/:id]]',
-                    'defaults' => [
-                        'controller' => Controller\AdminController::class,
-                        'action'     => 'index',
-                    ],
-                ],
-            ],
-			'cidades' => [
-				'type' => Literal::class,
-				'options' => [
-					'route'    => '/admin/cidade',
-					'defaults' => [
-						'controller' => Controller\CidadeController::class,
-						'action'     => 'index',
+			"admin" => [
+				"type" => Literal::class,
+				"options" => [
+					"route" => "/admin",
+					"defaults" => [
+						"__NAMESPACE__" => "Admin\Controller",
+						"controller" => "Admin",
+						"action" => "index",
 					],
 				],
-				'may_terminate' => true,
-				'child_routes' => [
-					'cidades-table' => [
-						'type' => Literal::class,
-						'options' => [
-							'route' => '/cidades-table',
-							'defaults' => [
-								'action' => 'test',
+				"may_terminate" => true,
+				"child_routes" => [
+					"default" => [
+						"type" => "Segment",
+						"options" => [
+							"route" => "/[:controller[/:action[/:id]]]",
+							"constraints" => [
+								"controller" => "[a-zA-Z][a-zA-Z0-9_-]*",
+								"action" => "[a-zA-Z][a-zA-Z0-9_-]*",
+							],
+							"defaults" => [
 							],
 						],
 					],
-				]
+				],
 			],
+
         ],
     ],
     'controllers' => [
         'factories' => [
-            Controller\AdminController::class => ControllerFactory::class,
-            Controller\CidadeController::class => ControllerFactory::class,
+			'Admin\Controller\Admin' => ControllerFactory::class,
+			'Admin\Controller\Cidade' => ControllerFactory::class,
         ],
     ],
     'view_manager' => [

@@ -52,4 +52,7 @@ interface AdapterInterface
      * @return string
      */
     public function getQuickSearch();
+
+    public function getValuesState();
+
 }

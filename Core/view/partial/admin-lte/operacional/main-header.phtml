@@ -40,7 +40,10 @@
 							<a href="<?=$this->url('admin');?>" class="btn btn-default btn-flat">Minha Conta</a>
 						</div>
 						<div class="pull-right">
-							<a href="<?=$this->url('auth/sair');?>" class="btn btn-default btn-flat">Sair Do Sistema</a>
+							<a href="<?=$this->url('auth/default', [
+								'controller'=>'auth',
+								'action'=>'sair'
+							]);?>" class="btn btn-default btn-flat">Sair Do Sistema</a>
 						</div>
 					</li>
 				</ul>

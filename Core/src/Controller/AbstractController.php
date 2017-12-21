@@ -65,6 +65,22 @@ abstract class AbstractController extends AbstractActionController
 		return new ViewModel();
 	}
 
+	public function createAction(){
+
+	}
+	public function editarAction(){
+
+	}
+	public function storeAction(){
+
+	}
+	public function deleteAction(){
+
+	}
+	public function stateAction(){
+
+	}
+
 	/**
 	 * @return $this
 	 */

@@ -34,7 +34,10 @@
                             <li><a href="index3.html">Dashboard3</a></li>
                         </ul>
                     </li>
-                    <li><a href="<?=$this->url('auth/sair');?>"><i class="fa fa-sign-out"></i> Sair do Sistema <span class="fa fa-chevron-right"></span></a></li>
+                    <li><a href="<?=$this->url('auth/default', [
+							'controller'=>'auth',
+							'action'=>'sair'
+						])?>"><i class="fa fa-sign-out"></i> Sair do Sistema <span class="fa fa-chevron-right"></span></a></li>
                 </ul>
             </div>
         </div>
