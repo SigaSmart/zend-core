@@ -1,8 +1,7 @@
 <?php
 /**
- * @link      http://github.com/zendframework/ZendSkeletonApplication for the canonical source repository
- * @copyright Copyright (c) 2005-2016 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   http://framework.zend.com/license/new-bsd New BSD License
+ * Created By: Claudio  Campos
+ * E-Mail: callcocam@gmail.com
  */
 
 namespace Admin;
@@ -58,6 +57,8 @@ return [
         'factories' => [
 			'Admin\Controller\Admin' => ControllerFactory::class,
 			'Admin\Controller\Cidade' => ControllerFactory::class,
+			'Admin\Controller\Empresa' => ControllerFactory::class,
+			'Admin\Controller\Demo' => ControllerFactory::class,
         ],
     ],
     'view_manager' => [

@@ -44,6 +44,7 @@ class FlashMsg extends AbstractHelper
             'success'     => array_merge($plugin->getSuccessMessages(), $plugin->getCurrentSuccessMessages()),
             'warning'     => array_merge($plugin->getWarningMessages(), $plugin->getCurrentWarningMessages()),
             'error'       => array_merge($plugin->getErrorMessages(), $plugin->getCurrentErrorMessages()),
+            'danger'       => array_merge($plugin->getErrorMessages(), $plugin->getCurrentErrorMessages()),
         ];
 
         $plugin->clearCurrentMessages('default');
@@ -51,6 +52,7 @@ class FlashMsg extends AbstractHelper
         $plugin->clearCurrentMessages('success');
         $plugin->clearCurrentMessages('warning');
         $plugin->clearCurrentMessages('error');
+        $plugin->clearCurrentMessages('danger');
 
         $this->inlineScript->captureStart();
         foreach(array_filter($noty) as $type => $messages){
@@ -62,6 +64,7 @@ class FlashMsg extends AbstractHelper
                 case "success":echo 'toastr.success("'.$message.'");';break;
                 case "warning":echo 'toastr.warning("'.$message.'");';break;
                 case "error":echo 'toastr.error("'.$message.'");';break;
+                case "danger":echo 'toastr.error("'.$message.'");';break;
               }
             
         }

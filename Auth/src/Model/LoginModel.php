@@ -1,9 +1,7 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: caltj
- * Date: 18/12/2017
- * Time: 07:57
+ * Created By: Claudio  Campos
+ * E-Mail: callcocam@gmail.com
  */
 
 namespace Auth\Model;

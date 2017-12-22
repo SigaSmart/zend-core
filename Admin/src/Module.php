@@ -1,20 +1,11 @@
 <?php
 /**
- * @link      http://github.com/zendframework/ZendSkeletonApplication for the canonical source repository
- * @copyright Copyright (c) 2005-2016 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   http://framework.zend.com/license/new-bsd New BSD License
+ * Created By: Claudio  Campos
+ * E-Mail: callcocam@gmail.com
  */
 
 namespace Admin;
 
-use Admin\Api\Model\Cidade;
-use Admin\Api\Model\Factory\ApiModelFactory;
-use Admin\Form\CidadeForm;
-use Admin\Form\Factory\FormFactory;
-use Admin\Model\CidadeModel;
-use Admin\Model\Factory\ModelFactory;
-use Admin\Table\CidadeTable;
-use Admin\Table\Factory\TableFactory;
 use Zend\ModuleManager\Feature\ServiceProviderInterface;
 
 class Module implements ServiceProviderInterface
@@ -37,10 +28,18 @@ class Module implements ServiceProviderInterface
 		return [
 
 			'factories'=>[
-				CidadeModel::class => ModelFactory::class,
-				CidadeTable::class => TableFactory::class,
-				Cidade::class => ApiModelFactory::class,
-				CidadeForm::class =>FormFactory::class
+				################ Cidade ###################
+				\Admin\Model\CidadeModel::class => \Admin\Model\Factory\ModelFactory::class,
+				\Admin\Table\CidadeTable::class => \Admin\Table\Factory\TableFactory::class,
+				\Admin\Api\Model\Cidade::class => \Admin\Api\Model\Factory\ApiModelFactory::class,
+				\Admin\Form\CidadeForm::class => \Admin\Form\Factory\FormFactory::class,
+
+				################ Empresa ###################
+				\Admin\Model\EmpresaModel::class => \Admin\Model\Factory\ModelFactory::class,
+				\Admin\Table\EmpresaTable::class => \Admin\Table\Factory\TableFactory::class,
+				\Admin\Api\Model\Empresa::class => \Admin\Api\Model\Factory\ApiModelFactory::class,
+				\Admin\Form\EmpresaForm::class => \Admin\Form\Factory\FormFactory::class
+
 			]
 		];
 	}
