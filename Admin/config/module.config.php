@@ -58,7 +58,6 @@ return [
 			'Admin\Controller\Admin' => ControllerFactory::class,
 			'Admin\Controller\Cidade' => ControllerFactory::class,
 			'Admin\Controller\Empresa' => ControllerFactory::class,
-			'Admin\Controller\Demo' => ControllerFactory::class,
         ],
     ],
     'view_manager' => [

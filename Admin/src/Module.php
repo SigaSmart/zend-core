@@ -38,7 +38,8 @@ class Module implements ServiceProviderInterface
 				\Admin\Model\EmpresaModel::class => \Admin\Model\Factory\ModelFactory::class,
 				\Admin\Table\EmpresaTable::class => \Admin\Table\Factory\TableFactory::class,
 				\Admin\Api\Model\Empresa::class => \Admin\Api\Model\Factory\ApiModelFactory::class,
-				\Admin\Form\EmpresaForm::class => \Admin\Form\Factory\FormFactory::class
+				\Admin\Form\EmpresaForm::class => \Admin\Form\Factory\FormFactory::class,
+
 
 			]
 		];
