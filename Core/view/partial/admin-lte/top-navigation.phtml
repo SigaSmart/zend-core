@@ -1,0 +1,13 @@
+<section class="content-header">
+	<h1>
+		<?=Core\Module::SIS?>
+		<small><?=Core\Module::VERSION?></small>
+	</h1>
+	<ol class="breadcrumb">
+		<li><a href="<?=$this->url('admin')?>"><i class="fa fa-dashboard"></i> <?=$this->a?></a></li>
+		<li><a href="<?=$this->url($this->b, [
+				'controller'=>$this->c
+			])?>"><?=$this->d?></a></li>
+		<li class="active"><?=$this->e?></li>
+	</ol>
+</section>

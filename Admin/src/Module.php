@@ -9,6 +9,8 @@ namespace Admin;
 
 use Admin\Api\Model\Cidade;
 use Admin\Api\Model\Factory\ApiModelFactory;
+use Admin\Form\CidadeForm;
+use Admin\Form\Factory\FormFactory;
 use Admin\Model\CidadeModel;
 use Admin\Model\Factory\ModelFactory;
 use Admin\Table\CidadeTable;
@@ -38,6 +40,7 @@ class Module implements ServiceProviderInterface
 				CidadeModel::class => ModelFactory::class,
 				CidadeTable::class => TableFactory::class,
 				Cidade::class => ApiModelFactory::class,
+				CidadeForm::class =>FormFactory::class
 			]
 		];
 	}

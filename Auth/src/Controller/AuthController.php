@@ -81,9 +81,9 @@ class AuthController extends AbstractController
 			$this->form->setInputFilter($this->model->getInputFilter());
 			if ($this->form->isValid()):
 				 $this->model->offsetSet("password" ,md5($this->encryptPassword($this->model->offsetGet('email'),$this->model->offsetGet('password'))));
-                 $Result = $this->table->insert($this->model);
-				 $this->helper->addMessage($Result['msg'],$Result['type']);
-				 if($Result['result']):
+				 $this->args = array_merge($this->args, $this->table->insert($this->model));
+				 $this->helper->addMessage($this->args['msg'],$this->args['type']);
+				 if($this->args['result']):
 				   $this->helper->addRedirect("auth");
 				 endif;
 			endif;

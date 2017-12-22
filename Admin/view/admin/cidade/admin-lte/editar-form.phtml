@@ -1,0 +1,27 @@
+<?=$this->partial('partial/form-error',['form'=>$this->form]);?>
+<?=$this->form()->openTag($this->form->setAttribute('action',$this->url('admin/default', [
+	'controller'=>'cidade',
+	'action'=>'editar-form'
+])));?>
+<?=$this->formHidden($this->form->get('id'));?>
+<?=$this->partial(sprintf('partial/%s/form/input-inline', LAYOUT),[
+	'field'=>$this->form->get('title')
+]);?>
+
+<?=$this->partial(sprintf('partial/%s/form/input-inline', LAYOUT),[
+	'field'=>$this->form->get('created_at')
+]);?>
+	<div class="row">
+		<!-- /.col -->
+		<div class="col-xs-6 col-xs-offset-3">
+			<?=$this->formSubmit($this->form->get('submit')->setValue('Atualizar Cidade'));?>
+		</div>
+		<div class="col-xs-3">
+			<a href="<?=$this->url($this->route, [
+				'controller'=>$this->controller
+			])?>" class="btn btn-warning btn-block"><i class="fa fa-backward"></i> Voltar Para a Lista </a>
+		</div>
+		<!-- /.col -->
+	</div>
+<?=$this->form()->closeTag();?>
+<?=$this->partial('partial/messages');?>

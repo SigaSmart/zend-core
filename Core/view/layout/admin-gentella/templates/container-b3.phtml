@@ -63,21 +63,5 @@
         </div>
     </div>
 	<?php echo $this->paramsWrap; ?>
-</div>
-<script>
-    $(function () {
-        $(".checkbox-toggle").click(function () {
-            var clicks = $(this).data('clicks');
-            if (clicks) {
-                //Uncheck all checkboxes
-                $(".box-body input[type='checkbox']").iCheck("uncheck");
-                $(".fa", this).removeClass("fa-check-square-o").addClass('fa-square-o');
-            } else {
-                //Check all checkboxes
-                $(".box-body input[type='checkbox']").iCheck("check");
-                $(".fa", this).removeClass("fa-square-o").addClass('fa-check-square-o');
-            }
-            $(this).data("clicks", !clicks);
-        });
-    });
-</script>
+	<?=$this->partial('partial/messages');?>
+</div><?=$this->ICheck();?>

@@ -2,11 +2,11 @@
 /**
  * Created by PhpStorm.
  * User: caltj
- * Date: 20/12/2017
- * Time: 00:32
+ * Date: 22/12/2017
+ * Time: 08:38
  */
 
-namespace Admin\Model\Factory;
+namespace Admin\Form\Factory;
 
 
 use Interop\Container\ContainerInterface;
@@ -15,7 +15,7 @@ use Zend\ServiceManager\Exception\ServiceNotCreatedException;
 use Zend\ServiceManager\Exception\ServiceNotFoundException;
 use Zend\ServiceManager\Factory\FactoryInterface;
 
-class ModelFactory implements FactoryInterface
+class FormFactory implements FactoryInterface
 {
 
 	/**
@@ -33,6 +33,8 @@ class ModelFactory implements FactoryInterface
 	 */
 	public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
 	{
-		return new $requestedName($container);
+		return new $requestedName("AjaxForm",[
+			'container'=>$container
+		]);
 	}
 }

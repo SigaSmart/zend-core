@@ -8,6 +8,7 @@
 namespace Core;
 
 use Core\View\Helper\FlashMsg;
+use Core\View\Helper\ICheckHelper;
 use Core\View\Helper\RouteHelper;
 use Core\View\Helper\ZfForm;
 use Core\View\Helper\ZfTable;
@@ -20,6 +21,7 @@ use Zend\Mvc\ModuleRouteListener;
 class Module implements BootstrapListenerInterface, ViewHelperProviderInterface
 {
 	const VERSION = '3.0.3-dev';
+	const SIS = 'SIGA-SMART';
 
 	public function getConfig()
 	{
@@ -129,6 +131,14 @@ class Module implements BootstrapListenerInterface, ViewHelperProviderInterface
 							$ViewHelperManager->get('HeadLink'),
 							$ViewHelperManager->get('url'));
 					return $ZfTable;
+				},
+				"ICheck" =>function(ContainerInterface $container){
+					    $ViewHelperManager=$container->get('ViewHelperManager');
+						$ICheckHelper = new ICheckHelper(
+							$ViewHelperManager->get('inlinescript'),
+							$ViewHelperManager->get('HeadLink'),
+							$ViewHelperManager->get('url'));
+					return $ICheckHelper;
 				}
 			]
 		];

@@ -52,7 +52,21 @@ abstract class AbstractController extends AbstractActionController
 
 	protected $helper;
 
+	protected $route = "admin";
 
+	protected $controller = "admin";
+
+	protected $action = "index";
+
+	protected $args = [
+		'icon' => 'fa fa-warning',
+		'title' => 'OPPSS!',
+		'msg' => 'Não conseguimos atender a sua solicitação!',
+		'type' => 'danger',
+	];
+
+
+	protected $user;
 
 	abstract public  function __construct(ContainerInterface $container);
 
@@ -145,10 +159,14 @@ abstract class AbstractController extends AbstractActionController
 	}
 
 
+	/**
+	 * @return \Zend\Http\Response
+	 */
 	protected function auth(){
 		if(!$this->identity()):
 			return $this->redirect()->toRoute("auth");
 		endif;
+		$this->user = $this->identity();
 	}
 	protected function quest(){
 		if($this->identity()):

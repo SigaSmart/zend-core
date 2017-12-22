@@ -5,7 +5,7 @@
 			[
 				'controller'=>$this->controller,
 				'action'=>'create'
-			]) ?>" name="ajaxForm" method="post" style="display: flex;float: left;">
+			]) ?>" name="ajaxBoxForm" method="post" style="display: flex;float: left;">
             <button style="margin-left: 10px;" class="actions btn btn-success btn-sm btn-flat"><i class="fa fa-plus-circle"></i> <?=$this->valueButtonsActions['add'];?></button>
         </form>
 		<?php if ($this->valuesState != '1'): ?>
@@ -41,7 +41,7 @@
             <a  href="<?= $this->url(sprintf("%s/default", $this->route),
 				[
 					'controller'=>$this->controller,
-					'action'=>'create'
+					'action'=>'delete'
 				]) ?>" id="4" style="margin-left: 10px;" type="button" class="actions btn btn-danger btn-flat btn-sm"><i class="fa fa-eraser"></i> <?=$this->valueButtonsActions['trashall'];?></a>
 		<?php endif; ?>
 		<?php if ($this->showExportToCSV): ?>
