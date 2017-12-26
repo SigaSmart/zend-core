@@ -40,6 +40,44 @@ class Module implements ServiceProviderInterface
 				\Admin\Api\Model\Empresa::class => \Admin\Api\Model\Factory\ApiModelFactory::class,
 				\Admin\Form\EmpresaForm::class => \Admin\Form\Factory\FormFactory::class,
 
+				################ Produto ###################
+				\Admin\Model\ProdutoModel::class => \Admin\Model\Factory\ModelFactory::class,
+				\Admin\Table\ProdutoTable::class => \Admin\Table\Factory\TableFactory::class,
+				\Admin\Api\Model\Produto::class => \Admin\Api\Model\Factory\ApiModelFactory::class,
+				\Admin\Form\ProdutoForm::class => \Admin\Form\Factory\FormFactory::class,
+
+				################ Menu ###################
+				\Admin\Model\MenuModel::class => \Admin\Model\Factory\ModelFactory::class,
+				\Admin\Table\MenuTable::class => \Admin\Table\Factory\TableFactory::class,
+				\Admin\Api\Model\Menu::class => \Admin\Api\Model\Factory\ApiModelFactory::class,
+				\Admin\Form\MenuForm::class => \Admin\Form\Factory\FormFactory::class,
+
+				################ Role ###################
+				\Admin\Model\RoleModel::class => \Admin\Model\Factory\ModelFactory::class,
+				\Admin\Table\RoleTable::class => \Admin\Table\Factory\TableFactory::class,
+				\Admin\Api\Model\Role::class => \Admin\Api\Model\Factory\ApiModelFactory::class,
+				\Admin\Form\RoleForm::class => \Admin\Form\Factory\FormFactory::class,
+
+				################ Privilege ###################
+				\Admin\Model\PrivilegeModel::class => \Admin\Model\Factory\ModelFactory::class,
+				\Admin\Table\PrivilegeTable::class => \Admin\Table\Factory\TableFactory::class,
+				\Admin\Api\Model\Privilege::class => \Admin\Api\Model\Factory\ApiModelFactory::class,
+				\Admin\Form\PrivilegeForm::class => \Admin\Form\Factory\FormFactory::class,
+
+				################ Resource ###################
+				\Admin\Model\ResourceModel::class => \Admin\Model\Factory\ModelFactory::class,
+				\Admin\Table\ResourceTable::class => \Admin\Table\Factory\TableFactory::class,
+				\Admin\Api\Model\Resource::class => \Admin\Api\Model\Factory\ApiModelFactory::class,
+				\Admin\Form\ResourceForm::class => \Admin\Form\Factory\FormFactory::class,
+
+				################ Gallery ###################
+				\Admin\Model\GalleryModel::class => \Admin\Model\Factory\ModelFactory::class,
+				\Admin\Table\GalleryTable::class => \Admin\Table\Factory\TableFactory::class,
+				\Admin\Api\Model\Gallery::class => \Admin\Api\Model\Factory\ApiModelFactory::class,
+				\Admin\Form\GalleryForm::class => \Admin\Form\Factory\FormFactory::class,
+				\Admin\Form\UploadForm::class => \Admin\Form\Factory\FormFactory::class,
+				\Admin\Form\ModuleForm::class => \Admin\Form\Factory\FormFactory::class,
+
 
 			]
 		];

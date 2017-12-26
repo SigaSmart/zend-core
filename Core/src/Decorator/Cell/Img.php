@@ -65,7 +65,7 @@ class Img extends AbstractCellDecorator
 		$values[] = $this->w;
 		$values[] = $this->h;
 
-		$value = vsprintf('<img %s src="%stim-zf.php?src=%s%s&w=%s&h=%s">', $values);
+		$value = vsprintf('<img %s src="%stim-zf.php?src=/dist/uploads%s%s&w=%s&h=%s">', $values);
 
 		return $value;
 

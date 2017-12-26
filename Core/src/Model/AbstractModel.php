@@ -114,4 +114,104 @@ class AbstractModel extends ArrayObject
 		endif;
 		return $RecordExists;
 	}
+
+	// This method creates input filter (used for form filtering/validation).
+	protected function ImageFilter()
+	{
+		// Add validation rules for the "file" field.
+		$inputFilter=[
+			'type'     => 'Zend\InputFilter\FileInput',
+			'name'     => 'image',
+			'required' => true,
+			'validators' => [
+				['name'    => 'FileUploadFile'],
+				[
+					'name'    => 'FileMimeType',
+					'options' => [
+						'mimeType'  => $this->getMimiType()
+					]
+				],
+				['name'    => 'FileIsImage'],
+				[
+					'name'    => 'FileImageSize',
+					'options' => [
+						'minWidth'  => 128,
+						'minHeight' => 128,
+						'maxWidth'  => 4096,
+						'maxHeight' => 4096
+					]
+				],
+			],
+			'filters'  => [
+				[
+					'name' => 'FileRenameUpload',
+					'options' => [
+						'target'=>sprintf("%s/upload/images",$this->container->get('request')->getServer('DOCUMENT_ROOT')),
+						'useUploadName'=>true,
+						'useUploadExtension'=>true,
+						'overwrite'=>true,
+						'randomize'=>false
+					]
+				]
+			],
+		];
+		return $inputFilter;
+	}
+
+	// This method creates input filter (used for form filtering/validation).
+	protected function FileFilter()
+	{
+		// Add validation rules for the "file" field.
+		$inputFilter=[
+			'type'     => 'Zend\InputFilter\FileInput',
+			'name'     => 'file',
+			'required' => true,
+			'validators' => [
+				['name'    => 'FileUploadFile'],
+				[
+					'name'    => 'FileMimeType',
+					'options' => [
+						'mimeType'  => $this->getMimiType('ext-ms-oficce')
+					]
+				],
+				['name'    => 'FileIsImage'],
+				[
+					'name'    => 'FileImageSize',
+					'options' => [
+						'minWidth'  => 128,
+						'minHeight' => 128,
+						'maxWidth'  => 4096,
+						'maxHeight' => 4096
+					]
+				],
+			],
+			'filters'  => [
+				[
+					'name' => 'FileRenameUpload',
+					'options' => [
+						'target'=>sprintf("%s/upload/files",$this->container->get('request')->getServer('DOCUMENT_ROOT')),
+						'useUploadName'=>true,
+						'useUploadExtension'=>true,
+						'overwrite'=>true,
+						'randomize'=>false
+					]
+				]
+			],
+		];
+		return $inputFilter;
+	}
+
+	protected function getMimiType($Types = 'ext-image-min'){
+		$MimiType=[];
+		$Config = $this->container->get("Config");
+		$mime_types_custom =$Config['mime_types_custom'];
+		$mime_types = $Config['mime_types'];
+		if(isset($mime_types_custom[$Types])):
+			foreach ($mime_types_custom[$Types] as $type):
+				$MimiType[] = $mime_types[$type];
+		endforeach;
+		endif;
+		return $MimiType;
+
+	}
 }

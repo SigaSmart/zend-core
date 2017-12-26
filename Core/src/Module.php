@@ -7,6 +7,11 @@
 
 namespace Core;
 
+use Core\Factory\FormFactory;
+use Core\Factory\NavigationFactory;
+use Core\Form\UploadForm;
+use Core\Service\ImageManager;
+use Core\Service\PHPThumb;
 use Core\View\Helper\FlashMsg;
 use Core\View\Helper\ICheckHelper;
 use Core\View\Helper\RouteHelper;
@@ -15,10 +20,12 @@ use Core\View\Helper\ZfTable;
 use Interop\Container\ContainerInterface;
 use Zend\EventManager\EventInterface;
 use Zend\ModuleManager\Feature\BootstrapListenerInterface;
+use Zend\ModuleManager\Feature\ServiceProviderInterface;
 use Zend\ModuleManager\Feature\ViewHelperProviderInterface;
 use Zend\Mvc\ModuleRouteListener;
+use Zend\ServiceManager\Factory\InvokableFactory;
 
-class Module implements BootstrapListenerInterface, ViewHelperProviderInterface
+class Module implements BootstrapListenerInterface, ViewHelperProviderInterface, ServiceProviderInterface
 {
 	const VERSION = '3.0.3-dev';
 	const SIS = 'SIGA-SMART';
@@ -84,7 +91,6 @@ class Module implements BootstrapListenerInterface, ViewHelperProviderInterface
 						$controllerClass = get_class($controller);
 						$moduleNamespace = substr($controllerClass, 0, strpos($controllerClass, '\\'));
 						$config          = $e->getApplication()->getServiceManager()->get('config');
-
 						if (isset($config['module_layouts'][$moduleNamespace])) {
 							$controller->layout($config['module_layouts'][$moduleNamespace]);
 						}
@@ -139,7 +145,27 @@ class Module implements BootstrapListenerInterface, ViewHelperProviderInterface
 							$ViewHelperManager->get('HeadLink'),
 							$ViewHelperManager->get('url'));
 					return $ICheckHelper;
-				}
+				},
+
+			],
+			'invokables'=>[
+				'phpthumb' => PHPThumb::class,
+				'navigation'=>NavigationFactory::class
+			]
+		];
+	}
+
+	/**
+	 * Expected to return \Zend\ServiceManager\Config object or array to
+	 * seed such an object.
+	 *
+	 * @return array|\Zend\ServiceManager\Config
+	 */
+	public function getServiceConfig()
+	{
+		return [
+			'factories'=>[
+				ImageManager::class => InvokableFactory::class
 			]
 		];
 	}

@@ -1,0 +1,9 @@
+<?= $this->partial(sprintf("partial/%s/top-navigation", LAYOUT),[
+	'a'=>"Admin",'b'=>$this->route,'c'=>$this->controller,'d'=>"Listar", "e"=>'Controle de acesso']); ?>
+<section class="content">
+	<div class="row">
+		<div class="col-md-12">
+			<?=$this->ZfTable()->listar();?>
+		</div>
+	</div>
+</section>

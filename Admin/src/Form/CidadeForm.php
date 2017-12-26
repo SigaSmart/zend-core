@@ -28,5 +28,6 @@ class CidadeForm extends AbstractForm
 				'class'=>'form-control'
 			]
 		]);
+
 	}
 }

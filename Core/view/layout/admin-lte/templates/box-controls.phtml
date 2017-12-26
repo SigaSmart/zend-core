@@ -1,7 +1,7 @@
 <div class="mailbox-controls">
     <!-- Check all button -->
     <div class="btn-group">
-        <form action="<?= $this->url(sprintf("%s/default", $this->route),
+        <form action="<?= $this->url($this->route,
 			[
 				'controller'=>$this->controller,
 				'action'=>'create'
@@ -9,7 +9,7 @@
             <button style="margin-left: 10px;" class="actions btn btn-success btn-sm btn-flat"><i class="fa fa-plus-circle"></i> <?=$this->valueButtonsActions['add'];?></button>
         </form>
 		<?php if ($this->valuesState != '1'): ?>
-            <a  href="<?=$this->url(sprintf("%s/default", $this->route),
+            <a  href="<?=$this->url($this->route,
 				[
 					'controller'=>$this->controller,
 					'action'=>'state',
@@ -19,7 +19,7 @@
 		<?php endif; ?>
 		<?php if ($this->valuesState != '2'): ?>
             <a  href="<?=
-			$this->url(sprintf("%s/default", $this->route),
+			$this->url($this->route,
 				[
 					'controller'=>$this->controller,
 					'action'=>'state',
@@ -29,7 +29,7 @@
 		<?php endif; ?>
 		<?php if ($this->valuesState != '3'): ?>
             <a  href="<?=
-			$this->url(sprintf("%s/default", $this->route),
+			$this->url( $this->route,
 				[
 					'controller'=>$this->controller,
 					'action'=>'state',
@@ -38,7 +38,7 @@
 			?>" id="3" style="margin-left: 10px;" class="actions btn bg-blue btn-flat btn-sm"><i class="fa fa-trash"></i> <?=$this->valueButtonsActions['trash'];?></a>
 		<?php endif; ?>
 		<?php if ($this->valuesState == '3'): ?>
-            <a  href="<?= $this->url(sprintf("%s/default", $this->route),
+            <a  href="<?= $this->url($this->route,
 				[
 					'controller'=>$this->controller,
 					'action'=>'delete'

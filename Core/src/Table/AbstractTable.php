@@ -11,6 +11,7 @@ namespace Core\Table;
 
 use Core\Model\AbstractModel;
 use Zend\Db\Adapter\AdapterInterface;
+use Zend\Db\Adapter\Driver\StatementInterface;
 use Zend\Db\ResultSet\ResultSet;
 use Zend\Db\Sql\Expression;
 use Zend\Db\Sql\Predicate\Operator;
@@ -39,7 +40,7 @@ class AbstractTable extends Utils
 
 	/**
 	 *
-	 * @var \Zend\Db\Adapter\Driver\StatementInterface
+	 * @var StatementInterface
 	 */
 	protected $Stmt;
 
@@ -99,6 +100,11 @@ class AbstractTable extends Utils
 	}
 
 
+	/**
+	 * AbstractTable constructor.
+	 *
+	 * @param AdapterInterface $adapter
+	 */
 	public function __construct(AdapterInterface $adapter)
 	{
 		$this->Sql = new Sql($adapter);
@@ -384,6 +390,17 @@ class AbstractTable extends Utils
 		return $this->Result;
 	}
 
+	public function update(array $values, array $where) {
+		$Data = $this->clear($values);
+		$Query = $this->Sql->update()
+			->table($this->table)
+			->set($Data)
+			->where([$this->id => $where]);
+		$this->Stmt = $this->Sql->prepareStatementForSqlObject($Query);
+		$this->finaliza("Registro(s) Atualizado Com Sucesso!");
+		return $this->Result;
+	}
+
 	public function state(array $values, array $where) {
 		$Data = $this->clear($values);
 		$Query = $this->Sql->update()
@@ -414,11 +431,21 @@ class AbstractTable extends Utils
 	/**
 	 * @return $this
 	 */
-	protected function exec() {
+	public function exec() {
 		$this->resultSet = new ResultSet();
 		$this->resultSet->initialize($this->Stmt->execute());
 		return $this;
 	}
+
+	/**
+	 * @return array|string
+	 */
+	public function getWhere()
+	{
+		$this->where = new Where();
+		return $this->where;
+	}
+
 
 	public function getAdapter(): AdapterInterface {
 		return $this->adapter;
@@ -450,5 +477,32 @@ class AbstractTable extends Utils
 			endif;
 		endif;
 		return $slug;
+	}
+
+	/**
+	 * @return Sql
+	 */
+	public function getSql(): Sql
+	{
+		return $this->Sql;
+	}
+
+	/**
+	 * @param StatementInterface $Stmt
+	 *
+	 * @return AbstractTable
+	 */
+	public function setStmt(StatementInterface $Stmt): AbstractTable
+	{
+		$this->Stmt = $Stmt;
+		return $this;
+}
+
+	/**
+	 * @return ResultSet
+	 */
+	public function getResultSet(): ResultSet
+	{
+		return $this->resultSet;
 	}
 }

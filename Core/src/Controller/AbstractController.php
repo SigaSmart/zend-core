@@ -7,14 +7,18 @@
 
 namespace Core\Controller;
 
+use Admin\Form\GalleryForm;
+use Admin\Form\UploadForm;
+use Admin\Model\GalleryModel;
+use Admin\Table\GalleryTable;
 use Core\Form\AbstractForm;
 use Core\Model\AbstractModel;
+use Core\Service\ImageManager;
 use Core\Service\Messages;
 use Core\Table\AbstractTable;
 use Interop\Container\ContainerInterface;
 use Zend\Db\Adapter\AdapterInterface;
 use Zend\Mvc\Controller\AbstractActionController;
-use Zend\Mvc\Plugin\FlashMessenger\FlashMessenger;
 use Zend\View\Model\JsonModel;
 use Zend\View\Model\ViewModel;
 
@@ -70,6 +74,11 @@ abstract class AbstractController extends AbstractActionController
 
 
 	protected $user;
+	/**
+	 * @var $imageManager ImageManager
+	 */
+	private $imageManager;
+	protected $cover = "cover";
 
 	abstract public  function __construct(ContainerInterface $container);
 
@@ -95,7 +104,7 @@ abstract class AbstractController extends AbstractActionController
 		//$view = $this->apiModel->render('dataTableAjaxInit');
 		//$view = $this->apiModel->render('dataTableJson');
 		//$view = $this->apiModel->render('newDataTableJson');
-		$view->setVariable('route',"admin");
+		$view->setVariable('route',$this->route);
 		$view->setVariable('controller',$this->controller);
 		return $view;
 	}
@@ -161,12 +170,6 @@ abstract class AbstractController extends AbstractActionController
 	public function store()
 	{
 		if($this->getRequest()->isPost()):
-			$uploadedFiles = $this->params()->fromFiles();
-			if ($uploadedFiles):
-				// handle single input with single file upload
-				//$Upload = new UploadAbstract($uploadedFiles['attachment']);
-				//$this->model->offsetSet($this->cover, $Upload->moveUploadedFile());
-			endif;
 			//setamos o adapter no model
 			$this->form->setInputFilter($this->model->getInputFilter());
 			if ($this->form->isValid()):
@@ -192,13 +195,215 @@ abstract class AbstractController extends AbstractActionController
 		return new JsonModel($Resul);
 	}
 
+	public function uploadAction(){
+		$view = new ViewModel([
+			'route'=>$this->route,
+			'controller'=>$this->controller
+		]);
+		$this->getTable();
+		$Form = $this->container->get(UploadForm::class);
+		$data = [
+			$this->cover =>"/images/no_image.jpg"
+		];
+		$Form->setBasePath($this->getRequest()->getServer('DOCUMENT_ROOT'));
+		$Form->setInputFilter($Form->addInputFilter($this->controller,$this->params()->fromRoute('id')));
+		if($this->params()->fromFiles()):
+			// Get the list of already saved files.
+			$data = $this->params()->fromFiles();
+			$data['file']['name'] = $Form->setFileName($data['file']['name']);
+			// Pass data to form.
+			$Form->setData($data);
+			// Validate form.
+			if($Form->isValid()) {
+				// Move uploaded file to its destination directory.
+				$data = $Form->getData();
+				$this->table->update([$this->cover=>sprintf("%s/%s",$Form->getSend(),$data['file']['name'])], [$this->params()->fromRoute('id')]);
+
+			}
+		endif;
+		$id = $this->params()->fromRoute("id",0);
+		$Imagem[$this->cover]="/images/no_image.jpg";
+		if ((int)$id):
+			$Imagem = $this->table->find($id);
+		endif;
+		// Get the list of already saved files.
+		$file = $Imagem[$this->cover];
+		$data[$this->cover] = $file;
+		$view->setVariable('form', $Form);
+		$view->setTerminal(true);
+		$view->setTemplate("core/upload/imagem");
+		$view->setVariable('file',$file);
+		$view->setVariable('data', $data);
+		return $view;
+
+	}
+
+	public function galleryAction(){
+
+		$this->getTable();
+		/**
+		 * @var $GalleryTable GalleryTable
+		 */
+		$GalleryTable = $this->container->get(GalleryTable::class);
+		/**
+		 * @var $GalleryModel GalleryModel
+		 */
+		$GalleryModel = $this->container->get(GalleryModel::class);
+		/**
+		 * @var $GalleryForm GalleryForm
+		 */
+		$GalleryForm = $this->container->get(GalleryForm::class);
+		$id = $this->params()->fromRoute("id",0);
+		if (!(int)$id):
+			return new JsonModel([]);
+		endif;
+		$Data = $this->table->find($id);
+		$GalleryForm->setBasePath($this->getRequest()->getServer('DOCUMENT_ROOT'));
+		$GalleryForm->setInputFilter($GalleryForm->addInputFilter($this->controller,$id));
+		$Files = $this->params()->fromFiles();
+		if($Files):
+
+				// Get the list of already saved files.
+			$Files['file'][0]['name'] = $GalleryForm->setFileName($Files['file'][0]['name']);
+				// Pass data to form.
+				$GalleryForm->setData($Files);
+				// Validate form.
+				if($GalleryForm->isValid()) {
+					// Move uploaded file to its destination directory.
+					$GalleryForm->getData();
+					$GalleryModel->offsetSet("name",substr($Files['file'][0]['name'], 0, strrpos($Files['file'][0]['name'], '.')));
+					$GalleryModel->offsetSet('parent', $this->controller);
+					$GalleryModel->offsetSet('parent_id',$id);
+					$GalleryModel->offsetSet('status','1');
+					//$GalleryModel->offsetSet('empresa',$this->user->empresa);
+					$GalleryModel->offsetSet('cover',$Files['file'][0]['name']);
+					$GalleryModel->offsetSet('path_upload',$GalleryForm->getSend());
+					$GalleryTable->insert($GalleryModel);
+				}
+
+		endif;
+
+		return new JsonModel($this->params()->fromFiles());
+	}
+
+	public function listgalleryAction(){
+		$Gallerys=[];
+		$datasUrl=[];
+		$this->imageManager = $this->container->get(ImageManager::class);
+		/**
+		 * @var $GalleryTable GalleryTable
+		 */
+		$GalleryTable = $this->container->get(GalleryTable::class);
+		$Datas = $GalleryTable->select(['parent'=>$this->controller,'parent_id'=>$this->params()->fromRoute('id')]);
+		if($Datas):
+			foreach ($Datas as $data):
+				$this->imageManager->setSaveToDir(sprintf("%s/%s/",$this->getRequest()->getServer('DOCUMENT_ROOT'),$data['path_upload']));
+				// Get path to image file.
+				$fileName = $this->imageManager->getImagePathByName($data['cover']);
+				// Get image file info (size and MIME type).
+				$fileInfo = $this->imageManager->getImageFileInfo($fileName);
+				if ($fileInfo===false) {
+					$fileInfo['type']="";
+					$fileInfo['size']="";
+					$fileInfo['width']="";
+					$fileInfo['height']="";
+				}
+				$Gallerys[]=[
+					'caption'=>$data['name'],
+					//'downloadUrl'=>sprintf("/%s/%s",$data['path_upload'], $data['cover']),
+					'url'=>$this->url()->fromRoute($this->route,[
+						'controller' => $this->controller,
+						'action'=>'delete-gallery-item',
+						'id'=>$data['id']
+					]),
+					'size'=>$fileInfo['size'],
+					'width'=>$fileInfo['width'],
+					'key'=>$data['id'],
+				];
+		    $datasUrl[]=sprintf("/%s/%s",$data['path_upload'], $data['cover']);
+			endforeach;
+		endif;
+		return new JsonModel([
+			'info'=>$Gallerys,
+			'datasUrl'=>$datasUrl,
+		]);
+	}
+
+	public function deletegalleryitemAction(){
+		/**
+		 * @var $GalleryTable GalleryTable
+		 */
+		$GalleryTable = $this->container->get(GalleryTable::class);
+		$Data = $GalleryTable->find($this->params()->fromRoute('id'));
+		$this->args = array_merge($this->args, $GalleryTable->delete(['id'=>[$this->params()->fromRoute('id')]]));
+		if($this->args['result']):
+			unlink(sprintf("%s/%s/%s", $this->getRequest()->getServer('DOCUMENT_ROOT'),$Data['path_upload'], $Data['cover']));
+		endif;
+		return new JsonModel($this->params()->fromPost());
+	}
+	public function deletegalleryAction(){
+
+		return new JsonModel($this->params()->fromPost());
+	}
+
+	public function fileAction(){
+// Get the file name from GET variable.
+		$fileName = $this->params()->fromQuery('name', '');
+
+		// Check whether the user needs a thumbnail or a full-size image.
+		$isThumbnail = (bool)$this->params()->fromQuery('thumbnail', false);
+
+		$this->imageManager = $this->container->get(ImageManager::class);
+		$this->imageManager->setSaveToDir($this->getRequest()->getServer('DOCUMENT_ROOT'));
+		// Get path to image file.
+		$fileName = $this->imageManager->getImagePathByName($fileName);
+		if($isThumbnail) {
+
+			// Resize the image.
+			$fileName = $this->imageManager->resizeImage($fileName);
+		}
+
+		// Get image file info (size and MIME type).
+		$fileInfo = $this->imageManager->getImageFileInfo($fileName);
+		if ($fileInfo===false) {
+			// Set 404 Not Found status code
+			$this->getResponse()->setStatusCode(404);
+			return;
+		}
+
+		// Write HTTP headers.
+		$response = $this->getResponse();
+		$headers = $response->getHeaders();
+		$headers->addHeaderLine("Content-type: " . $fileInfo['type']);
+		$headers->addHeaderLine("Content-length: " . $fileInfo['size']);
+
+		// Write file content.
+		$fileContent = $this->imageManager->getImageFileContent($fileName);
+		if($fileContent!==false) {
+			$response->setContent($fileContent);
+		} else {
+			// Set 500 Server Error status code.
+			$this->getResponse()->setStatusCode(500);
+			return;
+		}
+
+		if($isThumbnail) {
+			// Remove temporary thumbnail image file.
+			unlink($fileName);
+		}
+
+		// Return Response to avoid default view rendering.
+		return $this->getResponse();
+	}
 	/**
 	 * @return $this
 	 */
 	public function getForm()
 	{
 		$this->form = $this->container->get($this->form);
-		$this->form->setData($this->model->getArrayCopy());
+		if($this->model instanceof AbstractModel):
+			$this->form->setData($this->model->getArrayCopy());
+		endif;
 		return $this;
 	}
 

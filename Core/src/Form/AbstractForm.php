@@ -8,6 +8,10 @@
 
 namespace Core\Form;
 
+use Core\Table\AbstractTable;
+use Interop\Container\ContainerInterface;
+use Zend\Db\Adapter\AdapterInterface;
+use Zend\Db\Sql\Select;
 use Zend\Form\Element\Hidden;
 use Zend\Form\Element\Submit;
 use Zend\Form\Element\Text;
@@ -15,7 +19,13 @@ use Zend\Form\Form;
 
 class AbstractForm extends Form
 {
+	/**
+	 * @var ContainerInterface
+	 */
 	protected $container;
+	protected $ValueOptionsData = [];
+	private $Tables;
+
 	public function __construct($name = null, array $options = [])
 	{
 		parent::__construct($name, $options);
@@ -91,6 +101,62 @@ class AbstractForm extends Form
 			]
 		]);
 
+	}
+
+	public function dbValueOptions($table, $condition=[], $collumns = ['id','name']){
+		/**
+		 * @var $this->Tables AbstractTable
+		 */
+		$this->Tables = $this->container->get($table);
+		/**
+		 * @var $Select Select
+		 */
+		$Select = $this->Tables->getSelect($condition, null,$collumns);
+
+		return $Select;
+	}
+
+	public function getValueDb(Select $Select)
+	{
+		$Options=[];
+		$this->Tables->setStmt($this->Tables->getSql()->prepareStatementForSqlObject($Select));
+
+		$this->Tables->exec();
+
+		if($this->Tables->getResultSet()->count()):
+			$this->ValueOptionsData = $this->Tables->getResultSet()->toArray();
+		endif;
+
+		if($this->ValueOptionsData):
+			foreach ($this->ValueOptionsData as $optionsDatum):
+				$Options[reset($optionsDatum)] = end($optionsDatum);
+			endforeach;
+		endif;
+		return $Options;
+	}
+
+	//Verifica e cria o diretório base!
+	public function CreateFolder($Folder) {
+		if (!file_exists($Folder) && !is_dir($Folder)):
+			mkdir($Folder, 0777);
+		endif;
+	}
+
+	//Verifica e monta o nome dos arquivos tratando a string!
+	public function setFileName($Name) {
+		$FileName = $this->setName(substr($Name, 0, strrpos($Name, '.')));
+		return sprintf("%s%s%s",date("YmdHis") ,strtolower($FileName), strrchr($Name, '.'));
+	}
+
+	/**
+	 * <b>Tranforma URL:</b> Retira acentos e caracteres especias!
+	 * @param STRING $Name = Uma string qualquer
+	 * @return STRING um nome tratado
+	 */
+	public function setName($Name) {
+		$var = strtolower(utf8_encode($Name));
+		return preg_replace('{\W}', '', preg_replace('{ +}', '_', strtr(
+			utf8_decode(html_entity_decode($var)), utf8_decode('ÀÁÃÂÉÊÍÓÕÔÚÜÇÑàáãâéêíóõôúüçñ'), 'AAAAEEIOOOUUCNaaaaeeiooouucn')));
 	}
 
 }

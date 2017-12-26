@@ -19,5 +19,19 @@ class ProdutoForm extends AbstractForm
 		$this->setAttribute('class','form-horizontal');
 		//Add os campos abaixo voce pode usar o comando
 		// zf-input-text ou zf-input-select ou zf-input-checkbox ou zf-input-radio
+		    ################# name #################
+				$this->add([
+					'type'=>Text::class,
+					'name'=>'name',
+					'options'=>[
+						'label'=>'Nome\Descrição'
+					],
+					'attributes'=>[
+						'id'=>'name',
+						'class'=>'form-control',
+						'placeholder'=>'Nome\Descrição',
+						'required'=>true,
+						]
+				]);
 	}
 }

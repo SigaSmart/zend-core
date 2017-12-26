@@ -33,6 +33,19 @@ class ZfForm extends AbstractHelper
 			echo "$('#formContainer').zfForm('{$Rota}');";
 		$this->inlineScript->captureEnd();
     }
+    public function upload()
+    {
+    	$Url=$this->Url;
+		$Params = [
+			'controller'=>$this->view->Route()->getController(),
+			'action'=>'upload',
+			'id'=>$this->view->Route()->getId(),
+		];
+		$Rota = $Url($this->view->Route()->getRoute(),$Params);
+		$this->inlineScript->captureStart();
+			echo "$('#uploadContainer').zfForm('{$Rota}');";
+		$this->inlineScript->captureEnd();
+    }
 	public function person($Container,$route,$controller,$action,$id="")
 	{
 		$Url=$this->Url;

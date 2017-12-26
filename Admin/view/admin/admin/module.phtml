@@ -1,0 +1,49 @@
+<?= $this->partial(sprintf("partial/%s/top-navigation", LAYOUT),[
+	'a'=>"Admin",'b'=>$this->route,'c'=>"admin",'d'=>"Modulo", "e"=>'Criar']); ?>
+<section class="content">
+    <div class="row">
+        <div class="col-md-12">
+            <!-- Custom Tabs (Pulled to the right) -->
+            <div class="nav-tabs-custom">
+                <ul class="nav nav-tabs">
+                    <li class="active"><a href="#tab-1" data-toggle="tab">Geral</a></li>
+                    <li class="pull-right header"><i class="fa fa-th"></i> Manutenção de modulos</li>
+                </ul>
+                <div class="tab-content">
+                    <div class="tab-pane active" id="tab-1">
+                        <div class="row">
+                            <div class="col-md-12">
+								<?=$this->partial('partial/form-error',['form'=>$this->form]);?>
+								<?=$this->form()->openTag($this->form->setAttribute('action',$this->url($this->route, [
+									'controller'=>'admin',
+									'action'=>'module'
+								])));?>
+								<?=$this->partial(sprintf('partial/%s/form/input-inline', LAYOUT),[
+									'field'=>$this->form->get('module')
+								]);?>
+
+								<?=$this->partial(sprintf('partial/%s/form/input-inline', LAYOUT),[
+									'field'=>$this->form->get('classe')
+								]);?>
+                                <div class="row">
+                                    <!-- /.col -->
+                                    <div class="col-xs-6 col-xs-offset-3">
+										<?=$this->formSubmit($this->form->get('submit')->setValue('Gerar Modulo'));?>
+                                    </div>
+                                    <div class="col-xs-3">
+                                        <a href="<?=$this->url($this->route, [
+											'controller'=>$this->controller
+										])?>" class="btn btn-warning btn-block"><i class="fa fa-backward"></i> Voltar Para o Admin </a>
+                                    </div>
+                                    <!-- /.col -->
+                                </div>
+								<?=$this->form()->closeTag();?>
+								<?=$this->partial('partial/messages');?>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

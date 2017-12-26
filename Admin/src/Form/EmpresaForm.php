@@ -25,7 +25,8 @@ class EmpresaForm extends AbstractForm
 			],
 			'attributes'=>[
 				'id'=>'title',
-				'class'=>'form-control'
+				'class'=>'form-control',
+				'require'=>true
 			]
 		]);
 	}

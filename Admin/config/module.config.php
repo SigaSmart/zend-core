@@ -13,17 +13,6 @@ use Zend\Router\Http\Segment;
 return [
     'router' => [
         'routes' => [
-			'home' => [
-				'type' => Literal::class,
-				'options' => [
-					"route" => "/",
-					"defaults" => [
-						"__NAMESPACE__" => "Admin\Controller",
-						"controller" => "Admin",
-						"action" => "index",
-					],
-				],
-			],
 			"admin" => [
 				"type" => Literal::class,
 				"options" => [
@@ -58,6 +47,11 @@ return [
 			'Admin\Controller\Admin' => ControllerFactory::class,
 			'Admin\Controller\Cidade' => ControllerFactory::class,
 			'Admin\Controller\Empresa' => ControllerFactory::class,
+			'Admin\Controller\Produto' => ControllerFactory::class,
+			'Admin\Controller\Menu' => ControllerFactory::class,
+			'Admin\Controller\Role' => ControllerFactory::class,
+			'Admin\Controller\Privilege' => ControllerFactory::class,
+			'Admin\Controller\Resource' => ControllerFactory::class,
         ],
     ],
     'view_manager' => [

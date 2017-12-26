@@ -9,35 +9,13 @@ namespace Core;
 
 use Auth\Adapter\Authentication;
 use Auth\Adapter\AuthenticationFactory;
+use Core\Controller\Factory\ControllerFactory;
 use Zend\Authentication\AuthenticationService;
+use Zend\Router\Http\Literal;
 use Zend\Router\Http\Segment;
 use Zend\ServiceManager\Factory\InvokableFactory;
 
 return [
-	'router' => [
-		'routes' => [
-			'FlashMessenger' => [
-				'type'    => Segment::class,
-				'options' => [
-					'route'    => '/flashmessenger[/:action]',
-					'constraints' => [
-						'action'     => '[a-zA-Z][a-zA-Z0-9_-]*',
-					],
-					'defaults' => [
-						'controller'    => Controller\FlashmessengerController::class,
-						'action'        => 'index',
-					],
-				],
-
-			],
-		],
-	],
-
-	'controllers' => array(
-		'factories' => [
-			Controller\FlashmessengerController::class => InvokableFactory::class,
-		],
-	),
 	'PRJLog' => [
 		'notificationMail' => [
 			'notify' => false,
@@ -89,8 +67,6 @@ return [
 
 	],
 
-
-
 	'view_manager' => [
 		'display_not_found_reason' => true,
 		'display_exceptions'       => true,
@@ -98,7 +74,7 @@ return [
 		'not_found_template'       => 'error/404',
 		'exception_template'       => 'error/index',
 		'template_map' => [
-			'layout/layout'           => __DIR__ . '/../view/layout/login.phtml',
+			'layout/layout'           => __DIR__ . '/../view/layout/home.phtml',
 			'core/index/index' => __DIR__ . '/../view/core/index/index.phtml',
 			'error/404'               => __DIR__ . '/../view/error/404.phtml',
 			'error/index'             => __DIR__ . '/../view/error/index.phtml',

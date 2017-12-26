@@ -1,0 +1,33 @@
+<?php
+$form = $this->form;
+$form->get('submit')->setAttributes(['class'=>'btn btn-primary']);
+$form->prepare();
+$form->setAttribute('name',"AjaxUploadForm");
+?>
+<?= $this->form()->openTag($form->setAttribute('action',$this->url($this->route,[
+	'controller'=>$this->controller,
+	'action'=>'upload',
+	'id'=>$this->Route()->getId()
+]))); ?>
+    <div class="box-body box-profile">
+        <a target="_blank" href="<?= $this->url($this->route, ['controller'=>$this->controller,'action'=>'file'],
+			['query'=>['name'=>$this->file]]); ?>"
+           class="btn btn-default btn-block" role="button">
+        <img  class="img-responsive" src="<?= $this->url($this->route, ['controller'=>$this->controller,'action'=>'file'],
+			['query'=>['name'=>$this->file, 'thumbnail'=>true]]); ?>"></a>
+         <div class="form-group">
+            <div class="btn btn-default btn-file btn-block">
+                <i class="fa fa-paperclip"></i> Selecione Imagem
+				<?= $this->formLabel($form->get('file')); ?>
+				<?= $this->formElement($form->get('file')); ?>
+				<?= $this->formElementErrors($form->get('file')); ?>
+            </div>
+
+        </div>
+    <div class="form-group">
+		<?= $this->formElement($form->get('submit')
+            ->setAttribute('class','btn btn-success btn-block')->setValue("Enviar Imagem")); ?>
+    </div>
+        <p class="help-block">Max. 32MB</p>
+    </div>
+<?= $this->form()->closeTag(); ?>
