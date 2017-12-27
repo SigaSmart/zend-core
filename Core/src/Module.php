@@ -7,9 +7,7 @@
 
 namespace Core;
 
-use Core\Factory\FormFactory;
 use Core\Factory\NavigationFactory;
-use Core\Form\UploadForm;
 use Core\Service\ImageManager;
 use Core\Service\PHPThumb;
 use Core\View\Helper\FlashMsg;
@@ -150,7 +148,7 @@ class Module implements BootstrapListenerInterface, ViewHelperProviderInterface,
 			],
 			'invokables'=>[
 				'phpthumb' => PHPThumb::class,
-				'navigation'=>NavigationFactory::class
+
 			]
 		];
 	}
@@ -165,7 +163,8 @@ class Module implements BootstrapListenerInterface, ViewHelperProviderInterface,
 	{
 		return [
 			'factories'=>[
-				ImageManager::class => InvokableFactory::class
+				ImageManager::class => InvokableFactory::class,
+				'Navigation'=>NavigationFactory::class
 			]
 		];
 	}

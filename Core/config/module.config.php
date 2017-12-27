@@ -7,13 +7,8 @@
 
 namespace Core;
 
-use Auth\Adapter\Authentication;
-use Auth\Adapter\AuthenticationFactory;
-use Core\Controller\Factory\ControllerFactory;
 use Zend\Authentication\AuthenticationService;
-use Zend\Router\Http\Literal;
-use Zend\Router\Http\Segment;
-use Zend\ServiceManager\Factory\InvokableFactory;
+use Zend\Navigation\Service\DefaultNavigationFactory;
 
 return [
 	'PRJLog' => [
@@ -56,6 +51,7 @@ return [
 	'service_manager' => [
 		'invokables' => [
 			AuthenticationService::class =>AuthenticationService::class,
+
 		],
 		'factories' => [
 			'prj-log' => 'Core\Factory\Log',

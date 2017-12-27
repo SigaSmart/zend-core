@@ -45,7 +45,7 @@ class Posts extends AbstractTable
 		
 		$this->getHeader('name')->getCell()->addDecorator('link', [
 			'url' =>  $this->getUrl('blog/default', [
-				'controller'=>'Posts',
+				'controller'=>'posts',
 				'action'=>'editar',
 				'id' => "%s"
 			]),

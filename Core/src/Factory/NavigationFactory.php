@@ -9,7 +9,7 @@
 namespace Core\Factory;
 
 
-use Core\View\Helper\NavigationHelper;
+use Core\Service\Navigation;
 use Interop\Container\ContainerInterface;
 use Zend\ServiceManager\Factory\FactoryInterface;
 
@@ -27,6 +27,7 @@ class NavigationFactory implements FactoryInterface
 	 */
 	public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
 	{
-		return new NavigationHelper($container);
+		$navigation = new Navigation();
+		return $navigation->createService($container);
 	}
 }

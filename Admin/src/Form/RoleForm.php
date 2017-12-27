@@ -38,7 +38,6 @@ class RoleForm extends AbstractForm
 		]);
 
 		$Select = $this->dbValueOptions(RoleTable::class, ['status'=>1]);
-		$Select->where(new IsNull('parent'));
 		################# icone #################
 		$this->add([
 			'type'=> Select::class,

@@ -9,6 +9,7 @@
 namespace Core\View\Helper;
 
 
+use Admin\Table\MenuTable;
 use Auth\Adapter\Authentication;
 use Interop\Container\ContainerInterface;
 use Zend\View\Helper\AbstractHelper;
@@ -37,8 +38,9 @@ class NavigationHelper extends AbstractHelper
 	 */
 	public function __invoke()
 	{
+		$Menu = $this->container->get(MenuTable::class);
 		// Setup ACL:
-		$acl = $this->container->get('Acl\Permissions\Acl');
+		//$acl = $this->container->get('Acl\Permissions\Acl');
 		/**
 		 * @var  $auth Authentication
 		 */
@@ -53,8 +55,9 @@ class NavigationHelper extends AbstractHelper
 		 * @var $navigation Navigation
 		 */
 		$navigation = $this->container->get(Navigation::class);
+		d($navigation);
 		// Store ACL and role in the proxy helper:
-		$navigation->setAcl($acl)->setRole($role); // 'member'
+		//$navigation->setAcl($acl)->setRole($role); // 'member'
 		// Return the new navigation helper instance
 		return $navigation;
 	}

@@ -47,15 +47,15 @@ scratch. This page gets rid of all links and provides the needed markup only.
 	<!-- Left side column. contains the logo and sidebar -->
 	<aside class="main-sidebar">
 		<!-- sidebar: style can be found in sidebar.less -->
-         <?=$this->partial('partial/admin-lte/operacional/sidebar');?>
-		<!-- /.sidebar -->
+		<?=$this->navigation('Navigation')->menu()->setPartial('partial/admin-lte/operacional/sidebar'); ?>
+			<!-- /.sidebar -->
 	</aside>
 	<!-- Content Wrapper. Contains page content -->
 	<div class="content-wrapper">
 		<!-- Content Header (Page header) -->
 		<!-- Main content -->
 		<section class="content container-fluid">
-           <?= $this->content ?>
+			  <?= $this->content ?>
 			<!--------------------------
 			  | Your Page Content Here |
 			  -------------------------->
