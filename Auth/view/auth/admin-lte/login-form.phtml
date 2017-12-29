@@ -3,7 +3,7 @@
 <?=$this->form()->openTag($this->form->setAttribute('action',$this->url('auth/default', [
 	'controller'=>'auth',
 	'action'=>'login-form'
-])));?>
+]))->setAttribute('name', 'AjaxForm'));?>
 
 <?=$this->partial(sprintf('partial/%s/form/input-form-group', LAYOUT),[
 	'field'=>$this->form->get('email')->setLabel("")

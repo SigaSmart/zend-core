@@ -18,6 +18,7 @@ class ConditionPluginManager {
 	 * @var array
 	 */
 	protected $invokableClasses = array(
+		'acl' => '\Core\Decorator\Condition\Plugin\Acl',
 		'equal' => '\Core\Decorator\Condition\Plugin\Equal',
 		'notequal' => '\Core\Decorator\Condition\Plugin\NotEqual',
 		'between' => '\Core\Decorator\Condition\Plugin\Between',

@@ -8,6 +8,7 @@ namespace Auth\Form;
 
 
 use Core\Form\AbstractForm;
+use Zend\Form\Element\Hidden;
 use Zend\Form\Element\Select;
 use Zend\Form\Element\Text;
 
@@ -88,19 +89,11 @@ class LoginForm extends AbstractForm
 
 		//######################## role #######################
 		$this->add([
-			'type'=> Select::class,
-			'name' => 'role',
-			'options'=>[
-				'label'=>"Status:",
-				'value_options'=>[
-					'1' => "Admin",
-					'2'=>'Quest'
-				]
-			],
+			'type'=> Hidden::class,
+			'name' => 'access',
+
 			"attributes"=>[
-				'id'=>"role",
-				'class'=>'form-control validate',
-				'placeholder'=>"Image"
+				'id'=>"role"
 			]
 
 		]);

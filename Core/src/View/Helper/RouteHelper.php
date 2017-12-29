@@ -100,14 +100,19 @@ class RouteHelper extends AbstractHelper
 		$this->id = $id;
 	}
 
-	function getParans() {
+	public function getParans() {
 		return $this->parans;
 	}
 
-	function setParans($parans) {
+	public function setParans($parans) {
 		$this->parans = $parans;
 	}
 
+	public function getParan($param) {
+		if(isset($this->parans[$param])):
+			return $this->parans[$param];
+		endif;
+	}
 	public function __construct(ContainerInterface $container) {
 		$param = $container->get('application')->getMvcEvent()->getRouteMatch();
 		if (!is_null($param)):

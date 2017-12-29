@@ -6,18 +6,22 @@
 <?=$this->formHidden($this->form->get('id'));?>
 
 <?=$this->partial(sprintf('partial/%s/form/input-inline', LAYOUT),[
-	'field'=>$this->form->get('parent')
-]);?>
-
-<?=$this->partial(sprintf('partial/%s/form/input-inline', LAYOUT),[
 	'field'=>$this->form->get('name')
 ]);?>
 
 <?=$this->partial(sprintf('partial/%s/form/input-inline', LAYOUT),[
-	'field'=>$this->form->get('alias')
+	'field'=>$this->form->get('parent')
 ]);?>
+
 <?=$this->partial(sprintf('partial/%s/form/input-inline', LAYOUT),[
 	'field'=>$this->form->get('resource')
+]);?>
+<?=$this->partial(sprintf('partial/%s/form/input-inline', LAYOUT),[
+	'field'=>$this->form->get('controller')
+]);?>
+
+<?=$this->partial(sprintf('partial/%s/form/input-inline', LAYOUT),[
+	'field'=>$this->form->get('action')
 ]);?>
 <?=$this->partial(sprintf('partial/%s/form/input-inline', LAYOUT),[
 	'field'=>$this->form->get('role')

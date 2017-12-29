@@ -8,10 +8,12 @@ namespace Admin\Form;
 
 
 use Admin\Table\MenuTable;
+use Admin\Table\ResourceTable;
 use Admin\Table\RoleTable;
 use Core\Form\AbstractForm;
 use Zend\Db\Sql\Predicate\IsNull;
 use Zend\Form\Element\Select as SelectElement;
+use Zend\Form\Element\Select;
 use Zend\Form\Element\Text;
 
 class MenuForm extends AbstractForm
@@ -50,20 +52,23 @@ class MenuForm extends AbstractForm
 				'placeholder'=>'Icone',
 			]
 		]);
-
-		################# route #################
+		$Select = $this->dbValueOptions(ResourceTable::class, ['status'=>1]);
+		################# role #################
 		$this->add([
-			'type'=>Text::class,
+			'type'=> SelectElement::class,
 			'name'=>'route',
 			'options'=>[
-				'label'=>'Rota'
+				'disable_inarray_validator'=>true,
+				'label'=>'Rota',
+				'empty_option'=>'--Selecione--',
+				'value_options'=>$this->getValueDb($Select)
 			],
 			'attributes'=>[
 				'id'=>'route',
-				'class'=>'form-control',
-				'placeholder'=>'Rota',
+				'class'=>'form-control'
 			]
 		]);
+
 		################# controller #################
 		$this->add([
 			'type'=>Text::class,
@@ -138,6 +143,24 @@ class MenuForm extends AbstractForm
 			]
 		]);
 
+		$resources=array_merge($this->getResources('invokables'),$this->getResources('factories'));
+		################# alias #################
+		$this->add([
+			'type'=>Select::class,
+			'name'=>'alias',
+			'options'=>[
+				'label'=>'Nome real',
+				'disable_inarray_validator'=>true,
+				'empty_option'=>'--Selecione--',
+				'value_options'=>$resources
+			],
+			'attributes'=>[
+				'id'=>'alias',
+				'class'=>'form-control',
+				'required'=>true,
+			]
+		]);
+
 		$Select = $this->dbValueOptions(RoleTable::class, ['status'=>1]);
 		################# role #################
 		$this->add([
@@ -151,6 +174,23 @@ class MenuForm extends AbstractForm
 			],
 			'attributes'=>[
 				'id'=>'role',
+				'class'=>'form-control'
+			]
+		]);
+
+		$Select = $this->dbValueOptions(MenuTable::class, ['status'=>1]);
+		################# role #################
+		$this->add([
+			'type'=> SelectElement::class,
+			'name'=>'ordem',
+			'options'=>[
+				'disable_inarray_validator'=>true,
+				'label'=>'Ordem',
+				'empty_option'=>'--Selecione--',
+				'value_options'=>$this->getValueDb($Select)
+			],
+			'attributes'=>[
+				'id'=>'ordem',
 				'class'=>'form-control'
 			]
 		]);

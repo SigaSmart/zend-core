@@ -53,5 +53,22 @@ class RoleForm extends AbstractForm
 				'class'=>'form-control'
 			]
 		]);
+		################# icone #################
+		$this->add([
+			'type'=> Select::class,
+			'name'=>'is_admin',
+			'options'=>[
+				'disable_inarray_validator'=>true,
+				'label'=>'Todos os privilégios',
+				'empty_option'=>'--Selecione--',
+				'value_options'=>[
+					1=>'Sim'
+				]
+			],
+			'attributes'=>[
+				'id'=>'is_admin',
+				'class'=>'form-control'
+			]
+		]);
 	}
 }

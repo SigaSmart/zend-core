@@ -225,6 +225,33 @@ class AbstractTable extends Utils
 		endif;
 		return [];
 	}
+	/**
+	 * @param int   $id
+	 * @param array $colluns
+	 *
+	 * @return array
+	 */
+	public function findObject(int $id, $colluns = ['*']) {
+		$this->Select = $this->Sql->select();
+		$this->Select->from([$this->table => $this->table]);
+		if ($this->join):
+			foreach ($this->join as $key => $jon):
+				$this->Select->join([$key => $key],        // join table with alias
+					sprintf('%s.%s = %s.%s',$this->table,$jon['key'],$key,$jon['parent']),  // join expression
+					$jon['c'],
+					$this->Select::JOIN_INNER
+				);
+			endforeach;
+		endif;
+		$this->Select->columns($colluns);
+		$this->Select->where(["{$this->table}.{$this->id}" => $id]);
+		$this->Stmt = $this->Sql->prepareStatementForSqlObject($this->Select);
+		$this->exec();
+		if ($this->resultSet->count()):
+			return $this->resultSet->current();
+		endif;
+		return [];
+	}
 
 	/**
 	 * @param array $where

@@ -13,14 +13,14 @@
 				<!-- Menu Toggle Button -->
 				<a href="#" class="dropdown-toggle" data-toggle="dropdown">
 					<!-- The user image in the navbar-->
-					<img src="<?=$this->basePath($users->cover)?>" class="user-image" alt="<?=$users->first_name?>">
+					<img src="<?=$users->cover?>" class="user-image" alt="<?=$users->first_name?>">
 					<!-- hidden-xs hides the username on small devices so only the image appears. -->
 					<span class="hidden-xs"><?=$users->first_name?> <?=$users->last_name?></span>
 				</a>
 				<ul class="dropdown-menu">
 					<!-- The user image in the menu -->
 					<li class="user-header">
-						<img src="<?=$this->basePath($users->cover)?>" class="img-circle" alt="<?=$users->first_name?>">
+						<img src="<?=$users->cover?>" class="img-circle" alt="<?=$users->first_name?>">
 
 						<p>
 							<?=$users->first_name?> <?=$users->last_name?> - Web Developer
@@ -37,7 +37,11 @@
 					<!-- Menu Footer-->
 					<li class="user-footer">
 						<div class="pull-left">
-							<a href="<?=$this->url('admin');?>" class="btn btn-default btn-flat">Minha Conta</a>
+							<a href="<?=$this->url('auth/default',[
+								'controller'=>'auth',
+								'action'=>'profile',
+                                'id'=>base64_encode($users->id)
+							]);?>" class="btn btn-default btn-flat">Minha Conta</a>
 						</div>
 						<div class="pull-right">
 							<a href="<?=$this->url('auth/default', [

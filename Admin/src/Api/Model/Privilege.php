@@ -36,7 +36,7 @@ class Privilege extends AbstractTable
 	protected $headers = [
 		'id' => ['title' => 'check-all', 'width' => '50'],
 		'name' => ['title' => 'Nome\Descrição'],
-		'alias' => ['title' => 'Privilégios', 'width' => 150],
+		'action' => ['title' => 'Privilégios', 'width' => 150],
 		'role' => ['title' => 'Acesso', 'width' => 130],
 		'resource' => ['title' => 'Modulo', 'width' => 130],
 		'status' => ['title' => 'Active' , 'width' => 100],
@@ -45,7 +45,6 @@ class Privilege extends AbstractTable
 	public function init()
 	{
 		//zf-init-cover
-		
 		$this->getHeader('name')->getCell()->addDecorator('link', [
 			'url' =>  $this->getUrl('admin/default', [
 				'controller'=>'privilege',
@@ -53,7 +52,13 @@ class Privilege extends AbstractTable
 				'id' => "%s"
 			]),
 			'vars' => ['id'],
-		])->addCondition('equal', ['column' => 'status', 'values' => '1']);
+		])->addCondition('equal', ['column' => 'status', 'values' => '1'])
+			->addCondition('acl', [
+				'acl' => $this->acl->getAcl(),
+				'role' => $this->user->access,
+				'params' => $this->getRoute()->getParans(),
+				'action' => 'editar',
+			]);
 
 		$this->getHeader('status')->getCell()->addDecorator('state', [
 			'value' => [
@@ -70,6 +75,7 @@ class Privilege extends AbstractTable
 
 		$this->getHeader('id')->getCell()->addDecorator('check');
 		$this->getHeader('id')->addDecorator('check');
+
 	}
 
 	/**

@@ -1,3 +1,6 @@
+<?php $users = $this->identity();?>
+<?php $acl = $this->Acl()->getAcl();?>
+<?php $pemission = $acl->isAllowed($users->access,$this->Route()->getParan('controller'),$this->Route()->getAction());?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -33,7 +36,8 @@
 <body class="nav-md">
 <div class="container body">
 	<div class="main_container">
-		<?=$this->partial('partial/admin-gentella/operacional/sidebar');?>
+		<?=$this->navigation('Navigation')->setAcl($acl)->setRole((string)$users->access)->menu()
+			->setPartial('partial/admin-gentella/operacional/sidebar');?>
 		<!-- top navigation -->
 		<div class="top_nav">
 			<?=$this->partial('partial/admin-gentella/operacional/main-header');?>
@@ -42,7 +46,14 @@
 
 		<!-- page content -->
 		<div class="right_col" role="main">
-			<?= $this->content ?>
+			<?php
+			//d($acl->isAllowed($users->access,$this->Route()->getParan('controller'),$this->Route()->getAction()));
+			if($pemission){
+				echo $this->content;
+			}
+			else{
+				echo $this->partial('partial/admin-gentella/restrict');
+			}?>
 		</div>
 		<!-- /page content -->
 

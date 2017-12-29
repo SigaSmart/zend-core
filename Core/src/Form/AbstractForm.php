@@ -8,6 +8,7 @@
 
 namespace Core\Form;
 
+use Auth\Adapter\Authentication;
 use Core\Table\AbstractTable;
 use Interop\Container\ContainerInterface;
 use Zend\Db\Adapter\AdapterInterface;
@@ -25,6 +26,7 @@ class AbstractForm extends Form
 	protected $container;
 	protected $ValueOptionsData = [];
 	private $Tables;
+	protected $users;
 
 	public function __construct($name = null, array $options = [])
 	{
@@ -159,4 +161,27 @@ class AbstractForm extends Form
 			utf8_decode(html_entity_decode($var)), utf8_decode('ÀÁÃÂÉÊÍÓÕÔÚÜÇÑàáãâéêíóõôúüçñ'), 'AAAAEEIOOOUUCNaaaaeeiooouucn')));
 	}
 
+	protected function getResources($string)
+	{
+		$resources=[];
+		if(!isset($this->container->get('Config')['controllers'][$string])):
+			return [];
+		endif;
+		$Result = $this->container->get('Config')['controllers'][$string];
+		if($Result):
+			foreach ($Result as $key => $value) {
+				$resources[$key]=$key;
+			}
+		endif;
+
+		return $resources;
+
+	}
+
+	protected function user(){
+		if($this->container):
+			$this->users = $this->container->get(Authentication::class)->getIdentity();
+		endif;
+		return $this;
+	}
 }

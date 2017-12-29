@@ -1,0 +1,28 @@
+<?=$this->partial('partial/form-error',['form'=>$this->form]);?>
+<?=$this->form()->openTag($this->form->setAttribute('action',$this->url('auth/default', [
+	'controller'=>'auth',
+	'action'=>'profile-form'
+]))->setAttribute('name', 'AjaxForm'));?>
+
+        <?=$this->formHidden($this->form->get('id'));?>
+    	<?=$this->partial(sprintf('partial/%s/form/input-form-group', LAYOUT),[
+    	        'field'=>$this->form->get('first_name')->setLabel("")
+        ]);?>
+        <?=$this->partial(sprintf('partial/%s/form/input-form-group', LAYOUT),[
+            'field'=>$this->form->get('last_name')->setLabel("")
+        ]);?>
+        <?=$this->partial(sprintf('partial/%s/form/input-form-group', LAYOUT),[
+            'field'=>$this->form->get('email')->setLabel("")
+        ]);?>
+        <?=$this->partial(sprintf('partial/%s/form/input-form-group', LAYOUT),[
+            'field'=>$this->form->get('password')->setLabel("")
+        ]);?>
+    <div class="row">
+        <!-- /.col -->
+        <div class="col-xs-12">
+            <?=$this->formSubmit($this->form->get('submit')->setValue('Atualizar Conta'));?>
+         </div>
+        <!-- /.col -->
+    </div>
+	<?=$this->form()->closeTag();?>
+<?=$this->partial('partial/messages');?>

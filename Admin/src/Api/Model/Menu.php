@@ -36,6 +36,7 @@ class Menu extends AbstractTable
 	protected $headers = [
 		'id' => ['title' => 'check-all', 'width' => '50'],
 		'name' => ['title' => 'Nome\Descrição'],
+		'alias' => ['title' => 'Class\Controller'],
 		'status' => ['title' => 'Active' , 'width' => 100],
 	];
 

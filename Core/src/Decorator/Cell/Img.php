@@ -23,6 +23,7 @@ class Img extends AbstractCellDecorator
 	protected $attrs = ['class'=>'img-md'];
 	protected $w = 100;
 	protected $h = 100;
+	private $thumbnail =false;
 
 	/**
 	 * Constructor
@@ -40,6 +41,7 @@ class Img extends AbstractCellDecorator
 		$this->attrs = is_array($options['attrs']) ? $options['attrs'] : $this->attrs;
 		$this->w = isset($options['w']) ? $options['w'] : $this->w;
 		$this->h = isset($options['h']) ? $options['h'] : $this->h;
+		$this->thumbnail = isset($options['thumbnail']) ? $options['thumbnail'] : $this->thumbnail;
 
 	}
 
@@ -54,7 +56,6 @@ class Img extends AbstractCellDecorator
 		$values = [];
 		$values[] = $this->getAttr();
 		$values[] = $this->base;
-		$values[] = $this->base;
 		foreach ($this->vars as $var) {
 			$actualRow = $this->getCell()->getActualRow();
 			if (is_object($actualRow)) {
@@ -64,8 +65,9 @@ class Img extends AbstractCellDecorator
 		}
 		$values[] = $this->w;
 		$values[] = $this->h;
+		$values[] = $this->thumbnail;
 
-		$value = vsprintf('<img %s src="%stim-zf.php?src=/dist/uploads%s%s&w=%s&h=%s">', $values);
+		$value = vsprintf('<img %s src="%s?name=%s&w=%s&h=%s&thumbnail=%s">', $values);
 
 		return $value;
 

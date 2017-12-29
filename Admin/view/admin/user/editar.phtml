@@ -1,0 +1,37 @@
+<section class="content">
+    <div class="row">
+        <div class="col-md-12">
+            <!-- Custom Tabs (Pulled to the right) -->
+            <div class="nav-tabs-custom">
+                <ul class="nav nav-tabs">
+                    <li class="active"><a href="#tab-1" data-toggle="tab">Geral</a></li>
+                    <li class="pull-right header"><i class="fa fa-th"></i> Manutenção do usuario</li>
+                </ul>
+                <div class="tab-content">
+                    <div class="tab-pane active" id="tab-1">
+                        <div class="row">
+                            <div class="col-md-8 col-xs-12">
+                                <div id="formContainer">
+
+                                </div>
+								<?php $this->ZfForm()->form();?>
+                            </div>
+                            <div class="col-md-4 col-xs-12">
+                                <div id="uploadContainer">
+
+                                </div>
+								<?php $this->ZfForm()->upload();?>
+                            </div>
+                        </div>
+                        <div class="clearfix"></div>
+
+                    </div>
+                    <!-- /.tab-pane -->
+                </div>
+                <!-- /.tab-content -->
+            </div>
+            <!-- nav-tabs-custom -->
+        </div>
+        <!-- /.col -->
+    </div>
+</section>

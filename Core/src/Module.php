@@ -7,7 +7,9 @@
 
 namespace Core;
 
+use Core\Factory\AclFactory;
 use Core\Factory\NavigationFactory;
+use Core\Listener\LayoutListener;
 use Core\Service\ImageManager;
 use Core\Service\PHPThumb;
 use Core\View\Helper\FlashMsg;
@@ -22,6 +24,7 @@ use Zend\ModuleManager\Feature\ServiceProviderInterface;
 use Zend\ModuleManager\Feature\ViewHelperProviderInterface;
 use Zend\Mvc\ModuleRouteListener;
 use Zend\ServiceManager\Factory\InvokableFactory;
+use Zend\View\HelperPluginManager;
 
 class Module implements BootstrapListenerInterface, ViewHelperProviderInterface, ServiceProviderInterface
 {
@@ -47,54 +50,13 @@ class Module implements BootstrapListenerInterface, ViewHelperProviderInterface,
 	{
 
 		$eventManager = $e->getApplication()->getEventManager();
-		$serviceManager = $e->getApplication()->getServiceManager();
-
+		//$serviceManager = $e->getApplication()->getServiceManager();
 		$moduleRouteListener = new ModuleRouteListener();
 		$moduleRouteListener->attach($eventManager);
-		$eventManager = $e->getApplication()->getEventManager();
-//		$eventManager->attach('dispatch.error', function($event)
-//		{
-//			$exception = $event->getResult()->exception;
-//			if ($exception) {
-//				$sm = $event->getApplication()->getServiceManager();
-//				$serviceLog = $sm->get('prj-errorhandling');
-//				if($exception instanceof \Exception):
-//					$serviceLog->logException($exception);
-//				endif;
-//			}
-//
-//			$this->finishLog = false;
-//		});
-
-//		$eventManager->attach('finish', function($event)
-//		{
-//			if ($this->finishLog)
-//			{
-//				$result = $event->getResult();
-//				$events = method_exists($result, 'getVariables') ? $result->getVariables() : false;
-//				$exception = isset($events['exception']) ? $events['exception'] : false;
-//				if ($exception) {
-//					$sm = $event->getApplication()->getServiceManager();
-//					$serviceLog = $sm->get('prj-errorhandling');
-//					$serviceLog->logException($exception);
-//				}
-//			}
-//		});
-
-		$e->getApplication()
-			->getEventManager()
-				->getSharedManager()
-					->attach('Zend\Mvc\Controller\AbstractActionController', 'dispatch', function($e) {
-						$controller      = $e->getTarget();
-						$controllerClass = get_class($controller);
-						$moduleNamespace = substr($controllerClass, 0, strpos($controllerClass, '\\'));
-						$config          = $e->getApplication()->getServiceManager()->get('config');
-						if (isset($config['module_layouts'][$moduleNamespace])) {
-							$controller->layout($config['module_layouts'][$moduleNamespace]);
-						}
-
-		}, 100);
-
+		$eventManager->getSharedManager()
+			->attach('Zend\Mvc\Controller\AbstractActionController', 'dispatch', function($e) {
+				(new LayoutListener($e));
+			}, 100);
 	}
 
 	/**
@@ -144,6 +106,7 @@ class Module implements BootstrapListenerInterface, ViewHelperProviderInterface,
 							$ViewHelperManager->get('url'));
 					return $ICheckHelper;
 				},
+				"Acl" =>AclFactory::class
 
 			],
 			'invokables'=>[

@@ -7,6 +7,7 @@
 
 namespace Core;
 
+use Core\Factory\AclFactory;
 use Zend\Authentication\AuthenticationService;
 use Zend\Navigation\Service\DefaultNavigationFactory;
 
@@ -51,6 +52,9 @@ return [
 	'service_manager' => [
 		'invokables' => [
 			AuthenticationService::class =>AuthenticationService::class,
+			'LayoutListener' => 'Core\Listener\LayoutListener',
+			'LayoutErrorListener' => 'Core\Listener\LayoutErrorListener'
+
 
 		],
 		'factories' => [
@@ -58,7 +62,7 @@ return [
 			'prj-errorhandling' => 'Core\Factory\ErrorHandling',
 			'mail-transport' => 'Core\Factory\SmtpTransport',
 			'mail-template'  => 'Core\Factory\Template',
-			'mail-options'  => 'Core\Factory\Options',
+			'mail-options'  => 'Core\Factory\Options'
 		],
 
 	],

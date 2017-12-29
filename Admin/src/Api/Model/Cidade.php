@@ -48,10 +48,14 @@ class Cidade extends AbstractTable
 	public function init()
 	{
 		$this->getHeader('cover')->getCell()->addDecorator('img', [
-			'base' => $this->getBasePath(),
+			'base' => $this->getUrl('admin/default', [
+				'controller'=>'cidade',
+				'action'=>'file'
+			]),
 			'vars' => ['cover'],
 			//'attrs' => ['class'=>'img-circle','style'=>'width: 100%; display: block;']
-			'attrs' => ['class'=>'img-circle']
+			'attrs' => ['class'=>'img-circle'],
+			'thumbnail'=>true
 
 		]);
 		$this->getHeader('title')->getCell()->addDecorator('link', [

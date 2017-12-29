@@ -1,3 +1,6 @@
+<?php $users = $this->identity();?>
+<?php $acl = $this->Acl()->getAcl();?>
+<?php $pemission = $acl->isAllowed($users->access,$this->Route()->getParan('controller'),$this->Route()->getAction());?>
 <!DOCTYPE html>
 <!--
 This is a starter template page. Use this page to start your new project from
@@ -30,12 +33,12 @@ scratch. This page gets rid of all links and provides the needed markup only.
 		->prependStylesheet($this->basePath('lte-admin/bootstrap/dist/css/bootstrap.min.css'))?>
     <!-- REQUIRED JS SCRIPTS -->
 </head>
-<body class="hold-transition skin-blue sidebar-mini">
+<body class="hold-transition skin-blue<?=$pemission?' sidebar-mini':' lockscreen'?>">
 <div class="wrapper">
 	<!-- Main Header -->
 	<header class="main-header">
 		<!-- Logo -->
-		<a href="index2.html" class="logo">
+		<a href="<?=$this->url('admin');?>" class="logo">
 			<!-- mini logo for sidebar mini 50x50 pixels -->
 			<span class="logo-mini"><b>A</b>LT</span>
 			<!-- logo for regular state and mobile devices -->
@@ -47,7 +50,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
 	<!-- Left side column. contains the logo and sidebar -->
 	<aside class="main-sidebar">
 		<!-- sidebar: style can be found in sidebar.less -->
-		<?=$this->navigation('Navigation')->menu()->setPartial('partial/admin-lte/operacional/sidebar'); ?>
+		<?=$this->navigation('Navigation')->setAcl($acl)->setRole((string)$users->access)->menu()
+			->setPartial('partial/admin-lte/operacional/sidebar');?>
 			<!-- /.sidebar -->
 	</aside>
 	<!-- Content Wrapper. Contains page content -->
@@ -55,11 +59,14 @@ scratch. This page gets rid of all links and provides the needed markup only.
 		<!-- Content Header (Page header) -->
 		<!-- Main content -->
 		<section class="content container-fluid">
-			  <?= $this->content ?>
-			<!--------------------------
-			  | Your Page Content Here |
-			  -------------------------->
-
+			<?php
+			 //d($acl->isAllowed($users->access,$this->Route()->getParan('controller'),$this->Route()->getAction()));
+            if($pemission){
+			echo $this->content;
+            }
+			else{
+			echo $this->partial('partial/admin-lte/restrict');
+			}?>
 		</section>
 		<!-- /.content -->
 	</div>

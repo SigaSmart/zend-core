@@ -70,6 +70,12 @@ class Module implements ServiceProviderInterface
 				\Admin\Api\Model\Resource::class => \Admin\Api\Model\Factory\ApiModelFactory::class,
 				\Admin\Form\ResourceForm::class => \Admin\Form\Factory\FormFactory::class,
 
+				################ User ###################
+				\Admin\Model\UserModel::class => \Admin\Model\Factory\ModelFactory::class,
+				\Admin\Table\UserTable::class => \Admin\Table\Factory\TableFactory::class,
+				\Admin\Api\Model\User::class => \Admin\Api\Model\Factory\ApiModelFactory::class,
+				\Admin\Form\UserForm::class => \Admin\Form\Factory\FormFactory::class,
+
 				################ Gallery ###################
 				\Admin\Model\GalleryModel::class => \Admin\Model\Factory\ModelFactory::class,
 				\Admin\Table\GalleryTable::class => \Admin\Table\Factory\TableFactory::class,

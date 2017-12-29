@@ -47,7 +47,7 @@ class LoginModel extends AbstractModel
 			]);
 
 			$this->inputFilter->add([
-				'name'=>'role',
+				'name'=>'access',
 				'required'=>false,
 				'filters'=>$this->filters(),
 				'validators'=>[]
@@ -107,15 +107,25 @@ class LoginModel extends AbstractModel
 					$this->NotEmpty('E-Mail'),
 				]
 			]);
-
 			$this->inputFilter->add([
 				'name'=>'password',
-				'required'=>true,
+				'required'=>false,
 				'filters'=>$this->filters(),
-				'validators'=>[
-					$this->StringLength('Senha'),
-					$this->NotEmpty('Senha'),
-				]
+				'validators'=>[]
+			]);
+
+			$this->inputFilter->add([
+				'name'=>'access',
+				'required'=>false,
+				'filters'=>$this->filters(),
+				'validators'=>[]
+			]);
+
+			$this->inputFilter->add([
+				'name'=>'status',
+				'required'=>false,
+				'filters'=>$this->filters(),
+				'validators'=>[]
 			]);
 
 		endif;
@@ -148,7 +158,7 @@ class LoginModel extends AbstractModel
 				]
 			]);
 			$this->inputFilter->add([
-				'name'=>'role',
+				'name'=>'access',
 				'required'=>false,
 				'filters'=>$this->filters(),
 				'validators'=>[]

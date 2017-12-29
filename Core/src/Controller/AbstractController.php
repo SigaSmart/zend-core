@@ -11,6 +11,7 @@ use Admin\Form\GalleryForm;
 use Admin\Form\UploadForm;
 use Admin\Model\GalleryModel;
 use Admin\Table\GalleryTable;
+use Core\Acl;
 use Core\Form\AbstractForm;
 use Core\Model\AbstractModel;
 use Core\Service\ImageManager;
@@ -47,6 +48,10 @@ abstract class AbstractController extends AbstractActionController
 	 */
 	protected $apiModel;
 
+	/**
+	 * @var $acl Acl
+	 */
+	protected $acl;
 	/**
 	 * @var $table AbstractTable
 	 */
@@ -92,12 +97,14 @@ abstract class AbstractController extends AbstractActionController
 	}
 	public function listarAction(){
 
+		$this->auth();
 		$this->getTable()
 			->getApiModel();
 		$this->apiModel->setAdapter($this->getAdapter())
 			->setSource($this->table->setTableModel($this->apiModel)
 				->getSelect($this->params()->fromPost()))
-			->setParamAdapter($this->getRequest()->getPost());
+				->setUser($this->user)
+					->setParamAdapter($this->getRequest()->getPost());
 
 		$view = $this->apiModel->render();
 		//$view = $this->apiModel->render('custom',sprintf('admin/cidade/%s/listar', LAYOUT));
@@ -111,6 +118,9 @@ abstract class AbstractController extends AbstractActionController
 
 	public function createAction(){
 		$this->auth();
+		if(!$this->params()->fromPost()):
+			return $this->redirect()->toRoute($this->route,['controller'=>$this->controller]);
+		endif;
 		if (!$this->model):
 			$this->args['msg'] = sprintf("Nenhuma model valida foi passada <b>%s</b>!", $this->user['first_name']);
 			return new JsonModel($this->args);
@@ -183,6 +193,9 @@ abstract class AbstractController extends AbstractActionController
 
 	public function deleteAction()
 	{
+		if(!$this->params()->fromPost()):
+			return $this->redirect()->toRoute($this->route,['controller'=>$this->controller]);
+		endif;
 		$this->getTable();
 		$Resul = $this->table->delete($this->params()->fromPost('id'));
 		return new JsonModel($Resul);
@@ -190,6 +203,9 @@ abstract class AbstractController extends AbstractActionController
 
 	public function stateAction()
 	{
+		if(!$this->params()->fromPost()):
+			return $this->redirect()->toRoute($this->route,['controller'=>$this->controller]);
+		endif;
 		$this->getTable();
 		$Resul = $this->table->state(['status'=>$this->params()->fromRoute('id')], $this->params()->fromPost('id'));
 		return new JsonModel($Resul);
@@ -240,6 +256,10 @@ abstract class AbstractController extends AbstractActionController
 
 	public function galleryAction(){
 
+		$id = $this->params()->fromRoute("id",0);
+		if (!(int)$id):
+			return new JsonModel([]);
+		endif;
 		$this->getTable();
 		/**
 		 * @var $GalleryTable GalleryTable
@@ -253,10 +273,7 @@ abstract class AbstractController extends AbstractActionController
 		 * @var $GalleryForm GalleryForm
 		 */
 		$GalleryForm = $this->container->get(GalleryForm::class);
-		$id = $this->params()->fromRoute("id",0);
-		if (!(int)$id):
-			return new JsonModel([]);
-		endif;
+
 		$Data = $this->table->find($id);
 		$GalleryForm->setBasePath($this->getRequest()->getServer('DOCUMENT_ROOT'));
 		$GalleryForm->setInputFilter($GalleryForm->addInputFilter($this->controller,$id));
@@ -289,12 +306,16 @@ abstract class AbstractController extends AbstractActionController
 	public function listgalleryAction(){
 		$Gallerys=[];
 		$datasUrl=[];
+		$id = $this->params()->fromRoute("id",0);
+		if (!(int)$id):
+			return new JsonModel([]);
+		endif;
 		$this->imageManager = $this->container->get(ImageManager::class);
 		/**
 		 * @var $GalleryTable GalleryTable
 		 */
 		$GalleryTable = $this->container->get(GalleryTable::class);
-		$Datas = $GalleryTable->select(['parent'=>$this->controller,'parent_id'=>$this->params()->fromRoute('id')]);
+		$Datas = $GalleryTable->select(['parent'=>$this->controller,'parent_id'=>$id]);
 		if($Datas):
 			foreach ($Datas as $data):
 				$this->imageManager->setSaveToDir(sprintf("%s/%s/",$this->getRequest()->getServer('DOCUMENT_ROOT'),$data['path_upload']));
@@ -330,16 +351,20 @@ abstract class AbstractController extends AbstractActionController
 	}
 
 	public function deletegalleryitemAction(){
+		$id = $this->params()->fromRoute("id",0);
+		if (!(int)$id):
+			return new JsonModel($this->args);
+		endif;
 		/**
 		 * @var $GalleryTable GalleryTable
 		 */
 		$GalleryTable = $this->container->get(GalleryTable::class);
-		$Data = $GalleryTable->find($this->params()->fromRoute('id'));
+		$Data = $GalleryTable->find($id);
 		$this->args = array_merge($this->args, $GalleryTable->delete(['id'=>[$this->params()->fromRoute('id')]]));
 		if($this->args['result']):
 			unlink(sprintf("%s/%s/%s", $this->getRequest()->getServer('DOCUMENT_ROOT'),$Data['path_upload'], $Data['cover']));
 		endif;
-		return new JsonModel($this->params()->fromPost());
+		return new JsonModel($this->args);
 	}
 	public function deletegalleryAction(){
 
@@ -347,8 +372,8 @@ abstract class AbstractController extends AbstractActionController
 	}
 
 	public function fileAction(){
-// Get the file name from GET variable.
-		$fileName = $this->params()->fromQuery('name', '');
+//      Get the file name from GET variable.
+		$fileName = $this->params()->fromQuery('name', '/dist/uploads/images/no_image.jpg');
 
 		// Check whether the user needs a thumbnail or a full-size image.
 		$isThumbnail = (bool)$this->params()->fromQuery('thumbnail', false);
@@ -358,17 +383,16 @@ abstract class AbstractController extends AbstractActionController
 		// Get path to image file.
 		$fileName = $this->imageManager->getImagePathByName($fileName);
 		if($isThumbnail) {
-
+			$desiredWidth = $this->params()->fromQuery('w', 240);
 			// Resize the image.
-			$fileName = $this->imageManager->resizeImage($fileName);
+			$fileName = $this->imageManager->resizeImage($fileName,$desiredWidth);
 		}
 
 		// Get image file info (size and MIME type).
 		$fileInfo = $this->imageManager->getImageFileInfo($fileName);
 		if ($fileInfo===false) {
 			// Set 404 Not Found status code
-			$this->getResponse()->setStatusCode(404);
-			return;
+			$fileInfo = $this->imageManager->getImageFileInfo('/dist/uploads/images/no_image.jpg');
 		}
 
 		// Write HTTP headers.

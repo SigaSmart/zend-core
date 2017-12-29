@@ -59,6 +59,7 @@ class Link extends AbstractCellDecorator
                 $values[] = trim($actualRow[$var]);
             }
         }
+       // d($this->getCell()->Route);
         $url = vsprintf($this->url, $values);
         return sprintf('<a  href="%s">%s</a>', str_replace(" ","",$url), $context);
     }

@@ -1,48 +1,54 @@
+<?php $users = $this->identity();?>
+<?php $acl = $this->Acl()->getAcl();?>
+<?php $state = $acl->isAllowed($users->access,$this->Route()->getParan('controller'),'state')?"":"disabled";?>
+<?php $create = $acl->isAllowed($users->access,$this->Route()->getParan('controller'),'create');?>
 <div class="mailbox-controls">
     <!-- Check all button -->
     <div class="btn-group">
-        <form action="<?= $this->url(sprintf("%s/default", $this->route),
-			[
-				'controller'=>$this->controller,
-				'action'=>'create'
-			]) ?>" name="ajaxBoxForm" method="post" style="display: flex;float: left;">
-            <button style="margin-left: 10px;" class="actions btn btn-success btn-sm btn-flat"><i class="fa fa-plus-circle"></i> <?=$this->valueButtonsActions['add'];?></button>
-        </form>
+		<?php if ($create):?>
+            <form action="<?= $this->url($this->route,
+				[
+					'controller'=>$this->controller,
+					'action'=>'create'
+				]) ?>" name="ajaxBoxForm" method="post" style="display: flex;float: left;">
+                <button style="margin-left: 10px;" class="actions btn btn-success btn-sm btn-flat <?=$state?>"><i class="fa fa-plus-circle"></i> <?=$this->valueButtonsActions['add'];?></button>
+            </form>
+		<?php endif;?>
 		<?php if ($this->valuesState != '1'): ?>
-            <a  href="<?=$this->url(sprintf("%s/default", $this->route),
+            <a  href="<?=$this->url($this->route,
 				[
 					'controller'=>$this->controller,
 					'action'=>'state',
 					'id'=>1
 				])
-			?>" id="1" style="margin-left: 10px;" type="button" class="actions btn btn-warning btn-flat btn-sm"><i class="fa fa-check"></i> <?=$this->valueButtonsActions['active'];?></a>
+			?>" id="1" style="margin-left: 10px;" class="actions btn btn-warning btn-flat btn-sm <?=$state?>"><i class="fa fa-check"></i> <?=$this->valueButtonsActions['active'];?></a>
 		<?php endif; ?>
 		<?php if ($this->valuesState != '2'): ?>
             <a  href="<?=
-			$this->url(sprintf("%s/default", $this->route),
+			$this->url($this->route,
 				[
 					'controller'=>$this->controller,
 					'action'=>'state',
 					'id'=>2
-				])
-			?>" id="2" style="margin-left: 10px;" type="button" class="actions btn bg-gray btn-flat btn-sm"><i class="fa fa-close"></i> <?=$this->valueButtonsActions['inactive'];?></a>
+				],false)
+			?>" id="2" style="margin-left: 10px;" class="actions btn bg-gray btn-flat btn-sm <?=$state?>"><i class="fa fa-close"></i> <?=$this->valueButtonsActions['inactive'];?></a>
 		<?php endif; ?>
 		<?php if ($this->valuesState != '3'): ?>
             <a  href="<?=
-			$this->url(sprintf("%s/default", $this->route),
+			$this->url( $this->route,
 				[
 					'controller'=>$this->controller,
 					'action'=>'state',
 					'id'=>3
 				])
-			?>" id="3" style="margin-left: 10px;" type="button" class="actions btn bg-blue btn-flat btn-sm"><i class="fa fa-trash"></i> <?=$this->valueButtonsActions['trash'];?></a>
+			?>" id="3" style="margin-left: 10px;" class="actions btn bg-blue btn-flat btn-sm"><i class="fa fa-trash"></i> <?=$this->valueButtonsActions['trash'];?></a>
 		<?php endif; ?>
 		<?php if ($this->valuesState == '3'): ?>
-            <a  href="<?= $this->url(sprintf("%s/default", $this->route),
+            <a  href="<?= $this->url($this->route,
 				[
 					'controller'=>$this->controller,
 					'action'=>'delete'
-				]) ?>" id="4" style="margin-left: 10px;" type="button" class="actions btn btn-danger btn-flat btn-sm"><i class="fa fa-eraser"></i> <?=$this->valueButtonsActions['trashall'];?></a>
+				]) ?>" id="4" style="margin-left: 10px;" class="actions btn btn-danger btn-flat btn-sm"><i class="fa fa-eraser"></i> <?=$this->valueButtonsActions['trashall'];?></a>
 		<?php endif; ?>
 		<?php if ($this->showExportToCSV): ?>
             <a href="#" style="margin-left: 10px;" class="export-csv btn bg-aqua btn-flat btn-sm"><?=$this->valueButtonsActions['csv'];?></a>

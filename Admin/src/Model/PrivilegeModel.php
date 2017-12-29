@@ -16,6 +16,17 @@ class PrivilegeModel extends AbstractModel
 	{
 		if (!$this->inputFilter):
 			$this->inputFilter = new InputFilter();
+			########################### controller ####################
+			$this->inputFilter->add([
+				'name'=>'controller',
+				'required'=>true,
+				'filters'=>$this->filters(),
+				'validators'=>[
+					$this->StringLength('Controller'),
+					$this->NotEmpty('Controller')
+
+				]
+			]);
 			########################### parent ####################
 			$this->inputFilter->add([
 				'name'=>'parent',

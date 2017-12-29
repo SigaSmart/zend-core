@@ -27,6 +27,8 @@ class AuthController extends AbstractController
 		$this->form = LoginForm::class;
 		$this->model = LoginModel::class;
 		$this->table = LoginTable::class;
+		$this->route = "auth/default";
+		$this->controller = "auth";
 		$this->getHelper();
 	}
 	public function loginAction()
@@ -37,7 +39,6 @@ class AuthController extends AbstractController
 		return $view;
 	}
 	public function loginformAction(){
-
 		$this->quest();
 		$this->setData()
 			->getModel()
@@ -46,7 +47,7 @@ class AuthController extends AbstractController
 			$this->form->setInputFilter($this->model->getInputFilterLogin());
 			if ($this->form->isValid()):
 				$auth = $this->container->get(Authentication::class);
-			    $password = $this->encryptPassword($this->params()->fromPost('email'),$this->params()->fromPost('password'));
+				$password = $this->encryptPassword($this->params()->fromPost('email'),$this->params()->fromPost('password'));
 				$Result = $auth->login($this->params()->fromPost('email'),$password);
 				$this->helper->addMessage($auth->getResult(),$auth->getType());
 				if($Result->isValid()):
@@ -64,7 +65,10 @@ class AuthController extends AbstractController
 
 	public function registerAction(){
 		$this->quest();
-		$view = new ViewModel();
+		$view = new ViewModel([
+			'route'=>$this->route,
+			'controller'=>$this->controller
+		]);
 		$view->setTemplate(sprintf("auth/%s/register", LAYOUT));
 		return $view;
 	}
@@ -78,20 +82,75 @@ class AuthController extends AbstractController
 		if($this->data):
 			$this->form->setInputFilter($this->model->getInputFilter());
 			if ($this->form->isValid()):
-				 $this->model->offsetSet("password" ,md5($this->encryptPassword($this->model->offsetGet('email'),$this->model->offsetGet('password'))));
-				 $this->args = array_merge($this->args, $this->table->insert($this->model));
-				 $this->helper->addMessage($this->args['msg'],$this->args['type']);
-				 if($this->args['result']):
-				   $this->helper->addRedirect("auth");
-				 endif;
+				$this->model->offsetSet("password" ,md5($this->encryptPassword($this->model->offsetGet('email'),$this->model->offsetGet('password'))));
+				$this->args = array_merge($this->args, $this->table->insert($this->model));
+				$this->helper->addMessage($this->args['msg'],$this->args['type']);
+				if($this->args['result']):
+					$this->helper->addRedirect("auth");
+				endif;
 			endif;
 		endif;
 		$view = new ViewModel([
+			'route'=>$this->route,
+			'controller'=>$this->controller,
 			'form'=>$this->form
 		]);
 		$view->setTerminal(true);
 		$view->setTemplate(sprintf("auth/%s/register-form", LAYOUT));
 		return $view;
+	}
+
+
+	public function profileAction(){
+		$this->auth();
+		$view = new ViewModel();
+		$view->setTemplate(sprintf("auth/%s/profile", LAYOUT));
+		$view->setVariable('data',$this->user);
+		return $view;
+	}
+	public function profileformAction(){
+		$this->auth();
+		$this->setData()
+				->getModel()
+					->getForm()
+						->getTable();
+		if($this->params()->fromPost()):
+			$this->form->setInputFilter($this->model->getInputFilterProfile());
+			if ($this->form->isValid()):
+				if(empty($this->model->offsetGet('password'))):
+					$this->model->offsetUnset('password');
+					else:
+					$this->model->offsetSet("password" ,md5($this->encryptPassword($this->model->offsetGet('email'),$this->model->offsetGet('password'))));
+				endif;
+			    $this->args = array_merge($this->args, $this->table->save($this->model));
+				$this->helper->addMessage($this->args['msg'],$this->args['type']);
+				if($this->args['result']):
+					$this->container->get(Authentication::class)->getStorage()->write($this->table->findObject($this->params()->fromPost('id'),['id','first_name','last_name','cover','role','email','created_at','updated_at']));
+				endif;
+				else:
+					$this->helper->addMessage("Formulario invalido",'error');
+			endif;
+		else:
+			$this->form->setData($this->container->get(Authentication::class)->toArray());
+		endif;
+		$view = new ViewModel([
+			'route'=>$this->route,
+			'controller'=>$this->controller,
+			'form'=>$this->form
+		]);
+		$view->setTerminal(true);
+		$view->setTemplate(sprintf("auth/%s/profile-form", LAYOUT));
+		return $view;
+	}
+
+	public function uploadAction()
+	{
+		$this->auth();
+		$Result = parent::uploadAction();
+		if($this->params()->fromFiles()):
+			$this->container->get(Authentication::class)->getStorage()->write($this->table->findObject($this->params()->fromRoute('id'),['id','first_name','last_name','cover','role','email','created_at','updated_at']));
+		endif;
+		return  $Result;
 	}
 
 	public function recuperarsenhaAction(){

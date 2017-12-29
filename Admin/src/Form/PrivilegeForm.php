@@ -24,20 +24,27 @@ class PrivilegeForm extends AbstractForm
 		//Add os campos abaixo voce pode usar o comando
 		// zf-input-text ou zf-input-select ou zf-input-checkbox ou zf-input-radio
 
-		$Select = $this->dbValueOptions(PrivilegeTable::class, ['status'=>1]);
-		################# role #################
+
+		################# parent #################
 		$this->add([
-			'type'=> Select::class,
+			'type'=>Select::class,
 			'name'=>'parent',
 			'options'=>[
+				'label'=>'Privilégios\Default',
 				'disable_inarray_validator'=>true,
-				'label'=>'Herdar',
 				'empty_option'=>'--Selecione--',
-				'value_options'=>$this->getValueDb($Select)
+				'value_options'=>[
+					'upload,gallery,listgallery,deletegalleryitem,file,index,listar'=>"Listar",
+					'state,upload,gallery,listgallery,deletegalleryitem,file,index,listar'=>"Listar e alterar status",
+					'state,upload,gallery,listgallery,deletegalleryitem,file,index,listar,editar,editar-form'=>"Listar, alterar status e Editar",
+					'state,upload,gallery,listgallery,deletegalleryitem,file,index,listar,editar,create,editar-form'=>"Listar, alterar status, Editar e Criar",
+					'state,upload,gallery,listgallery,deletegalleryitem,file,index,listar,editar,create,editar-form,delete'=>"Listar, alterar status, Editar, Criare e Deletar",
+				]
 			],
 			'attributes'=>[
-				'id'=>'role',
-				'class'=>'form-control'
+				'id'=>'action',
+				'class'=>'form-control',
+				'required'=>true,
 			]
 		]);
 
@@ -56,21 +63,37 @@ class PrivilegeForm extends AbstractForm
 			]
 		]);
 
-		################# alias #################
+		################# action #################
 		$this->add([
 			'type'=>Text::class,
-			'name'=>'alias',
+			'name'=>'action',
 			'options'=>[
-				'label'=>'Privilégios'
+				'label'=>'Privilégios Adicionais'
 			],
 			'attributes'=>[
-				'id'=>'alias',
+				'id'=>'action',
 				'class'=>'form-control',
-				'placeholder'=>'Privilégios',
+				'placeholder'=>'Privilégios Adicionais',
 				'required'=>true,
 			]
 		]);
-
+		$resources=array_merge($this->getResources('invokables'),$this->getResources('factories'));
+		################# controller #################
+		$this->add([
+			'type'=>Select::class,
+			'name'=>'controller',
+			'options'=>[
+				'label'=>'Controller',
+				'disable_inarray_validator'=>true,
+				'empty_option'=>'--Selecione--',
+				'value_options'=>$resources
+			],
+			'attributes'=>[
+				'id'=>'controller',
+				'class'=>'form-control',
+				'required'=>true,
+			]
+		]);
 		$Select = $this->dbValueOptions(RoleTable::class, ['status'=>1]);
 		################# role #################
 		$this->add([

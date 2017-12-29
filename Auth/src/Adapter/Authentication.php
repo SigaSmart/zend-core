@@ -8,8 +8,10 @@ namespace Auth\Adapter;
 
 use Zend\Authentication\AuthenticationService;
 use Zend\Db\Adapter\AdapterInterface;
+use Zend\Hydrator\ClassMethods;
 use Zend\Mvc\Plugin\FlashMessenger\FlashMessenger;
 use Zend\Session\Storage\StorageInterface;
+use Zend\Stdlib\ArrayObject;
 
 class Authentication
 {
@@ -138,6 +140,12 @@ class Authentication
 	public function getType()
 	{
 		return $this->type;
+	}
+	public function toArray(){
+
+		$hidrator = new ArrayObject();
+		$hidrator->exchangeArray($this->getIdentity());
+		return $hidrator->getArrayCopy();
 	}
 
 }

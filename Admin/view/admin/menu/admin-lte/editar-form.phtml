@@ -23,6 +23,9 @@
 <?=$this->partial(sprintf('partial/%s/form/input-inline', LAYOUT),[
 	'field'=>$this->form->get('action')
 ]);?>
+<?=$this->partial(sprintf('partial/%s/form/input-inline', LAYOUT),[
+	'field'=>$this->form->get('alias')
+]);?>
 
 <?=$this->partial(sprintf('partial/%s/form/input-inline', LAYOUT),[
 	'field'=>$this->form->get('icone')
@@ -34,6 +37,10 @@
 
 <?=$this->partial(sprintf('partial/%s/form/input-inline', LAYOUT),[
 	'field'=>$this->form->get('role')
+]);?>
+
+<?=$this->partial(sprintf('partial/%s/form/input-inline', LAYOUT),[
+	'field'=>$this->form->get('ordem')
 ]);?>
 
 

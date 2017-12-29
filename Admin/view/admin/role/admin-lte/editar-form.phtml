@@ -13,6 +13,9 @@
 <?=$this->partial(sprintf('partial/%s/form/input-inline', LAYOUT),[
 	'field'=>$this->form->get('name')
 ]);?>
+<?=$this->partial(sprintf('partial/%s/form/input-inline', LAYOUT),[
+	'field'=>$this->form->get('is_admin')
+]);?>
 
 <?=$this->partial(sprintf('partial/%s/form/input-inline', LAYOUT),[
 	'field'=>$this->form->get('created_at')

@@ -14,8 +14,6 @@ use Core\Params\AdapterArrayObject;
 use Core\Table\Exception;
 use Core\Options\ModuleOptions;
 
-use Core\Form\TableForm;
-use Core\Form\TableFilter;
 
 
 abstract class AbstractTable extends AbstractElement implements TableInterface

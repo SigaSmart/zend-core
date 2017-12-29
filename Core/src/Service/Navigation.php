@@ -33,7 +33,11 @@ class Navigation extends DefaultNavigationFactory
 			 */
 			$fetchMenu = $serviceLocator->get(MenuTable::class);
 			$Menu= $fetchMenu->getSelect()->where(new IsNull('parent'));
-			$Menu->where(['status'=>1]);
+            $Menu->join( ['b' => 'resources'],        // join table with alias
+				'menus.route = b.id',  // join expression
+				['alias','route'], $Menu::JOIN_LEFT);
+			$Menu->where(['menus.status'=>1]);
+			$Menu->order('menus.ordem',"DESC");
 			$fetchMenu->setStmt($fetchMenu->getSql()->prepareStatementForSqlObject($Menu));
 			$fetchMenu->exec();
 
@@ -43,6 +47,11 @@ class Navigation extends DefaultNavigationFactory
 				{
 					$Pages=[];
 					$SubMenu= $fetchMenu->getSelect()->where(new Operator('parent',Operator::OP_EQ, $row['id']));
+					$SubMenu->where(['menus.status'=>1]);
+					$SubMenu->join( ['b' => 'resources'],        // join table with alias
+						'menus.route = b.id',  // join expression
+						['route']);
+					$SubMenu->order('menus.ordem',"DESC");
 					$fetchMenu->setStmt($fetchMenu->getSql()->prepareStatementForSqlObject($SubMenu));
 					$fetchMenu->exec();
 					if($fetchMenu->getResultSet()->count()):
@@ -51,17 +60,21 @@ class Navigation extends DefaultNavigationFactory
 						{
 							$Pages[]= [
 								'label' => $subrow['name'],
-								'route' => $subrow['route'],
+								'route' => sprintf("%s/default",$subrow['route']),
 								'controller' => $subrow['controller'],
+								'privilege' => $subrow['action'],
 								'action' => $subrow['action'],
+								'resource' => $subrow['alias'],
 								'role' => $subrow['role'],
 								'icone' => $subrow['icone'],
 								'pages'=>[
 									[
 										'label' => $subrow['name'],
-										'route' => $subrow['route'],
+										'route' => sprintf("%s/default",$subrow['route']),
+										'privilege' => 'editar',
 										'controller' => $subrow['controller'],
 										'action' => 'editar',
+										'resource' => $subrow['alias'],
 										'role' => $subrow['role']
 									]
 								]
@@ -73,6 +86,8 @@ class Navigation extends DefaultNavigationFactory
 						'route' => $row['route'],
 						'controller' => $row['controller'],
 						'action' => $row['action'],
+						'privilege' => $row['action'],
+						'resource' => $row['alias'],
 						'role' => $row['role'],
 						'icone' => $row['icone'],
 						'pages'=>$Pages
@@ -94,8 +109,7 @@ class Navigation extends DefaultNavigationFactory
 			$routeMatch  = $application->getMvcEvent()->getRouteMatch();
 			$router      = $application->getMvcEvent()->getRouter();
 			$pages       = $this->getPagesFromConfig($configuration['navigation'][$this->getName()]);
-
-			$this->pages = $this->injectComponents($pages, $routeMatch, $router);
+            $this->pages = $this->injectComponents($pages, $routeMatch, $router);
 		}
 		return $this->pages;
 	}

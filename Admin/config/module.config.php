@@ -52,6 +52,7 @@ return [
 			'Admin\Controller\Role' => ControllerFactory::class,
 			'Admin\Controller\Privilege' => ControllerFactory::class,
 			'Admin\Controller\Resource' => ControllerFactory::class,
+			'Admin\Controller\User' => ControllerFactory::class,
         ],
     ],
     'view_manager' => [
