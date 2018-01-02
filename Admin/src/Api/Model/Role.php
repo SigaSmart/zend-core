@@ -7,6 +7,7 @@
 namespace Admin\Api\Model;
 
 
+use Admin\Table\RoleTable;
 use Core\AbstractTable;
 use Zend\Db\Sql\Select;
 
@@ -36,6 +37,7 @@ class Role extends AbstractTable
 	protected $headers = [
 		'id' => ['title' => 'check-all', 'width' => '50'],
 		'name' => ['title' => 'Nome\Descrição'],
+		'parent' => ['title' => 'Herda Privilégios', 'width' => 250],
 		'status' => ['title' => 'Active' , 'width' => 100],
 	];
 
@@ -52,6 +54,16 @@ class Role extends AbstractTable
 			'vars' => ['id'],
 		])->addCondition('equal', ['column' => 'status', 'values' => '1']);
 
+		$this->getHeader('parent')->getCell()->addDecorator('callable', [
+			'callable' => function($context, $record){
+				$Role = $this->container->get(RoleTable::class);
+				if((int)$context):
+				$Result = $Role->find((int)$context);
+				return $Result['name'];
+				endif;
+				return "---";
+			}
+		]);
 		$this->getHeader('status')->getCell()->addDecorator('state', [
 			'value' => [
 				'1' => 'Active',

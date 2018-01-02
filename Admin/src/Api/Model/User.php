@@ -7,6 +7,7 @@
 namespace Admin\Api\Model;
 
 
+use Admin\Table\RoleTable;
 use Core\AbstractTable;
 use Zend\Db\Sql\Select;
 
@@ -35,14 +36,31 @@ class User extends AbstractTable
 	 */
 	protected $headers = [
 		'id' => ['title' => 'check-all', 'width' => '50'],
+		'cover' => ['title' => 'Avatar', 'width' => '50'],
 		'first_name' => ['title' => 'Nome\Descrição'],
+		'email' => ['title' => 'E-Mail', 'width' => 180],
+		'access' => ['title' => 'Nivel\Acesso', 'width' => 180],
 		'status' => ['title' => 'Active' , 'width' => 100],
 	];
 
 	public function init()
 	{
 		//zf-init-cover
-		
+		$this->getHeader('cover')->getCell()->addDecorator('img', [
+			'base' => $this->getUrl('admin/default', [
+				'controller'=>'user',
+				'action'=>'file'
+			]),
+			'vars' => ['cover'],
+			//'attrs' => ['class'=>'img-circle','style'=>'width: 100%; display: block;']
+			'attrs' => ['class'=>'img-circle'],
+			'thumbnail'=>true
+		]);
+		$this->getHeader('first_name')->getCell()->addDecorator('callable', [
+			'callable' => function($context, $record){
+				return sprintf("%s %s", $context, $record['last_name']);
+			}
+		]);
 		$this->getHeader('first_name')->getCell()->addDecorator('link', [
 			'url' =>  $this->getUrl('admin/default', [
 				'controller'=>'user',
@@ -57,7 +75,16 @@ class User extends AbstractTable
 				'params' => $this->getRoute()->getParans(),
 				'action' => 'editar',
 			]);
-
+		$this->getHeader('access')->getCell()->addDecorator('callable', [
+			'callable' => function($context, $record){
+				if((int)$context):
+					$Role = $this->container->get(RoleTable::class);
+					$Result = $Role->find((int)$context);
+					return $Result['name'];
+				endif;
+				return $context;
+			}
+		]);
 		$this->getHeader('status')->getCell()->addDecorator('state', [
 			'value' => [
 				'1' => 'Active',

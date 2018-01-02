@@ -250,7 +250,7 @@ class AbstractTable extends Utils
 		if ($this->resultSet->count()):
 			return $this->resultSet->current();
 		endif;
-		return [];
+		return null;
 	}
 
 	/**
@@ -262,6 +262,15 @@ class AbstractTable extends Utils
 	public function findBy(array $where, $colluns = ['*']) {
 		$this->Select = $this->Sql->select();
 		$this->Select->from($this->table);
+		if ($this->join):
+			foreach ($this->join as $key => $jon):
+				$this->Select->join([$key => $key],        // join table with alias
+					sprintf('%s.%s = %s.%s',$this->table,$jon['key'],$key,$jon['parent']),  // join expression
+					$jon['c'],
+					$this->Select::JOIN_INNER
+				);
+			endforeach;
+		endif;
 		$this->Select->columns($colluns);
 		$this->Select->where($where);
 		$this->Stmt = $this->Sql->prepareStatementForSqlObject($this->Select);
@@ -282,6 +291,15 @@ class AbstractTable extends Utils
 		$this->filtro($where);
 		$this->Select = $this->Sql->select();
 		$this->Select->from($this->table);
+		if ($this->join):
+			foreach ($this->join as $key => $jon):
+				$this->Select->join([$key => $key],        // join table with alias
+					sprintf('%s.%s = %s.%s',$this->table,$jon['key'],$key,$jon['parent']),  // join expression
+					$jon['c'],
+					$this->Select::JOIN_INNER
+				);
+			endforeach;
+		endif;
 		$this->Select->columns($colluns);
 		$this->Select->where($this->where);
 		$this->Stmt = $this->Sql->prepareStatementForSqlObject($this->Select);
@@ -493,7 +511,11 @@ class AbstractTable extends Utils
 			->columns([$this->id => $this->id, 'count' => new Expression('COUNT(*)')]);
 		$this->Select->where([$SlugName => (string) $slug]);
 		$this->Stmt = $this->Sql->prepareStatementForSqlObject($this->Select);
-		$result = $this->Stmt->execute()->current();
+		$this->exec();
+		if ($this->resultSet->count()):
+			$result = $this->resultSet->current()->getArrayCopy();
+		endif;
+
 		if (empty($SlugId)):
 			if ($result['count']):
 				$slug = sprintf("%s-%s", $slug, $result[$this->id]);

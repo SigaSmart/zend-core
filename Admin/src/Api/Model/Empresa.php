@@ -38,18 +38,28 @@ class Empresa extends AbstractTable
 		'id' => ['title' => 'check-all', 'width' => '50'],
 		'cover' => ['title' => 'Imagem', 'width' => 100],
 		'social' => ['title' => 'Name'],
+		'tipo' => ['title' => 'Tipo', 'width' => 90],
+		'phone' => ['title' => 'Telefone', 'width' => 120],
+		'phone' => ['title' => 'Telefone', 'width' => 120],
+		'email' => ['title' => 'E-Mail', 'width' => 130],
+		'cnpj' => ['title' => 'Cnpj', 'width' => 120],
 		'status' => ['title' => 'Active' , 'width' => 100],
 	];
 
 	public function init()
 	{
 		$this->getHeader('cover')->getCell()->addDecorator('img', [
-			'base' => $this->getBasePath(),
-			'vars' => ['cover'],
-			//'attrs' => ['class'=>'img-circle','style'=>'width: 100%; display: block;']
-			'attrs' => ['class'=>'img-circle']
-
-		]);
+					'base' => $this->getUrl('admin/default', [
+						'controller'=>'empresa',
+						'action'=>'file'
+					]),
+					'vars' => ['cover'],
+					//'attrs' => ['class'=>'img-circle','style'=>'width: 100%; display: block;']
+					'attrs' => ['class'=>'img-circle'],
+					'thumbnail'=>true,
+					'w'=>50
+				]);
+		
 		$this->getHeader('social')->getCell()->addDecorator('link', [
 			'url' =>  $this->getUrl('admin/default', [
 				'controller'=>'empresa',
@@ -58,7 +68,10 @@ class Empresa extends AbstractTable
 			]),
 			'vars' => ['id'],
 		])->addCondition('equal', ['column' => 'status', 'values' => '1']);
-
+		$this->getHeader('tipo')->getCell()->addDecorator('mapper', [
+				'1' => 'Matriz',
+				'2' => 'Filial'
+		]);
 		$this->getHeader('status')->getCell()->addDecorator('state', [
 			'value' => [
 				'1' => 'Active',

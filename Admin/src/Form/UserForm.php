@@ -11,6 +11,7 @@ use Admin\Table\RoleTable;
 use Auth\Adapter\Authentication;
 use Core\Form\AbstractForm;
 use Zend\Db\Sql\Predicate\Operator;
+use Zend\Form\Element\Hidden;
 use Zend\Form\Element\Select;
 use Zend\Form\Element\Text;
 
@@ -55,20 +56,13 @@ class UserForm extends AbstractForm
 
 		]);
 
-		//######################## cover #######################
+		################# cover #################
 		$this->add([
-			'type'=> Text::class,
-			'name' => 'cover',
-			'options'=>[
-				'label'=>"Image:"
-			],
-			"attributes"=>[
-				'id'=>"email",
-				'class'=>'form-control validate',
-				'placeholder'=>"Image",
-				'ico'=>"glyphicon glyphicon-image",
+			'type'=>Hidden::class,
+			'name'=>'cover',
+			'attributes'=>[
+				'id'=>'cover'
 			]
-
 		]);
 
 		//######################## status #######################

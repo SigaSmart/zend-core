@@ -45,8 +45,8 @@ class Authentication
 		// Perform the authentication query, saving the result
 		$this->result = $this->getAdapter()->authenticate();
 		if($this->result->isValid()):
-			$user = $this->getAdapter()->getResultRowObject(null,['password','user_active','password_salt']);
-			$this->getStorage()->write($user);
+			 $user = $this->getAdapter()->getResultRowObject(null,['password','user_active','password_salt']);
+		     $this->getStorage()->write($user);
 		endif;
 		return $this->result;
 	}

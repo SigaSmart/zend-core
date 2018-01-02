@@ -76,14 +76,14 @@ class AbstractModel extends ArrayObject
 		];
 	}
 
-	protected function NoRecordExists(){
+	protected function NoRecordExists($table="users",$field="email",$campo="Email"){
 		$NoRecordExists = new NoRecordExists(
 			[
-				'table' => 'users',
-				'field' => 'email',
+				'table' => $table,
+				'field' => $field,
 				'adapter' => $this->container->get(AdapterInterface::class),
 				'messages' =>[
-					NoRecordExists::ERROR_RECORD_FOUND => 'Email Ja Existe!'
+					NoRecordExists::ERROR_RECORD_FOUND => "{$campo} Ja Existe!"
 				],
 			]
 		);
@@ -97,13 +97,13 @@ class AbstractModel extends ArrayObject
 
 	}
 
-	protected function RecordExists(){
-        $RecordExists = new RecordExists([
-			'table' => 'users',
-			'field' => 'email',
+	protected function RecordExists($table="users",$field="email",$campo="Email"){
+		$RecordExists = new RecordExists([
+			'table' => $table,
+			'field' => $field,
 			'adapter' => $this->container->get(AdapterInterface::class),
 			'messages' =>[
-				RecordExists::ERROR_NO_RECORD_FOUND => 'Email não Existe!'
+				RecordExists::ERROR_NO_RECORD_FOUND => "{$campo} não Existe!"
 			],
 		]);
 		if($this->offsetExists('id') && $this->offsetGet('id')):
@@ -209,7 +209,7 @@ class AbstractModel extends ArrayObject
 		if(isset($mime_types_custom[$Types])):
 			foreach ($mime_types_custom[$Types] as $type):
 				$MimiType[] = $mime_types[$type];
-		endforeach;
+			endforeach;
 		endif;
 		return $MimiType;
 

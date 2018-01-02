@@ -7,6 +7,9 @@
 
 namespace Core;
 
+use Auth\Adapter\Authentication;
+use Auth\Adapter\Company;
+use Auth\Adapter\Logado;
 use Core\Factory\AclFactory;
 use Core\Factory\NavigationFactory;
 use Core\Listener\LayoutListener;
@@ -23,6 +26,7 @@ use Zend\ModuleManager\Feature\BootstrapListenerInterface;
 use Zend\ModuleManager\Feature\ServiceProviderInterface;
 use Zend\ModuleManager\Feature\ViewHelperProviderInterface;
 use Zend\Mvc\ModuleRouteListener;
+use Zend\Mvc\MvcEvent;
 use Zend\ServiceManager\Factory\InvokableFactory;
 use Zend\View\HelperPluginManager;
 
@@ -53,12 +57,44 @@ class Module implements BootstrapListenerInterface, ViewHelperProviderInterface,
 		//$serviceManager = $e->getApplication()->getServiceManager();
 		$moduleRouteListener = new ModuleRouteListener();
 		$moduleRouteListener->attach($eventManager);
+
+
+		$moduleRouteListener->attach($eventManager);
+		$eventManager->attach(MvcEvent::EVENT_DISPATCH, array($this, 'onDispatch'), 0);
+
 		$eventManager->getSharedManager()
 			->attach('Zend\Mvc\Controller\AbstractActionController', 'dispatch', function($e) {
 				(new LayoutListener($e));
 			}, 100);
 	}
 
+	/**
+	 * @param MvcEvent $e
+	 */
+	public function onDispatch(MvcEvent $e)
+	{
+		$app = $e->getApplication()->getServiceManager();
+		/**
+		 * @var $Authenticate Authentication
+		 */
+		$Authenticate    	= $app->get(Authentication::class);
+
+		if($Authenticate->hasIdentity()):
+			$Identity = $Authenticate->getIdentity();
+			/**
+			 * @var $Logado Logado
+			 */
+			$Logado    			= $app->get(Logado::class);
+			$UserLogagado 		= $Logado->user($Identity->id);
+			/**
+			 * @var $Company Company
+			 */
+			$Company = $app->get(Company::class);
+			$Company->matriz($Identity->empresa);
+			$UserLogagado->restrito = $Company->getRestrito();
+			$Authenticate->getStorage()->write($UserLogagado);
+		endif;
+	}
 	/**
 	 * Expected to return \Zend\ServiceManager\Config object or array to
 	 * seed such an object.
@@ -76,34 +112,34 @@ class Module implements BootstrapListenerInterface, ViewHelperProviderInterface,
 						$ViewHelperManager->get('inlinescript'),
 						$ViewHelperManager->get('HeadLink'),
 						$ViewHelperManager->get('url'));
-					  return $viewHelper;
+					return $viewHelper;
 				},
 				"Route" =>function(ContainerInterface $container){
-						$Route = new RouteHelper($container);
+					$Route = new RouteHelper($container);
 					return $Route;
 				},
 				"ZfTable" =>function(ContainerInterface $container){
-					    $ViewHelperManager=$container->get('ViewHelperManager');
-						$ZfTable = new ZfTable(
-							$ViewHelperManager->get('inlinescript'),
-							$ViewHelperManager->get('HeadLink'),
-							$ViewHelperManager->get('url'));
+					$ViewHelperManager=$container->get('ViewHelperManager');
+					$ZfTable = new ZfTable(
+						$ViewHelperManager->get('inlinescript'),
+						$ViewHelperManager->get('HeadLink'),
+						$ViewHelperManager->get('url'));
 					return $ZfTable;
 				},
 				"ZfForm" =>function(ContainerInterface $container){
-					    $ViewHelperManager=$container->get('ViewHelperManager');
-						$ZfTable = new ZfForm(
-							$ViewHelperManager->get('inlinescript'),
-							$ViewHelperManager->get('HeadLink'),
-							$ViewHelperManager->get('url'));
+					$ViewHelperManager=$container->get('ViewHelperManager');
+					$ZfTable = new ZfForm(
+						$ViewHelperManager->get('inlinescript'),
+						$ViewHelperManager->get('HeadLink'),
+						$ViewHelperManager->get('url'));
 					return $ZfTable;
 				},
 				"ICheck" =>function(ContainerInterface $container){
-					    $ViewHelperManager=$container->get('ViewHelperManager');
-						$ICheckHelper = new ICheckHelper(
-							$ViewHelperManager->get('inlinescript'),
-							$ViewHelperManager->get('HeadLink'),
-							$ViewHelperManager->get('url'));
+					$ViewHelperManager=$container->get('ViewHelperManager');
+					$ICheckHelper = new ICheckHelper(
+						$ViewHelperManager->get('inlinescript'),
+						$ViewHelperManager->get('HeadLink'),
+						$ViewHelperManager->get('url'));
 					return $ICheckHelper;
 				},
 				"Acl" =>AclFactory::class

@@ -1,0 +1,52 @@
+<?=$this->partial('partial/form-error',['form'=>$this->form]);?>
+<?=$this->form()->openTag($this->form->setAttribute('action',$this->url($this->route, [
+	'controller'=>$this->controller,
+	'action'=>'editar-form'
+]))->setAttribute('name','AjaxForm')->setAttribute('class',''));?>
+<?php
+$formLayouty='group';
+//$formLayouty='inline';
+?>
+<div class="row">
+    <div class="col-md-8 col-xs-12">
+		<?=$this->formHidden($this->form->get('id'));?>
+		<?=$this->partial(sprintf('partial/%s/form/input-%s', LAYOUT,$formLayouty),[
+			'field'=>$this->form->get('parent')
+		]);?>
+
+		<?=$this->partial(sprintf('partial/%s/form/input-%s', LAYOUT,$formLayouty),[
+			'field'=>$this->form->get('name')
+		]);?>
+		<?=$this->partial(sprintf('partial/%s/form/input-%s', LAYOUT,$formLayouty),[
+			'field'=>$this->form->get('updated_at')
+		]);?>
+		<?=$this->partial(sprintf('partial/%s/form/input-%s', LAYOUT,$formLayouty),[
+			'field'=>$this->form->get('created_at')
+		]);?>
+    </div>
+    <div class="col-md-4 col-xs-12">
+		<?=$this->partial(sprintf('partial/%s/form/input-file', LAYOUT,$formLayouty),[
+			'field'=>$this->form->get('cover'),
+			'route'=>$this->route,
+			'controller'=>$this->controller,
+			'id'=>$this->form->get('id')->getValue(),
+			'action'=>'upload-modal',
+		]);?>
+
+    </div>
+</div>
+<div class="clearfix"></div>
+<div class="row">
+    <!-- /.col -->
+    <div class="col-xs-6">
+		<?=$this->formSubmit($this->form->get('submit')->setValue('Atualizar Categoria'));?>
+    </div>
+    <div class="col-xs-6">
+        <a href="<?=$this->url($this->route, [
+			'controller'=>$this->controller
+		])?>" class="btn btn-warning btn-block"><i class="fa fa-backward"></i> Voltar Para a Lista </a>
+    </div>
+    <!-- /.col -->
+</div>
+<?=$this->form()->closeTag();?>
+<?=$this->partial('partial/messages');?>

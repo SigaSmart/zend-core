@@ -27,6 +27,7 @@ class ResourceController extends AbstractController
 		$this->route = "admin/default";
 		$this->controller = "resource";
 		$this->templateEdit = "admin/resource/%s/editar-form";
+		$this->tenancy = false;
 		$this->getHelper();
 	}
 

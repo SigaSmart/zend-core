@@ -90,7 +90,8 @@ class Acl extends ZendAcl
 			$allprivileges = array_merge(explode(",", $privilege['action']),explode(",", $privilege['parent']));
 			$this->allow($privilege['role'], $privilege['controller'], $allprivileges);
 		}
-		$this->allow($this->all_roles, ['Admin\Controller\Admin','Auth\Controller\Auth','Home\Controller\Home'], null);
+		$this->allow($this->all_roles, ['Admin\Controller\Admin','Auth\Controller\Auth'], null);
+		//$this->allow($this->all_roles, ['Admin\Controller\Admin','Auth\Controller\Auth','Home\Controller\Home'], null);
 
 		if($this->is_admin):
 			$this->allow($this->is_admin, null, null);

@@ -1,0 +1,27 @@
+<?= $this->partial(sprintf("partial/%s/top-navigation", LAYOUT),[
+	'a'=>"Admin",'b'=>$this->route,'c'=>$this->controller,'d'=>"Post", "e"=>'editar']); ?>
+    <section class="content">
+        <div class="row">
+            <div class="col-md-12">
+                <!-- Custom Tabs (Pulled to the right) -->
+                <div class="nav-tabs-custom">
+                    <ul class="nav nav-tabs">
+                        <li class="active"><a href="#tab-1" data-toggle="tab">Geral</a></li>
+                          <li class="pull-right header"><i class="fa fa-th"></i> Manutenção dos categorias</li>
+                    </ul>
+                    <div class="tab-content">
+                        <div class="tab-pane active" id="tab-1">
+                            <div id="formContainer">
+
+                            </div>
+							<?php $this->ZfForm()->form();?>
+                        </div>
+                        <!-- /.tab-pane -->
+                      </div>
+                    <!-- /.tab-content -->
+                </div>
+                <!-- nav-tabs-custom -->
+            </div>
+            <!-- /.col -->
+        </div>
+    </section>

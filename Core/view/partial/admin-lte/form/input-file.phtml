@@ -1,0 +1,13 @@
+<div class="box box-primary">
+    <div class="box-body box-profile">
+        <img id="cover-default" class="img-responsive" src="<?=$this->url($this->route, ['controller'=>$this->controller,'action'=>'file'],
+			['query'=>['name'=>$this->field->getValue(), 'thumbnail'=>true,'w'=>520]]);?>" alt="User profile picture">
+		<?=$this->formRow($this->field->setLabel(""));?>
+        <a href="<?=$this->url($this->route,[
+                'controller'=>$this->controller,
+                 'action'=>$this->action,
+                 'id'=>$this->id
+                ])?>" class="btn btn-primary btn-block upload"><i class="fa fa-file-image-o"></i> <b>Selecionar imagem</b></a>
+    </div>
+    <!-- /.box-body -->
+</div>

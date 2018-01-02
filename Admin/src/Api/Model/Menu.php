@@ -7,6 +7,7 @@
 namespace Admin\Api\Model;
 
 
+use Admin\Table\MenuTable;
 use Core\AbstractTable;
 use Zend\Db\Sql\Select;
 
@@ -36,6 +37,7 @@ class Menu extends AbstractTable
 	protected $headers = [
 		'id' => ['title' => 'check-all', 'width' => '50'],
 		'name' => ['title' => 'Nome\Descrição'],
+		'parent' => ['title' => 'Grupo','separatable' => true],
 		'alias' => ['title' => 'Class\Controller'],
 		'status' => ['title' => 'Active' , 'width' => 100],
 	];
@@ -53,6 +55,17 @@ class Menu extends AbstractTable
 			'vars' => ['id'],
 		])->addCondition('equal', ['column' => 'status', 'values' => '1']);
 
+		$this->getHeader('parent')->getCell()->addDecorator('callable', [
+			'callable' => function($context, $record){
+				$Menu = $this->container->get(MenuTable::class);
+				if((int)$context):
+					$Result = $Menu->find((int)$context);
+					return $Result['name'];
+				endif;
+				return sprintf("Menu Principal: %s",$record['name']);
+			}
+		]);
+		$this->getRow()->addDecorator('separatable', ['defaultColumn' => 'parent']);
 		$this->getHeader('status')->getCell()->addDecorator('state', [
 			'value' => [
 				'1' => 'Active',
@@ -75,6 +88,6 @@ class Menu extends AbstractTable
 	 */
 	protected function initFilters(Select $query)
 	{
-
+     $query->order(['parent'=>"ASC"]);
 	}
 }

@@ -7,6 +7,8 @@
 namespace Admin\Api\Model;
 
 
+use Admin\Table\ResourceTable;
+use Admin\Table\RoleTable;
 use Core\AbstractTable;
 use Zend\Db\Sql\Select;
 
@@ -35,8 +37,8 @@ class Privilege extends AbstractTable
 	 */
 	protected $headers = [
 		'id' => ['title' => 'check-all', 'width' => '50'],
-		'name' => ['title' => 'Nome\Descrição'],
-		'action' => ['title' => 'Privilégios', 'width' => 150],
+		'name' => ['title' => 'Nome\Descrição', 'width' => 200],
+		'action' => ['title' => 'Privilégios'],
 		'role' => ['title' => 'Acesso', 'width' => 130],
 		'resource' => ['title' => 'Modulo', 'width' => 130],
 		'status' => ['title' => 'Active' , 'width' => 100],
@@ -59,7 +61,25 @@ class Privilege extends AbstractTable
 				'params' => $this->getRoute()->getParans(),
 				'action' => 'editar',
 			]);
-
+		$this->getHeader('action')->getCell()->addDecorator('callable', [
+			'callable' => function($context, $record){
+				return sprintf("%s , Adicional: %s",$record['parent'], $context);
+			}
+		]);
+		$this->getHeader('role')->getCell()->addDecorator('callable', [
+			'callable' => function($context, $record){
+				$Role = $this->container->get(RoleTable::class);
+				$Result = $Role->find($context);
+			    return $Result['name'];
+			}
+		]);
+		$this->getHeader('resource')->getCell()->addDecorator('callable', [
+			'callable' => function($context, $record){
+				$Resource = $this->container->get(ResourceTable::class);
+				$Result = $Resource->find($context);
+				return $Result['name'];
+			}
+		]);
 		$this->getHeader('status')->getCell()->addDecorator('state', [
 			'value' => [
 				'1' => 'Active',

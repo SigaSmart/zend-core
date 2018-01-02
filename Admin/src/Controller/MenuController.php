@@ -27,6 +27,7 @@ class MenuController extends AbstractController
 		$this->route = "admin/default";
 		$this->controller = "menu";
 		$this->templateEdit = "admin/menu/%s/editar-form";
+		$this->tenancy = false;
 		$this->getHelper();
 	}
 

@@ -43,6 +43,7 @@ return [
     'controllers' => [
         'factories' => [
 			'Blog\Controller\Posts' => \Blog\Controller\Factory\ControllerFactory::class,
+			'Blog\Controller\Categorie' => \Blog\Controller\Factory\ControllerFactory::class,
         ],
     ],
     'view_manager' => [

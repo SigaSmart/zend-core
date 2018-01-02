@@ -2,28 +2,69 @@
 <?=$this->form()->openTag($this->form->setAttribute('action',$this->url($this->route, [
 	'controller'=>$this->controller,
 	'action'=>'editar-form'
-])));?>
-<?=$this->formHidden($this->form->get('id'));?>
-
-
-<?=$this->partial(sprintf('partial/%s/form/input-inline', LAYOUT),[
-	'field'=>$this->form->get('created_at')
-]);?>
-
-<?=$this->partial(sprintf('partial/%s/form/input-inline', LAYOUT),[
-	'field'=>$this->form->get('updated_at')
-]);?>
-	<div class="row">
-		<!-- /.col -->
-		<div class="col-xs-6 col-xs-offset-3">
-			<?=$this->formSubmit($this->form->get('submit')->setValue('Atualizar Cidade'));?>
-		</div>
-		<div class="col-xs-3">
-			<a href="<?=$this->url($this->route, [
-				'controller'=>$this->controller
-			])?>" class="btn btn-warning btn-block"><i class="fa fa-backward"></i> Voltar Para a Lista </a>
-		</div>
-		<!-- /.col -->
-	</div>
+]))->setAttribute('name','AjaxForm')->setAttribute('class',''));?>
+<?php
+$formLayouty='group';
+//$formLayouty='inline';
+?>
+<div class="row">
+    <div class="col-md-8 col-xs-12">
+		<?=$this->formHidden($this->form->get('id'));?>
+		<?=$this->formHidden($this->form->get('author')->setValue($this->identity()->id));?>
+		<?=$this->partial(sprintf('partial/%s/form/input-%s', LAYOUT,$formLayouty),[
+			'field'=>$this->form->get('name')
+		]);?>
+		<?=$this->partial(sprintf('partial/%s/form/input-%s', LAYOUT,$formLayouty),[
+			'field'=>$this->form->get('categorie')
+		]);?>
+		<?=$this->partial(sprintf('partial/%s/form/input-%s', LAYOUT,$formLayouty),[
+			'field'=>$this->form->get('preview')
+		]);?>
+		<?=$this->partial(sprintf('partial/%s/form/input-%s', LAYOUT,$formLayouty),[
+			'field'=>$this->form->get('description')
+		]);?>
+    </div>
+    <div class="col-md-4 col-xs-12">
+		<?=$this->partial(sprintf('partial/%s/form/input-file', LAYOUT,$formLayouty),[
+			'field'=>$this->form->get('cover'),
+			'route'=>$this->route,
+			'controller'=>$this->controller,
+			'id'=>$this->form->get('id')->getValue(),
+			'action'=>'upload-modal',
+		]);?>
+		<?=$this->partial(sprintf('partial/%s/form/input-%s', LAYOUT,$formLayouty),[
+			'field'=>$this->form->get('updated_at')
+		]);?>
+		<?=$this->partial(sprintf('partial/%s/form/input-%s', LAYOUT,$formLayouty),[
+			'field'=>$this->form->get('created_at')
+		]);?>
+    </div>
+</div>
+<div class="clearfix"></div>
+<div class="row">
+    <!-- /.col -->
+    <div class="col-xs-6">
+		<?=$this->formSubmit($this->form->get('submit')->setValue('Atualizar Post'));?>
+    </div>
+    <div class="col-xs-6">
+        <a href="<?=$this->url($this->route, [
+			'controller'=>$this->controller
+		])?>" class="btn btn-warning btn-block"><i class="fa fa-backward"></i> Voltar Para a Lista </a>
+    </div>
+    <!-- /.col -->
+</div>
 <?=$this->form()->closeTag();?>
 <?=$this->partial('partial/messages');?>
+<?php
+$Id = $this->form->get('id')->getValue();
+$Params = [
+	'controller'=>$this->controller,
+	'action'=>'upload',
+	'id'=>$Id,
+];
+$Rota = $this->Url($this->route,$Params);?>
+<script>
+    $(function () {
+        $('#content').zfTiny('<?=$Rota?>');
+    })
+</script>

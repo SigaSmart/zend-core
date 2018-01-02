@@ -24,6 +24,7 @@ class PostsTable extends AbstractTable
 	}
 
    public function save(AbstractModel $mode) {
+        $mode->offsetSet('created_at', date("Y-m-d H:i:s"));
         $mode->offsetSet('updated_at', date("Y-m-d H:i:s"));
         //Descomentar se ouver url amigavel
         $mode->offsetSet('alias', $this->slugExists('alias', $mode->offsetGet("name"), $mode->offsetGet("id")));

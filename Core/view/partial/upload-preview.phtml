@@ -1,0 +1,51 @@
+   $("<?=$this->Selector?>").fileinput({
+            language: "pt-BR",
+            fileActionSettings: {
+                showDrag: false,
+                showDownload: false,
+                showRemove:false
+            },
+            overwriteInitial: false,
+            initialPreview: data.datasUrl,
+            initialPreviewAsData: true,
+            initialPreviewConfig: data.info,
+            uploadUrl: '<?=$this->url($this->route,[
+                'controller'=>$this->controller,
+                'action'=>'upload',
+                'id'=>$this->Route()->getId()
+            ])?>',
+            deleteUrl: '<?=$this->url($this->route,[
+                'controller'=>$this->controller,
+                'action'=>'delete-upload',
+                'id'=>$this->Route()->getId()
+            ])?>',
+            allowedFileExtensions: ['jpg', 'png', 'gif'],
+            maxFileSize: 5000,
+            initialCaption: "selecione as imagens [jpg, png, gif]"
+        }).on('fileloaded', function (event, file, previewId, index) {
+        }).on('fileuploaded', function (e, params) {
+        }).on('filebeforedelete', function () {
+            return uploadconfirm();
+        });
+
+function uploadconfirm(){
+    return new Promise(function(resolve, reject) {
+        $.confirm({
+            title: 'Confirmar!',
+            content: 'Tem certeza de que deseja excluir este arquivo?',
+            type: 'red',
+            buttons: {
+            ok: {
+            btnClass: 'btn-primary text-white',
+            keys: ['enter'],
+            action: function(){
+              resolve();
+            }
+        },
+        cancel: function(){
+          //$.alert('File deletion was aborted! ' + krajeeGetCount('file-6'));
+        }
+            }
+        })
+    })
+}

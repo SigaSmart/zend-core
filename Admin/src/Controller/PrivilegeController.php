@@ -27,6 +27,7 @@ class PrivilegeController extends AbstractController
 		$this->route = "admin/default";
 		$this->controller = "privilege";
 		$this->templateEdit = "admin/privilege/%s/editar-form";
+		$this->tenancy = false;
 		$this->getHelper();
 	}
 

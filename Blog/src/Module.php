@@ -31,7 +31,13 @@ class Module implements ServiceProviderInterface
 				\Blog\Model\PostsModel::class => \Blog\Model\Factory\ModelFactory::class,
 				\Blog\Table\PostsTable::class => \Blog\Table\Factory\TableFactory::class,
 				\Blog\Api\Model\Posts::class => \Blog\Api\Model\Factory\ApiModelFactory::class,
-				\Blog\Form\PostsForm::class => \Blog\Form\Factory\FormFactory::class
+				\Blog\Form\PostsForm::class => \Blog\Form\Factory\FormFactory::class,
+
+				################ Categorie ###################
+				\Blog\Model\CategorieModel::class => \Blog\Model\Factory\ModelFactory::class,
+				\Blog\Table\CategorieTable::class => \Blog\Table\Factory\TableFactory::class,
+				\Blog\Api\Model\Categorie::class => \Blog\Api\Model\Factory\ApiModelFactory::class,
+				\Blog\Form\CategorieForm::class => \Blog\Form\Factory\FormFactory::class
 			]
 
 		];

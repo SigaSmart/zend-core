@@ -27,6 +27,7 @@ class RoleController extends AbstractController
 		$this->route = "admin/default";
 		$this->controller = "role";
 		$this->templateEdit = "admin/role/%s/editar-form";
+		$this->tenancy = false;
 		$this->getHelper();
 	}
 

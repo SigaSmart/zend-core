@@ -7,7 +7,10 @@
 namespace Auth\Controller;
 
 
+use Admin\Model\EmpresaModel;
+use Admin\Table\EmpresaTable;
 use Auth\Adapter\Authentication;
+use Auth\Adapter\Company;
 use Auth\Form\LoginForm;
 use Auth\Model\LoginModel;
 use Auth\Table\LoginTable;
@@ -51,6 +54,9 @@ class AuthController extends AbstractController
 				$Result = $auth->login($this->params()->fromPost('email'),$password);
 				$this->helper->addMessage($auth->getResult(),$auth->getType());
 				if($Result->isValid()):
+					$Company = $this->container->get(Company::class);
+					$Company->matriz($this->identity()->empresa);
+					$this->identity()->restrito = $Company->getRestrito();
 					$this->helper->addRedirect("admin");
 				endif;
 			endif;
@@ -86,6 +92,16 @@ class AuthController extends AbstractController
 				$this->args = array_merge($this->args, $this->table->insert($this->model));
 				$this->helper->addMessage($this->args['msg'],$this->args['type']);
 				if($this->args['result']):
+					$EmpresaTable = $this->container->get(EmpresaTable::class);
+				    $EmpresaModel = $this->container->get(EmpresaModel::class);
+				    $EmpresaModel->offsetSet("tipo",1);
+					$EmpresaModel->offsetSet("status",1);
+					$Result = $EmpresaTable->save($EmpresaModel);
+					if($Result['result']):
+						$this->model->offsetSet("id",$this->args['result']);
+						$this->model->offsetSet("empresa",$Result['result']);
+						$this->table->save($this->model);
+					endif;
 					$this->helper->addRedirect("auth");
 				endif;
 			endif;
@@ -124,9 +140,6 @@ class AuthController extends AbstractController
 				endif;
 			    $this->args = array_merge($this->args, $this->table->save($this->model));
 				$this->helper->addMessage($this->args['msg'],$this->args['type']);
-				if($this->args['result']):
-					$this->container->get(Authentication::class)->getStorage()->write($this->table->findObject($this->params()->fromPost('id'),['id','first_name','last_name','cover','role','email','created_at','updated_at']));
-				endif;
 				else:
 					$this->helper->addMessage("Formulario invalido",'error');
 			endif;
@@ -143,15 +156,6 @@ class AuthController extends AbstractController
 		return $view;
 	}
 
-	public function uploadAction()
-	{
-		$this->auth();
-		$Result = parent::uploadAction();
-		if($this->params()->fromFiles()):
-			$this->container->get(Authentication::class)->getStorage()->write($this->table->findObject($this->params()->fromRoute('id'),['id','first_name','last_name','cover','role','email','created_at','updated_at']));
-		endif;
-		return  $Result;
-	}
 
 	public function recuperarsenhaAction(){
 		$this->quest();

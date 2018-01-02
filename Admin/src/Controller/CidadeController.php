@@ -27,6 +27,7 @@ class CidadeController extends AbstractController
 		$this->route = "admin/default";
 		$this->controller = "cidade";
 		$this->templateEdit = "admin/cidade/%s/editar-form";
+		$this->tenancy = false;
 		$this->getHelper();
 	}
 

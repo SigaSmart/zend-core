@@ -8,6 +8,7 @@
 namespace Core\Controller;
 
 use Admin\Form\GalleryForm;
+use Admin\Form\MdDefaultForm;
 use Admin\Form\UploadForm;
 use Admin\Model\GalleryModel;
 use Admin\Table\GalleryTable;
@@ -19,6 +20,7 @@ use Core\Service\Messages;
 use Core\Table\AbstractTable;
 use Interop\Container\ContainerInterface;
 use Zend\Db\Adapter\AdapterInterface;
+use Zend\Db\Sql\Predicate\In;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\JsonModel;
 use Zend\View\Model\ViewModel;
@@ -59,6 +61,7 @@ abstract class AbstractController extends AbstractActionController
 
 	protected $data=[];
 
+	protected $tenancy = true;
 
 	protected $helper;
 
@@ -100,11 +103,16 @@ abstract class AbstractController extends AbstractActionController
 		$this->auth();
 		$this->getTable()
 			->getApiModel();
+		$params = $this->getRequest()->getPost();
+		$Source = $this->table->setTableModel($this->apiModel)
+			->getSelect($params->toArray());
+        if($this->tenancy):
+		$Source->where(new In('empresa',$this->user->restrito));
+        endif;
 		$this->apiModel->setAdapter($this->getAdapter())
-			->setSource($this->table->setTableModel($this->apiModel)
-				->getSelect($this->params()->fromPost()))
+			->setSource($Source)
 				->setUser($this->user)
-					->setParamAdapter($this->getRequest()->getPost());
+					->setParamAdapter($params);
 
 		$view = $this->apiModel->render();
 		//$view = $this->apiModel->render('custom',sprintf('admin/cidade/%s/listar', LAYOUT));
@@ -118,8 +126,9 @@ abstract class AbstractController extends AbstractActionController
 
 	public function createAction(){
 		$this->auth();
-		if(!$this->params()->fromPost()):
-			return $this->redirect()->toRoute($this->route,['controller'=>$this->controller]);
+		if(!$this->getRequest()->isPost()):
+			$this->args['msg'] = sprintf("Nenhuma model valida foi passada <b>%s</b>!", $this->user['first_name']);
+			return new JsonModel($this->args);
 		endif;
 		if (!$this->model):
 			$this->args['msg'] = sprintf("Nenhuma model valida foi passada <b>%s</b>!", $this->user['first_name']);
@@ -186,6 +195,8 @@ abstract class AbstractController extends AbstractActionController
 				//validamos a model
 				$this->args = array_merge($this->args, $this->table->save($this->model));
 				$this->helper->addMessage($this->args['msg'],$this->args['type']);
+				else:
+				d($this->form->getMessages());
 			endif;
 			return new JsonModel($this->args);
 		endif;
@@ -212,45 +223,15 @@ abstract class AbstractController extends AbstractActionController
 	}
 
 	public function uploadAction(){
-		$view = new ViewModel([
-			'route'=>$this->route,
-			'controller'=>$this->controller
-		]);
-		$this->getTable();
-		$Form = $this->container->get(UploadForm::class);
-		$data = [
-			$this->cover =>"/images/no_image.jpg"
-		];
-		$Form->setBasePath($this->getRequest()->getServer('DOCUMENT_ROOT'));
-		$Form->setInputFilter($Form->addInputFilter($this->controller,$this->params()->fromRoute('id')));
-		if($this->params()->fromFiles()):
-			// Get the list of already saved files.
-			$data = $this->params()->fromFiles();
-			$data['file']['name'] = $Form->setFileName($data['file']['name']);
-			// Pass data to form.
-			$Form->setData($data);
-			// Validate form.
-			if($Form->isValid()) {
-				// Move uploaded file to its destination directory.
-				$data = $Form->getData();
-				$this->table->update([$this->cover=>sprintf("%s/%s",$Form->getSend(),$data['file']['name'])], [$this->params()->fromRoute('id')]);
-
-			}
-		endif;
+		$data = $this->params()->fromFiles();
 		$id = $this->params()->fromRoute("id",0);
-		$Imagem[$this->cover]="/images/no_image.jpg";
-		if ((int)$id):
-			$Imagem = $this->table->find($id);
-		endif;
-		// Get the list of already saved files.
-		$file = $Imagem[$this->cover];
-		$data[$this->cover] = $file;
-		$view->setVariable('form', $Form);
-		$view->setTerminal(true);
-		$view->setTemplate("core/upload/imagem");
-		$view->setVariable('file',$file);
-		$view->setVariable('data', $data);
-		return $view;
+		$ImagesUpload = $this->container->get(\Core\Service\ImagesUpload::class);
+		$ImagesUpload->setBasePath($this->getRequest()->getServer('DOCUMENT_ROOT'));;
+		$Result =  $ImagesUpload->persistFile($data['file'],[
+			'controller'=>$this->controller,
+			'id'=>$id
+		]);
+		return new JsonModel($Result);
 
 	}
 
@@ -418,6 +399,27 @@ abstract class AbstractController extends AbstractActionController
 
 		// Return Response to avoid default view rendering.
 		return $this->getResponse();
+	}
+
+	public function uploadmodalAction(){
+		$view = new ViewModel([
+			'route'=>$this->route,
+			'controller'=>$this->controller
+		]);
+		$this->getTable();
+		$id = $this->params()->fromRoute("id",0);
+		$Imagem[$this->cover]="/dist/uploads/images/no_image.jpg";
+		if ((int)$id):
+			$Imagem = $this->table->find($id);
+		endif;
+		// Get the list of already saved files.
+		$file = $Imagem[$this->cover];
+		$data[$this->cover] = $file;
+		$view->setTerminal(true);
+		$view->setVariable('file',$file);
+		$view->setVariable('data', $data);
+		$view->setTemplate(sprintf("core/%s/modal/default", LAYOUT));
+		return $view;
 	}
 	/**
 	 * @return $this

@@ -8,12 +8,16 @@ namespace Auth;
 
 use Auth\Adapter\Authentication;
 use Auth\Adapter\AuthenticationFactory;
+use Auth\Adapter\Company;
+use Auth\Adapter\Logado;
 use Auth\Form\Factory\LoginFactory;
 use Auth\Form\LoginForm;
 use Auth\Model\Factory\LoginModelFactory;
 use Auth\Model\LoginModel;
 use Auth\Table\Factory\LoginTableFactory;
+use Auth\Table\Factory\TableFactory;
 use Auth\Table\LoginTable;
+use Interop\Container\ContainerInterface;
 use Zend\ModuleManager\Feature\ServiceProviderInterface;
 
 class Module implements ServiceProviderInterface
@@ -41,7 +45,11 @@ class Module implements ServiceProviderInterface
 
 				LoginModel::class => LoginModelFactory::class,
 
-				LoginTable::class => LoginTableFactory::class
+				LoginTable::class => LoginTableFactory::class,
+
+				Company::class => TableFactory::class,
+
+				Logado::class => TableFactory::class,
 			]
 
 		];
