@@ -1,0 +1,151 @@
+<?php
+// Within your view
+$this->plugin('dateFormat')
+	->setTimezone('America/Sao_Paulo')
+	->setLocale('pt_BR');  ?>
+<!DOCTYPE HTML>
+<html>
+<head>
+	<?= $this->headTitle(\Core\Module::SIS)->setSeparator(' - ')->setAutoEscape(false) ?>
+
+
+	<?= $this->headMeta()
+		->appendName('viewport', 'width=device-width, initial-scale=1.0')
+		->appendHttpEquiv('X-UA-Compatible', 'IE=edge')
+	?>
+
+
+    <!-- Le styles -->
+	<?= $this->headLink(['rel' => 'shortcut icon', 'type' => 'web-blog/image/vnd.microsoft.icon', 'href' => $this->basePath() . '/img/favicon.ico'])
+		->prependStylesheet('//fonts.googleapis.com/css?family=Source+Sans+Pro:200,300,400,600,700,300italic,400italic,600italic')
+		->prependStylesheet('//fonts.googleapis.com/css?family=Oswald:100,400,300,700')
+		->prependStylesheet($this->basePath('web-blog/css/style.css'))
+		->prependStylesheet($this->basePath('assets/toastr.min.css'))
+		->prependStylesheet($this->basePath('web-blog/css/bootstrap.css'))
+	?>
+
+    <!-- Scripts -->
+	<?= $this->headScript()
+		->prependFile($this->basePath('web-blog/js/jquery.form.min.js'))
+		->prependFile($this->basePath('assets/toastr.min.js'))
+		->prependFile($this->basePath('web-blog/js/move-top.js'))
+		->prependFile($this->basePath('web-blog/js/easing.js'))
+		->prependFile($this->basePath('web-blog/js/jquery.min.js'))
+	?>
+    <script type="application/x-javascript">
+        addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false);
+        function hideURLbar(){ window.scrollTo(0,1); }
+    </script>
+    <!----webfonts---->
+    <script type="text/javascript">
+        jQuery(document).ready(function($) {
+            $(".scroll").click(function(event){
+                event.preventDefault();
+                $('html,body').animate({scrollTop:$(this.hash).offset().top},900);
+            });
+        });
+    </script>
+    <!---->
+
+</head>
+<body>
+<div class="banner">
+    <div class="header">
+        <div class="container">
+            <div class="logo">
+                <a href="<?=$this->url('web')?>"> <img src="<?=$this->basePath('web-blog/images/log.png');?>" title="soup" /></a>
+            </div>
+            <!---start-top-nav---->
+            <div class="top-menu">
+                <span class="menu"> </span>
+
+
+                <ul>
+					<?=$this->navigation(\Webblog\Service\Menu::class)->menu()
+						->setPartial('partial/menu-top');?>
+
+                    <div class="clearfix"> </div>
+                </ul>
+            </div>
+            <div class="clearfix"></div>
+            <script>
+                $("span.menu").click(function(){
+                    $(".top-menu ul").slideToggle("slow" , function(){
+                    });
+                });
+            </script>
+            <!---//End-top-nav---->
+        </div>
+    </div>
+    <div class="container">
+        <div class="banner-head">
+			<?= $this->placeholder('pagetitle') ?>
+        </div>
+        <div class="banner-links">
+            <ul>
+				<?=$this->navigation(\Webblog\Service\Categorie::class)->menu()
+					->setPartial('partial/menu-top');?>
+                <div class="clearfix"></div>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<!---//End-banner---->
+<?= $this->content ?>
+<div class="fotter">
+    <div class="container">
+        <div class="col-md-4 fotter-info">
+            <h3>MENSAGEM DE BOAS VINDAS</h3>
+            <p>Certamente viveremos grandes momentos e todos juntos iremos alcançar muito sucesso. Suas qualidades e capacidades vão acrescentar muitos pontos positivos ao grupo e sei que iremos aprender muito com você também.</p>
+            <p>É com muita alegria e de braços abertos que hoje recebemos você!.</p>
+        </div>
+        <div class="col-md-4 fotter-list">
+            <h3>MENUS</h3>
+            <ul>
+				<?=$this->navigation(\Webblog\Service\Menu::class)->menu()
+					->setPartial('partial/menu-top');?>
+            </ul>
+        </div>
+        <div class="col-md-4 fotter-media">
+            <h3>FOLLOW US ON....</h3>
+            <div class="social-icons">
+                <a href="https://www.facebook.com/claudio.coelho.775"><span class="fb"> </span></a>
+                <a href="https://twitter.com/callcocam"><span class="twt"> </span></a>
+                <a href="#"><span class="in"> </span></a>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+</div>
+<!---fotter/-->
+<div class="copywrite">
+    <div class="container">
+        <p>Copyrights &copy; 2018 Blogging All rights reserved |  <a href="https://sigasmart.com.br">SIGA-SMART</a></p>
+    </div>
+</div>
+<!---->
+<script type="text/javascript">
+    $(document).ready(function() {
+        /*
+         var defaults = {
+         containerID: 'toTop', // fading element id
+         containerHoverID: 'toTopHover', // fading element hover id
+         scrollSpeed: 1200,
+         easingType: 'linear'
+         };
+         */
+        $().UItoTop({ easingType: 'easeOutQuart' });
+    });
+</script>
+<a href="#to-top" id="toTop" style="display: block;"> <span id="toTopHover" style="opacity: 1;"> </span></a>
+<div class="body-processing">
+    <div class="processing">
+        <p style="margin-top: 15px"></p>
+    </div>
+</div>
+<?= $this->inlineScript()
+	->prependFile($this->basePath('web-blog/js/app.js'))
+?>
+</body>
+</html>

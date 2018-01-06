@@ -78,7 +78,7 @@ class ImagesFilter  extends AbstractOptions
 		return $inputFilter;
 	}
 
-	protected function getMimiType($Types = 'ext-image-min'){
+	protected function getMimiType($Types = 'ext-image-thumb'){
 		$MimiType=[];
 		$Config = $this->container->get("Config");
 		$mime_types_custom =$Config['mime_types_custom'];

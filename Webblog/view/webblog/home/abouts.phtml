@@ -1,3 +1,10 @@
+<?php $companys = $this->companys();?>
+
+<?php $this->placeholder('pagetitle')->captureStart();?>
+<h1>TERMS & CONDITIONS</h1>
+<h2>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</h2>
+<?php $this->placeholder('pagetitle')->captureEnd() ?>
+
 <div class="terms">
 	<div class="container">
 		<div class="terms-sec-head">
@@ -39,3 +46,6 @@
 		<input type="button" value="Continue">
 	</div>
 </div>
+<?=$this->partial('partial/seo',[
+	'data'=>$companys
+]);?>

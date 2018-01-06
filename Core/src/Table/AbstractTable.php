@@ -85,8 +85,9 @@ class AbstractTable extends Utils
 	 * @var AbstractModel
 	 */
 	protected $model;
-	private $Model;
-	private $tableModel;
+	protected $Model;
+	protected $tableModel;
+	protected $paginator;
 
 	/**
 	 * @param mixed $tableModel
@@ -175,7 +176,10 @@ class AbstractTable extends Utils
 		$this->filtro($where);
 		$this->Select->from($this->table)->columns($colluns);
 		$this->Select->where($this->where);
-		$this->Select->limit(1000);
+		$this->Select->offset($this->offset);
+		$this->Select->limit($this->limit);
+		$this->Select->order($this->order);
+
 		$this->Stmt = $this->Sql->prepareStatementForSqlObject($this->Select);
 		$this->exec();
 		if ($this->resultSet->count()):
@@ -353,6 +357,10 @@ class AbstractTable extends Utils
 			$this->where->expression("CONCAT_WS(' ', {$colls}) LIKE ?", "%{$condicao['zfTableQuickSearch']}%");
 			unset($condicao['zfTableQuickSearch']);
 		}
+		if ($this->like && !empty($this->value)) {
+			$colls = implode(", ", array_keys($this->like));
+			$this->where->expression("CONCAT_WS(' ', {$colls}) LIKE ?", "%{$this->value}%");
+		}
 		if ($condicao):
 			unset($condicao['table_search'], $condicao['zfTablePage'], $condicao['zfTableColumn'], $condicao['zfTableOrder'], $condicao['zfTableQuickSearch'], $condicao['zfTableItemPerPage'], $condicao['valuesState'], $condicao['id']);
 			foreach ($condicao as $key => $value):
@@ -366,6 +374,14 @@ class AbstractTable extends Utils
 		return $this->where;
 	}
 
+	public function getPaginator($resultSetArray,$page=1, $countPerPage=12){
+		$this->paginator = new \Zend\Paginator\Paginator(new
+			\Zend\Paginator\Adapter\ArrayAdapter($resultSetArray)
+		);
+		$this->paginator->setCurrentPageNumber($page)
+			->setItemCountPerPage($countPerPage);
+		return $this->paginator;
+	}
 
 	//INSERT
 

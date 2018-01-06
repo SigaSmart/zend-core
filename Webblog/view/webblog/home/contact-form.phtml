@@ -1,0 +1,25 @@
+<?=$this->partial('partial/form-error',['form'=>$this->form]);?>
+<?=$this->form()->openTag($this->form->setAttribute('action',$this->url($this->route, [
+	'controller'=>$this->controller,
+	'action'=>'contact-form'
+]))->setAttribute('name','AjaxForm')->setAttribute('class',''));?>
+
+	<div class="col-md-6 contact-left">
+		<?=$this->formRow($this->form->get('name'));?>
+		<?=$this->formRow($this->form->get('email'));?>
+		<?=$this->formRow($this->form->get('phone'));?>
+	</div>
+	<div class="col-md-6 contact-right">
+		<?=$this->formRow($this->form->get('message'));?>
+		<?=$this->formSubmit($this->form->get('submit')->setValue('Enviar Contato'));?>
+	</div>
+	<div class="clearfix"></div>
+<style>
+	.help-inline{
+		margin-top: -28px !important;
+		margin-bottom: 12px!important;;
+		color: red!important;
+	}
+</style>
+
+<?=$this->partial('partial/messages');?>

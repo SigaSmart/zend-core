@@ -1,17 +1,19 @@
 <?php
 /**
- * Created By: Claudio  Campos
- * E-Mail: callcocam@gmail.com
+ * Created by PhpStorm.
+ * User: caltj
+ * Date: 03/01/2018
+ * Time: 11:43
  */
 
-namespace Auth\Form\Factory;
+namespace Webblog\Service\Factory;
 
 
-use Auth\Form\LoginForm;
 use Interop\Container\ContainerInterface;
+use Webblog\Service\Categorie;
 use Zend\ServiceManager\Factory\FactoryInterface;
 
-class LoginFactory implements FactoryInterface
+class NavigationFactory implements FactoryInterface
 {
 
 	/**
@@ -25,8 +27,7 @@ class LoginFactory implements FactoryInterface
 	 */
 	public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
 	{
-		return new LoginForm("AjaxForm",[
-			'container'=>$container
-		]);
-}
+		$navigation = new $requestedName();
+		return $navigation->createService($container);
+	}
 }

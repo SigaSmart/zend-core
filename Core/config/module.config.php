@@ -29,13 +29,13 @@ return [
 	'PRJMail' => [
 		'transport' => [
 			'smtpOptions' => [
-				'host' => 'mail.exemplo.com.br',
+				'host' => 'mail.sigasmart.com.br',
 				'port' => 587,
 				'connection_class' => 'plain',
 				'connection_config' => [
-					'username' => 'contato@exemplo.com.br',
-					'password' => 'senhadeacesso',
-					'from' => 'exemplo@gmail.com'
+					'username' => 'contato@sigasmart.com.br',
+					'password' => 'vmiq2552mail',
+					'from' => 'contato@sigasmart.com.br'
 				],
 			],
 			'transportSsl' => [

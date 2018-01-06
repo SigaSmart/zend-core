@@ -10,7 +10,7 @@ use Auth\Adapter\Authentication;
 use Auth\Adapter\AuthenticationFactory;
 use Auth\Adapter\Company;
 use Auth\Adapter\Logado;
-use Auth\Form\Factory\LoginFactory;
+use Auth\Form\Factory\FormFactory;
 use Auth\Form\LoginForm;
 use Auth\Model\Factory\LoginModelFactory;
 use Auth\Model\LoginModel;
@@ -41,7 +41,7 @@ class Module implements ServiceProviderInterface
 			'factories'=>[
 				Authentication::class =>AuthenticationFactory::class,
 
-				LoginForm::class => LoginFactory::class,
+				LoginForm::class => FormFactory::class,
 
 				LoginModel::class => LoginModelFactory::class,
 

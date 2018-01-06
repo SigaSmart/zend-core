@@ -1,0 +1,10 @@
+<?php
+/* @var $container Zend\Navigation\Navigation */
+$container = $this->container;
+if ($container):?>
+	<?php foreach ($container as $page): ?>
+		<li class="<?=$page->isActive()? 'active':'' ?>"><a href="<?=$page->getHref();?>"><?=$this->escapeHtml($this->translate($page->getLabel(), $this->navigation($container)->getTranslatorTextDomain())); ?></a></li>
+	<?php endforeach ?>
+	<?php
+endif;
+?>

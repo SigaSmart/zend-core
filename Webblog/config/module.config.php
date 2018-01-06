@@ -13,7 +13,18 @@ use Zend\Router\Http\Segment;
 return [
     'router' => [
         'routes' => [
-			"web" => [
+			"home" => [
+				"type" => Literal::class,
+				"options" => [
+					"route" => "/",
+					"defaults" => [
+						"__NAMESPACE__" => "Webblog\Controller",
+						"controller" => "Home",
+						"action" => "index",
+					],
+				],
+
+			],"web" => [
 				"type" => Literal::class,
 				"options" => [
 					"route" => "/",
@@ -28,7 +39,7 @@ return [
 			"web-blog" => [
 				"type" => Segment::class,
 				"options" => [
-					"route" => "/blog[/:action[/:slug]]",
+					"route" => "/blog[/:action[/:slug[/:page]]]",
 					'constraints' => [
 						'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
 						'id'     => '[a-zA-Z][a-zA-Z0-9_-]*',

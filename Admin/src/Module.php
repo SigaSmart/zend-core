@@ -85,10 +85,6 @@ class Module implements ServiceProviderInterface
 				\Admin\Form\GalleryForm::class => \Admin\Form\Factory\FormFactory::class,
 				\Admin\Form\UploadForm::class => \Admin\Form\Factory\FormFactory::class,
 				\Admin\Form\ModuleForm::class => \Admin\Form\Factory\FormFactory::class,
-				\Admin\Form\MdDefaultForm::class => \Admin\Form\Factory\FormFactory::class,
-				\Core\Service\TinyUpload::class => function(ContainerInterface $container){
-			      return new \Core\Service\TinyUpload($container);
-				},
 				\Core\Service\ImagesUpload::class => function(ContainerInterface $container){
 					return new \Core\Service\ImagesUpload($container);
 				},

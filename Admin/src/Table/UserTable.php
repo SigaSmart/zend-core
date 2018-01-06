@@ -34,6 +34,6 @@ class UserTable extends AbstractTable
 	}
 	public function encryptPassword($email, $password)
 	{
-		return base64_encode(Pbkdf2::calc('sha256', $password, $email, 10000, strlen($password*2)));
+		return base64_encode(Pbkdf2::calc('sha256', $password, $email, 10000, strlen($password)*2));
 	}
 }

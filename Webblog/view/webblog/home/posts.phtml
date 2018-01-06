@@ -1,1 +1,74 @@
-posts
+<?php $companys = $this->companys();?>
+<div class="content">
+	<div class="container">
+		<div class="content-grids">
+			<div class="col-md-8 content-main">
+				<?php
+                if($this->data->getTotalItemCount()):?>
+                    <?php $companys['title'] = $this->parent['name'];?>
+					<?php $this->placeholder('pagetitle')->captureStart();?>
+                            <h1><?= $this->parent['name'] ?></h1>
+                            <h2>Lista De Posts</h2>
+					<?php $this->placeholder('pagetitle')->captureEnd() ?>
+					<?php foreach ($this->data as $data):?>
+						<div class="content-grid">
+							<div class="content-grid-head">
+								<h3>POST OF THE DAY</h3>
+								<h4><?=$this->dateFormat(new DateTime($data['created_at']), IntlDateFormatter::MEDIUM)?> ,Posted by: <a href="#"><?=$data['first_name']?> <?=$data['last_name']?></a></h4>
+								<div class="clearfix"></div>
+							</div>
+							<div class="content-grid-info">
+								<h3><a href="<?=$this->url('web-blog',[
+										'action'=>'post',
+										'slug'=>$data['alias']
+									])?>"><?=$data['name']?></a></h3>
+								<p><?=$data['preview']?></p>
+								<img src="<?=$this->basePath($data['cover'])?>" alt=""/>
+								<a class="bttn" href="<?=$this->url('web-blog',[
+									'action'=>'post',
+									'slug'=>$data['alias']
+								])?>">VER MAIS</a>
+							</div>
+						</div>
+					<?php endforeach;?>
+                    <div class="pages">
+						<?php
+						echo $this->paginationControl(
+						// the paginator object
+							$this->data,
+							// the scrolling style
+							'sliding',
+							// the partial to use to render the control
+							'partial/paginator.phtml',
+							// the route to link to when a user clicks a control link
+							[
+								'route' => $this->Route()->getRoute(),
+								'controller' => $this->Route()->getController(),
+								'action' => $this->Route()->getAction(),
+								'slug' => $this->slug
+							]
+						);
+						?>
+
+                    </div>
+				<?php else:?>
+					<?php $this->placeholder('pagetitle')->captureStart();?>
+                    <h1>Sua pesquisa</h1>
+                    <h2>Não retornou resultados</h2>
+					<?php $this->placeholder('pagetitle')->captureEnd() ?>
+					<?=$this->partial('partial/no-registers');?>
+				<?php endif;?>
+			</div>
+
+			<div class="col-md-4 content-main-right">
+				  <?=$this->navigation(\Webblog\Service\Categorie::class)->menu()
+						->setPartial('partial/categorie');?>
+			</div>
+			<div class="clearfix"></div>
+		</div>
+	</div>
+</div>
+<?=$this->partial('partial/seo',[
+	'data'=>$companys
+]);?>
+<!--fotter-->

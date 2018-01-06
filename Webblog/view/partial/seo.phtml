@@ -1,0 +1,38 @@
+<?php
+
+$this->headMeta()->appendName('description', $this->data['description']);
+$this->headMeta()->appendName('robots', "index, follow");
+
+$this->headMeta()->setProperty('itemprop:name', "SIGA-Sistema Inteligente - {$this->data['fantasia']}");
+$this->headMeta()->setProperty('itemprop:description', $this->data['preview']);
+$this->headMeta()->setProperty('itemprop:image',  sprintf("%s%s",$this->url("home",[],['force_canonical' => true]), $this->data['cover']));
+$this->headMeta()->setProperty('itemprop:url',$this->url("home",[],['force_canonical' => true]));
+
+$this->headMeta()->setProperty('og:title', "SIGA-Sistema Inteligente - {$this->data['title']}");
+$this->headMeta()->setProperty('og:description', $this->data['preview']);
+$this->headMeta()->setProperty('og:image', sprintf("%s%s",$this->url("home",[],['force_canonical' => true]), $this->data['cover']));
+$this->headMeta()->setProperty('og:type', 'article');
+$this->headMeta()->setProperty('og:url', $this->url("home",[],['force_canonical' => true]));
+$this->headMeta()->setProperty('og:site_name', "SIGA-Sistema Inteligente - {$this->data['fantasia']}");
+$this->headMeta()->setProperty('og:locale', 'pt_BR');
+$this->headMeta()->setProperty('og:app_id', $this->data['fb_api']);
+$this->headMeta()->setProperty('article:author', $this->data['fb_autor']);
+$this->headMeta()->setProperty('article:publisher', $this->data['fb_publisher']);
+
+$this->headMeta()->setProperty('twitter:card', 'summary_large_image');
+$this->headMeta()->setProperty('twitter:site', $this->data['fantasia']);
+$this->headMeta()->setProperty('twitter:domain',$this->url("home",[],['force_canonical' => true]));
+$this->headMeta()->setProperty('twitter:title', "SIGA-Sistema Inteligente - {$this->data['fantasia']}");
+$this->headMeta()->setProperty('twitter:description', $this->data['preview']);
+$this->headMeta()->setProperty('twitter:image',  sprintf("%s%s",$this->url("home",[],['force_canonical' => true]), $this->data['cover']));
+$this->headMeta()->setProperty('twitter:url', $this->url("home",[],['force_canonical' => true]));
+
+$this->headLink(['rel' => 'base', 'href' => $this->url("home",[],['force_canonical' => true])], 'PREPEND');
+$this->headLink(['rel' => 'canonical', 'href' => $this->url("home",[],['force_canonical' => true])], 'PREPEND');
+$this->headLink(['rel' => 'sitemap', 'href' =>sprintf(  "%srss.php", $this->url("home",[],['force_canonical' => true]))], 'PREPEND');
+$this->headLink(['rel' => 'author', 'href' => sprintf(  "https://plus.google.com/%s/posts", $this->data['gg_autor'])], 'PREPEND');
+$this->headLink(['rel' => 'publisher', 'href' => sprintf(  "https://plus.google.com/%s", $this->data['gg_publisher'])], 'PREPEND');
+?>
+
+
+

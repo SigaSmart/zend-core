@@ -1,0 +1,35 @@
+<div class="wc_contant_sended jwc_contant_sended">
+	<p class="h2"><span>&#10003;</span><br>Mensagem enviada com sucesso!</p>
+	<p><b>Prezado(a) <span class="jwc_contant_sended_name"><?=$this->data['name']?></span>. Obrigado por entrar em contato,</b></p>
+	<p>Informamos que recebemos sua mensagem, e que vamos responder o mais breve possível.</p>
+	<p><em>Atenciosamente <?=\Core\Module::SIS?>.</em></p>
+	<a href="<?=$this->url('web-blog',[
+		'action'=>'contact'
+	])?>" class="btn btn-success" style="margin-top: 20px;">FECHAR</a>
+</div>
+<style>
+
+	.wc_contant_sended{
+		text-align: center;
+	}
+
+	.wc_contant_sended .h2{
+		font-size: 1.2em;
+		font-weight: bold;
+		color: #008B6F;
+	}
+
+	.wc_contant_sended .h2 span{
+		display: inline-block;
+		background: #008B6F;
+		margin-bottom: 10px;
+		font-size: 2em;
+		color: #fff;
+		padding: 8px 20px;
+		border-radius: 50%;
+	}
+
+	.wc_contant_sended p{
+		margin-top: 15px;
+	}
+</style>

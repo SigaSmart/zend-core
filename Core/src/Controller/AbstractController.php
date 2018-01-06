@@ -61,6 +61,10 @@ abstract class AbstractController extends AbstractActionController
 
 	protected $data=[];
 
+	protected $page = 1;
+
+	protected $itemPage = 12;
+
 	protected $tenancy = true;
 
 	protected $helper;

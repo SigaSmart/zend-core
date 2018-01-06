@@ -27,7 +27,7 @@ class PostsController extends AbstractController
 		$this->route = "blog/default";
 		$this->controller = "posts";
 		$this->templateEdit = "blog/posts/%s/editar-form";
-		$this->tenancy = false;
+		//$this->tenancy = false;
 		$this->getHelper();
 	}
 

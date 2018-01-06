@@ -1,0 +1,19 @@
+<p style="font-size: 1.3em">Caro(a) <?=$this->first_name?> <?=$this->last_name?>,</p>
+<p>Este e-mail é para ajudar você a recuperar o acesso ao sistema SIGA SMART!</p>
+<p>Uma chave foi criada para que você possa baixar e:</p>
+
+<p>Confira abaixo os dados de acesso a sua conta:</p>
+<p style="font-size: 1.1em">
+
+    Email: <?php echo $this->email?>
+    Senha: <?php echo $this->password?> <br>
+    <br>
+</p>
+<p><i>Atenciosamente, <a href="<?php echo $this->url?>"><?php echo $this->sis?></a> !</i></p>
+
+<p>Olá <?=$this->first_name?> <?=$this->last_name?>, você está recebendo esse e-mail pois solicitou uma nova senha em nosso site.</p>
+<p>Caso não tenha solicitado essa senha. Por favor nos desculpe pelo incomodo. E apenas ignore este e-mail :)</p>
+<p>Caso contrário:</p>
+<p><a title='Recuperar Minha Senha' href='<?php echo $this->url?>/admin-auth/auth/login'>RECUPERAR MINHA SENHA AGORA!</a></p>
+<p>Ao clicar no link acima você será redirecionado para criar uma nova senha, e assim recuperar seu acesso!</p>
+<p><i>Atenciosamente,  {site_name}!</i></p>

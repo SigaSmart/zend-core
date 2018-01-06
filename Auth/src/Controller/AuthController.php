@@ -15,6 +15,8 @@ use Auth\Form\LoginForm;
 use Auth\Model\LoginModel;
 use Auth\Table\LoginTable;
 use Core\Controller\AbstractController;
+use Core\Module;
+use Core\Service\Mail;
 use Interop\Container\ContainerInterface;
 use Zend\Crypt\Key\Derivation\Pbkdf2;
 use Zend\Db\Adapter\AdapterInterface;
@@ -157,23 +159,45 @@ class AuthController extends AbstractController
 	}
 
 
-	public function recuperarsenhaAction(){
+	public function recuperasenhaAction(){
 		$this->quest();
 		$view = new ViewModel();
 		$view->setTemplate(sprintf("auth/%s/recuperar-senha", LAYOUT));
 		return $view;
 	}
 
-	public function recuperarsenhaformAction(){
+	public function recuperasenhaformAction(){
 		$this->quest();
 		$this->setData()
 			->getModel()
-			->getForm();
+			->getForm()
+			->getTable();
 		if($this->params()->fromPost()):
 			$this->form->setInputFilter($this->model->getInputFilterRecuperarSenha());
-			if ($this->form->isValid()):
-
-			endif;
+				if ($this->form->isValid()):
+					$data = $this->table->findOneBy(['email'=>$this->params()->fromPost('email')]);
+					if($data):
+						$newSenha = substr(base64_encode(md5(date("YmdHis"))),0,10);
+						$this->model->offsetSet('password', md5($this->encryptPassword($this->params()->fromPost('email'),$newSenha)));
+						$this->model->offsetSet('id', $data['id']);
+						$this->args = array_merge($this->args, $this->table->save($this->model));
+						$this->helper->addMessage("{$newSenha} {$this->args['msg']}",$this->args['type']);
+						$data['password'] = $newSenha;
+						$data['sis'] = Module::SIS;
+						$data['url'] = $this->getRequest()->getServer('HTTP_ORIGIN');
+						$mail = new Mail($this->container);
+						$mail->setSubject("Solicitação de recuperação de senha no site: " .Module::SIS)
+							->setTo($data['email'])
+							->setData($data)
+							->setViewTemplate('recuperar-senha')
+							->send();
+						else:
+						$this->helper->addMessage("OPSS! E-Mail não encontrado!",LoginTable::ERROR);
+					endif;
+				else:
+					d($this->form->getMessages());
+					$this->helper->addMessage("OPSS! Formulario invalido!",LoginTable::ERROR);
+				endif;
 		endif;
 		$view = new ViewModel([
 			'form'=>$this->form
@@ -195,6 +219,6 @@ class AuthController extends AbstractController
 
 	public function encryptPassword($email, $password)
 	{
-		return base64_encode(Pbkdf2::calc('sha256', $password, $email, 10000, strlen($password*2)));
+		return base64_encode(Pbkdf2::calc('sha256', $password, $email, 10000, strlen($password)*2));
 	}
 }

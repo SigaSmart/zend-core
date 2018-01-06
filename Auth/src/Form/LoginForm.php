@@ -54,16 +54,10 @@ class LoginForm extends AbstractForm
 
 		//######################## cover #######################
 		$this->add([
-			'type'=> Text::class,
+			'type'=> Hidden::class,
 			'name' => 'cover',
-			'options'=>[
-				'label'=>"Image:"
-			],
-			"attributes"=>[
-				'id'=>"email",
-				'class'=>'form-control validate',
-				'placeholder'=>"Image",
-				'ico'=>"glyphicon glyphicon-image",
+			 "attributes"=>[
+				'id'=>"cover"
 			]
 
 		]);

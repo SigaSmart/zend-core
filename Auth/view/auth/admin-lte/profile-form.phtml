@@ -3,26 +3,60 @@
 	'controller'=>'auth',
 	'action'=>'profile-form'
 ]))->setAttribute('name', 'AjaxForm'));?>
+<div class="row">
+    <div class="col-md-3">
 
-        <?=$this->formHidden($this->form->get('id'));?>
-    	<?=$this->partial(sprintf('partial/%s/form/input-form-group', LAYOUT),[
-    	        'field'=>$this->form->get('first_name')->setLabel("")
-        ]);?>
-        <?=$this->partial(sprintf('partial/%s/form/input-form-group', LAYOUT),[
-            'field'=>$this->form->get('last_name')->setLabel("")
-        ]);?>
-        <?=$this->partial(sprintf('partial/%s/form/input-form-group', LAYOUT),[
-            'field'=>$this->form->get('email')->setLabel("")
-        ]);?>
-        <?=$this->partial(sprintf('partial/%s/form/input-form-group', LAYOUT),[
-            'field'=>$this->form->get('password')->setLabel("")
-        ]);?>
+        <!-- Profile Image -->
+        		<?=$this->partial(sprintf('partial/%s/form/input-file', LAYOUT),[
+					'field'=>$this->form->get('cover'),
+					'route'=>$this->route,
+					'controller'=>$this->controller,
+					'id'=>$this->form->get('id')->getValue(),
+					'action'=>'upload-modal',
+				]);?>
+				   <ul class="list-group list-group-unbordered">
+                    <li class="list-group-item">
+                        <b>E-Mail</b> <a class="pull-right"><?= $this->form->get('email')->getValue() ?></a>
+                    </li>
+                </ul>
+        <!-- /.box -->
+    </div>
+    <!-- /.col -->
+    <div class="col-md-9">
+        <div class="nav-tabs-custom">
+            <ul class="nav nav-tabs">
+                <li class="active"><a href="#settings" data-toggle="tab" aria-expanded="false">Settings</a></li>
+            </ul>
+            <div class="tab-content">
+                <div class="tab-pane active" id="settings">
+					<?=$this->formHidden($this->form->get('id'));?>
+					<?=$this->partial(sprintf('partial/%s/form/input-form-group', LAYOUT),[
+						'field'=>$this->form->get('first_name')->setLabel("")
+					]);?>
+					<?=$this->partial(sprintf('partial/%s/form/input-form-group', LAYOUT),[
+						'field'=>$this->form->get('last_name')->setLabel("")
+					]);?>
+					<?=$this->partial(sprintf('partial/%s/form/input-form-group', LAYOUT),[
+						'field'=>$this->form->get('email')->setLabel("")
+					]);?>
+					<?=$this->partial(sprintf('partial/%s/form/input-form-group', LAYOUT),[
+						'field'=>$this->form->get('password')->setLabel("")
+					]);?>
+                </div>
+                <!-- /.tab-pane -->
+            </div>
+            <!-- /.tab-content -->
+        </div>
+        <!-- /.nav-tabs-custom -->
+    </div>
+    <!-- /.col -->
+</div>
     <div class="row">
         <!-- /.col -->
         <div class="col-xs-12">
-            <?=$this->formSubmit($this->form->get('submit')->setValue('Atualizar Conta'));?>
-         </div>
+			<?=$this->formSubmit($this->form->get('submit')->setValue('Atualizar Conta'));?>
+        </div>
         <!-- /.col -->
     </div>
-	<?=$this->form()->closeTag();?>
+<?=$this->form()->closeTag();?>
 <?=$this->partial('partial/messages');?>

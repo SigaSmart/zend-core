@@ -1,79 +1,63 @@
 <div class="content">
+	<?php $companys = $this->companys();?>
 	<div class="container">
 		<div class="content-grids">
 			<div class="col-md-8 content-main">
 				<?php if($this->data):?>
-				<div class="content-grid">
+                    <?php
+					$companys['title'] = $this->data['name'];
+					$companys['cover'] = $this->data['cover'];
+					$companys['preview'] = $this->data['preview'];
+					 ?>
+
+                    <?php $this->placeholder('pagetitle')->captureStart();?>
+                    <h1><?= $this->data['name'] ?></h1>
+                    <h2><?= $this->data['preview'] ?></h2>
+					<?php $this->placeholder('pagetitle')->captureEnd() ?>
+
+
+                   <div class="content-grid">
 					<div class="content-grid-head">
-						<h3>POST OF THE DAY</h3>
-						<h4><?=date_pt($data['created_at'],"D, M Y")?>,Posted by: <a href="#"><?=$data['first_name']?> <?=$data['last_name']?></a></h4>
+						<h3><?=$this->translate('POST OF THE DAY')?></h3>
+						<h4><?=$this->dateFormat(new DateTime($this->data['created_at']), IntlDateFormatter::MEDIUM)?>, <?=$this->translate('Posted by')?>: <a href="#"><?=$this->data['first_name']?> <?=$this->data['last_name']?></a></h4>
 						<div class="clearfix"></div>
 					</div>
 					<div class="content-grid-single">
 						<h3><?=$this->data['name']?></h3>
 						<span><?=$this->data['preview']?></span>
+                        <?php if(empty($this->data['video'])):?>
 						<img class="single-pic" src="<?=$this->basePath($this->data['cover'])?>" alt=""/>
-						<p><?=$this->data['description']?></p>
-
-						<div class="content-form">
-							<h3>Leave a comment</h3>
-							<form>
-								<textarea placeholder="Message"></textarea>
-								<input type="submit" value="SEND"/>
-							</form>
-						</div>
+						<?php else:?>
+                            <iframe id="mediaview" style="width: 100%;height: 450px;" src="https://www.youtube.com/embed/<?=$this->data['video']?>?rel=0&amp;showinfo=0&autoplay=0&origin=<?=$this->url("home",[],['force_canonical' => true]);?>" frameborder="0" allowfullscreen></iframe>
+                        <?php endif;?>
+                        <p><?=$this->data['description']?></p>
 						<div class="comments">
-							<h3>Comment</h3>
-							<div class="comment-grid">
-								<img src="images/pic.png" alt=""/>
-								<div class="comment-info">
-									<h4>MARK JOHNSON</h4>
-									<p>Vivamus congue turpis in laoreet sem nec ultrices. Fusce blandit nunc vehicula massa vehicula tincidunt. Nam venenatis cursus urna sed gravida. Ut tincidunt elit ut quam malesuada consequat. Sed semper.</p>
-									<h5>On April 14, 2014, 18:01</h5>
-									<a href="#">Reply</a>
-								</div>
-								<div class="clearfix"></div>
-							</div>
-
-							<div class="comment-grid">
-								<img src="images/pic.png" alt=""/>
-								<div class="comment-info">
-									<h4>MARK JOHNSON</h4>
-									<p>Vivamus congue turpis in laoreet sem nec ultrices. Fusce blandit nunc vehicula massa vehicula tincidunt. Nam venenatis cursus urna sed gravida. Ut tincidunt elit ut quam malesuada consequat. Sed semper.</p>
-									<h5>On April 14, 2014, 18:01</h5>
-									<a href="#">Reply</a>
-								</div>
-								<div class="clearfix"></div>
-							</div>
-						</div>
+							<h3>Comentarios</h3>
+                            <div class="fb-comments" data-href="https://www.zenddesk.sigasmart.com.br/blog/post/<?=$this->data['alias']?>" data-numposts="5"></div>
+                          </div>
 					</div>
 
 				</div>
 				<?php endif;?>
 			</div>
-
 			<div class="col-md-4 content-main-right">
-				<div class="search">
-					<h3>SEARCH HERE</h3>
-					<form>
-						<input type="text" value="" onfocus="this.value=''" onblur="this.value=''">
-						<input type="submit" value="">
-					</form>
-				</div>
-				<div class="categories">
-					<h3>CATEGORIES</h3>
-					<li class="active"><a href="#">Donec quis dui at dolor tempor</a></li>
-					<li><a href="#">Vestibulum commodo felis quis tort</a></li>
-					<li><a href="#">Fusce pellentesque suscipit</a></li>
-				</div>
-				<div class="archives">
-					<h3>ARCHIVES</h3>
-					<li class="active"><a href="#">July 2014</a></li>
-					<li><a href="#">June 2014</a></li>
-					<li><a href="#">May 2014</a></li>
-				</div>
+					<?=$this->navigation(\Webblog\Service\Categorie::class)->menu()
+						->setPartial('partial/categorie');?>
 			</div>
 			<div class="clearfix"></div>
 		</div>
 	</div>
 </div>
+
+<?php $this->partial('partial/seo',[
+	'data'=>$companys
+]);?>
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) return;
+        js = d.createElement(s); js.id = id;
+        js.src = 'https://connect.facebook.net/pt_BR/sdk.js#xfbml=1&version=v2.11&appId=657705874367292';
+        fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));</script>

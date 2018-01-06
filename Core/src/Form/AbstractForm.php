@@ -146,7 +146,7 @@ class AbstractForm extends Form
 
 	//Verifica e monta o nome dos arquivos tratando a string!
 	public function setFileName($Name) {
-		$FileName = $this->setName(substr($Name, 0, strrpos($Name, '.')));
+		$FileName = $this->setSlug(substr($Name, 0, strrpos($Name, '.')));
 		return sprintf("%s%s%s",date("YmdHis") ,strtolower($FileName), strrchr($Name, '.'));
 	}
 
@@ -155,7 +155,8 @@ class AbstractForm extends Form
 	 * @param STRING $Name = Uma string qualquer
 	 * @return STRING um nome tratado
 	 */
-	public function setName($Name) {
+	public function setSlug($Name) {
+		if(!is_string($Name))return;
 		$var = strtolower(utf8_encode($Name));
 		return preg_replace('{\W}', '', preg_replace('{ +}', '_', strtr(
 			utf8_decode(html_entity_decode($var)), utf8_decode('ÀÁÃÂÉÊÍÓÕÔÚÜÇÑàáãâéêíóõôúüçñ'), 'AAAAEEIOOOUUCNaaaaeeiooouucn')));

@@ -13,7 +13,7 @@ use Core\Table\AbstractTable;
 class CategorieTable extends AbstractTable
 {
 
-	protected $table = 'post_categories';
+	protected $table = 'categories';
 	public function insert(AbstractModel $mode) {
 		$mode->offsetSet('name', "Nova Categorie");
 		$mode->offsetSet('created_at', date("Y-m-d H:i:s"));

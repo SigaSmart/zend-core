@@ -35,6 +35,7 @@ class Posts extends AbstractTable
 	 */
 	protected $headers = [
 		'id' => ['title' => 'check-all', 'width' => '50'],
+		'cover' => ['title' => 'Imagem' , 'width' => 100],
 		'name' => ['title' => 'Nome\Descrição'],
 		'status' => ['title' => 'Active' , 'width' => 100],
 	];
@@ -42,7 +43,16 @@ class Posts extends AbstractTable
 	public function init()
 	{
 		//zf-init-cover
-		
+		$this->getHeader('cover')->getCell()->addDecorator('img', [
+			'base' => $this->getUrl('blog/default', [
+				'controller'=>'posts',
+				'action'=>'file'
+			]),
+			'vars' => ['cover'],
+			//'attrs' => ['class'=>'img-circle','style'=>'width: 100%; display: block;']
+			'attrs' => ['class'=>'img-circle'],
+			'thumbnail'=>true
+		]);
 		$this->getHeader('name')->getCell()->addDecorator('link', [
 			'url' =>  $this->getUrl('blog/default', [
 				'controller'=>'posts',

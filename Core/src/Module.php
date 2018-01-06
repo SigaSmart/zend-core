@@ -15,6 +15,7 @@ use Core\Factory\NavigationFactory;
 use Core\Listener\LayoutListener;
 use Core\Service\ImageManager;
 use Core\Service\PHPThumb;
+use Core\View\Helper\CompanysHelper;
 use Core\View\Helper\FlashMsg;
 use Core\View\Helper\ICheckHelper;
 use Core\View\Helper\RouteHelper;
@@ -34,6 +35,7 @@ class Module implements BootstrapListenerInterface, ViewHelperProviderInterface,
 {
 	const VERSION = '3.0.3-dev';
 	const SIS = 'SIGA-SMART';
+	const BASE = 'https://www.zenddesk.sigasmart.com.br';
 
 	public function getConfig()
 	{
@@ -142,7 +144,10 @@ class Module implements BootstrapListenerInterface, ViewHelperProviderInterface,
 						$ViewHelperManager->get('url'));
 					return $ICheckHelper;
 				},
-				"Acl" =>AclFactory::class
+				"Acl" =>AclFactory::class,
+				"companys" =>function(ContainerInterface $container){
+					return new CompanysHelper($container);
+				},
 
 			],
 			'invokables'=>[
