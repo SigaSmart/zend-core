@@ -59,8 +59,9 @@ class Render extends AbstractCommon
     public function renderDataTableJson()
     {
         $res = array();
-        $render = $this->getTable()->getRow()->renderRows('array');
+        $render = $this->getTable()->getRow()->renderRows('array_assc');
         $res['sEcho'] = $render;
+        $res['items'] = $render;
         $res['iTotalDisplayRecords'] = $this->getTable()->getSource()->getPaginator()->getTotalItemCount();
         $res['aaData'] = $render;
 
@@ -71,7 +72,7 @@ class Render extends AbstractCommon
     public function renderNewDataTableJson()
     {
 
-        $render = $this->getTable()->getRow()->renderRows('array');
+        $render = $this->getTable()->getRow()->renderRows('array_assc');
 
         $res = array(
             'draw' => $render,
@@ -127,6 +128,8 @@ class Render extends AbstractCommon
 		$Top->setVariable('valuesOfState', $tableConfig->getValuesOfState());
 		$Top->setVariable('valuesState', $this->getTable()->getParamAdapter()->getValuesState());
 		$Top->setVariable('route', $tableConfig->getRoute());
+		$view->setVariable('showButtonsActions', $tableConfig->getShowButtonsActions());
+		$view->setVariable('showParamsWrap', $tableConfig->getShowParamsWrap());
 		$Top->setVariable('controller', $tableConfig->getController());
 		$Top->setVariable('valueButtonsActions', $tableConfig->getValueButtonsActions());
 		$Top->setVariable('pages', get_object_vars($this->getTable()->getSource()->getPaginator()->getPages()));
@@ -170,6 +173,8 @@ class Render extends AbstractCommon
         $view->setVariable('showItemPerPage', $tableConfig->getShowItemPerPage());
         $view->setVariable('showExportToCSV', $tableConfig->getShowExportToCSV());
         $view->setVariable('valuesOfState', $tableConfig->getValuesOfState());
+        $view->setVariable('showButtonsActions', $tableConfig->getShowButtonsActions());
+        $view->setVariable('showParamsWrap', $tableConfig->getShowParamsWrap());
 		$view->setVariable('valuesState', $this->getTable()->getParamAdapter()->getValuesState());
 		$view->setVariable('route', $tableConfig->getRoute());
 		$view->setVariable('controller', $tableConfig->getController());

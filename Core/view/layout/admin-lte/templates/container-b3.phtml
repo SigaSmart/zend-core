@@ -29,12 +29,14 @@
                                 </select>
                             </label>
 						<?php endif; ?>
+						<?php if ($this->showQuickSearch): ?>
                         <div class="input-group input-group-sm" id="dataTable_filter" style="width: 150px;">
                             <input name="table_search" aria-controls="dataTable" class="quick-search form-control pull-right" placeholder="Search" type="text" value="<?= $quickSearch ?>">
                             <div class="input-group-btn">
                                 <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
                             </div>
                         </div>
+						<?php endif; ?>
                     </div>
                 </div>
 				<?= $this->partial('box-controls', [
@@ -43,6 +45,7 @@
                         'pages' => $this->pages,
                          'valueButtonsActions'=>$this->valueButtonsActions,
                          'valuesState'=>$this->valuesState,
+                         'showButtonsActions'=>$this->showButtonsActions,
                 ]); ?>
                 <!-- /.box-header -->
                 <div class="box-body table-responsive">
@@ -63,7 +66,10 @@
             <!-- /.box -->
         </div>
     </div>
-	<?php echo $this->paramsWrap; ?>
+	<?php if ($this->showParamsWrap): ?>
+		<?php echo $this->paramsWrap; ?>
+	<?php endif; ?>
+
 </div>
 <?=$this->partial('partial/messages');?>
 <?=$this->ICheck();?>

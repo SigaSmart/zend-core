@@ -1,0 +1,47 @@
+<?=$this->partial('partial/form-error',['form'=>$this->form]);?>
+<?=$this->form()->openTag($this->form->setAttribute('action',$this->url($this->route, [
+	'controller'=>$this->controller,
+	'action'=>'editar-form'
+])));
+?>
+<div class="modal-dialog">
+	<div class="modal-content">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+				<span aria-hidden="true">&times;</span></button>
+			<h4 class="modal-title">Adicionar estoque</h4>
+		</div>
+		<div class="modal-body">
+			<?php
+			$formLayouty='group';
+			?>
+			<?=$this->formHidden($this->form->get('id'));?>
+			<?=$this->formHidden($this->form->get('empresa')->setValue($this->identity()->empresa));?>
+			<div class="row">
+				<div class="col-md-4">
+					<?=$this->partial(sprintf('partial/%s/form/input-%s', LAYOUT,$formLayouty),[
+						'field'=>$this->form->get('estoque_name')
+					]);?>
+				</div>
+				<div class="col-md-4">
+					<?=$this->partial(sprintf('partial/%s/form/input-%s', LAYOUT,$formLayouty),[
+						'field'=>$this->form->get('estoque')
+					]);?>
+				</div>
+				<div class="col-md-4">
+					<?=$this->partial(sprintf('partial/%s/form/input-%s', LAYOUT,$formLayouty),[
+						'field'=>$this->form->get('status')
+					]);?>
+				</div>
+			</div>
+			<?=$this->formHidden($this->form->get('product'));?>
+		</div>
+		<div class="modal-footer">
+			<button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
+			<?=$this->formSubmit($this->form->get('submit')->setAttribute('class','btn btn-success btn-flat')->setValue('Adicionar'));?>
+		</div>
+	</div>
+	<!-- /.modal-content -->
+</div>
+<!-- /.modal-dialog -->
+<?=$this->form()->closeTag();?>

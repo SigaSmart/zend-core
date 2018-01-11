@@ -27,19 +27,33 @@ class ModuleForm extends AbstractForm
 		//Add os campos abaixo voce pode usar o comando
 		// zf-input-text ou zf-input-select ou zf-input-checkbox ou zf-input-radio
 		################# module #################
-		$Select = $this->dbValueOptions(ResourceTable::class, ['status'=>1],['alias','name']);
+//		$Select = $this->dbValueOptions(ResourceTable::class, ['status'=>1],['alias','name']);
+//		$this->add([
+//			'type'=> Select::class,
+//			'name'=>'module',
+//			'options'=>[
+//				'disable_inarray_validator'=>true,
+//				'label'=>'Modulo',
+//				'empty_option'=>'--Selecione--',
+//				'value_options'=>$this->getValueDb($Select)
+//			],
+//			'attributes'=>[
+//				'id'=>'module',
+//				'class'=>'form-control'
+//			]
+//		]);
+		################# module #################
 		$this->add([
-			'type'=> Select::class,
+			'type'=>Text::class,
 			'name'=>'module',
 			'options'=>[
-				'disable_inarray_validator'=>true,
-				'label'=>'Modulo',
-				'empty_option'=>'--Selecione--',
-				'value_options'=>$this->getValueDb($Select)
+				'label'=>'Nome do Modulo'
 			],
 			'attributes'=>[
-				'id'=>'module',
-				'class'=>'form-control'
+				'id'=>'classe',
+				'class'=>'form-control',
+				'placeholder'=>'Nome do Modulo',
+				'required'=>true,
 			]
 		]);
 
@@ -54,7 +68,7 @@ class ModuleForm extends AbstractForm
 				'id'=>'classe',
 				'class'=>'form-control',
 				'placeholder'=>'Nome das classes',
-				'required'=>true,
+				'required'=>false,
 			]
 		]);
 
@@ -101,7 +115,7 @@ class ModuleForm extends AbstractForm
 
 		$inputFilter->add([
 			'name'=>'classe',
-			'required'=>true,
+			'required'=>false,
 			'filters'=>[
 
 				[
@@ -112,25 +126,7 @@ class ModuleForm extends AbstractForm
 				]
 
 			],
-			'validators'=>[
-				[
-					'name' => StringLength::class,
-					'options' => [
-						'max' => 100,
-						'min' => 1,
-						'messages' => [
-							StringLength::TOO_SHORT => "Campo [Nome do classe] Muito Curto",
-							StringLength::TOO_LONG => "Campo [Nome do classe] Muito Longo",
-						],
-					],
-				],
-				[
-					'name' => NotEmpty::class,
-					'options' => [
-						'messages' => [NotEmpty::IS_EMPTY => "Campo [Nome do classe] Obrigatorio"],
-					],
-				],
-			]
+			'validators'=>[]
 		]);
 		return $inputFilter;
 	}

@@ -2,6 +2,7 @@
 <?php $acl = $this->Acl()->getAcl();?>
 <?php $state = $acl->isAllowed($users->access,$this->Route()->getParan('controller'),'state')?"":"disabled";?>
 <?php $create = $acl->isAllowed($users->access,$this->Route()->getParan('controller'),'create');?>
+<?php if($this->showButtonsActions):?>
 <div class="mailbox-controls">
     <!-- Check all button -->
     <div class="btn-group">
@@ -63,3 +64,4 @@
     </div>
     <!-- /.pull-right -->
 </div>
+<?php endif;?>

@@ -9,9 +9,7 @@
 namespace Core\Form;
 
 use Auth\Adapter\Authentication;
-use Core\Table\AbstractTable;
 use Interop\Container\ContainerInterface;
-use Zend\Db\Adapter\AdapterInterface;
 use Zend\Db\Sql\Select;
 use Zend\Form\Element\Hidden;
 use Zend\Form\Element\Submit;
@@ -36,6 +34,8 @@ class AbstractForm extends Form
 			$this->container = $options['container'];
 		endif;
 
+		$this->user();
+
 		//######################## id #######################
 		$this->add([
 			'type'=>Hidden::class,
@@ -55,6 +55,25 @@ class AbstractForm extends Form
 				'id'=>"empresa"
 			]
 
+		]);
+
+		################# status #################
+		$this->add([
+			'type'=> \Zend\Form\Element\Select::class,
+			'name'=>'status',
+			'options'=>[
+				'disable_inarray_validator'=>true,
+				'label'=>'Status',
+				'empty_option'=>'--Selecione--',
+				'value_options'=>[
+						'1'=>"Ativo",
+						'2'=>"Inativo",
+				]
+			],
+			'attributes'=>[
+				'id'=>'status',
+				'class'=>'form-control'
+			]
 		]);
 
 		//######################## created_at #######################
@@ -102,10 +121,31 @@ class AbstractForm extends Form
 				'value'=>"Atualizar Cadastro"
 			]
 		]);
+		//######################## save_copy #######################
+		$this->add([
+			'type'=>Submit::class,
+			'name' => 'save_copy',
+			"attributes"=>[
+				'id'=>"button",
+				'class'=>'btn btn-warning btn-block btn-flat btn-block',
+				'value'=>"Duplicar Cadastro"
+			]
+		]);
+		//######################## save_close #######################
+		$this->add([
+			'type'=>Submit::class,
+			'name' => 'save_close',
+			"attributes"=>[
+				'id'=>"button",
+				'class'=>'btn btn-success btn-block btn-flat btn-block',
+				'value'=>"Atualizar e Fechar"
+			]
+		]);
 
 	}
 
 	public function dbValueOptions($table, $condition=[], $collumns = ['id','name']){
+
 		/**
 		 * @var $this->Tables AbstractTable
 		 */

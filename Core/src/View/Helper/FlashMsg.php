@@ -32,9 +32,23 @@ class FlashMsg extends AbstractHelper
     {
         $Url = $this->Url;
         $Route=[];
+        $Time=3000;
         $plugin   = $this->flashMessenger->getPluginFlashMessenger();
-		if($plugin->hasMessages('redirect')):
-			$Route=$plugin->getMessagesFromNamespace('redirect');
+		if($plugin->hasMessages('time')):
+			$Time = $plugin->getMessagesFromNamespace('time')[0];
+		endif;
+			if($plugin->hasMessages('redirect')):
+			$Redirect=$plugin->getMessagesFromNamespace('redirect')[0];
+			if(is_string($Redirect)):
+				$Route[0]=$Redirect;
+				$Route[1]=[];
+			else:
+				$Route=$Redirect;
+				if(!isset($Redirect[1])):
+					$Route[1]=[];
+				endif;
+			endif;
+
 			$plugin->clearCurrentMessages('redirect');
 		endif;
 
@@ -66,11 +80,11 @@ class FlashMsg extends AbstractHelper
               }
             
         }
-    		if($Route):
-				echo 'setTimeout(function () {
-					window.location.href = "'.$this->view->url($Route[0]).'";
-				 }, 3000);';
-			endif;
+		if($Route):
+			echo sprintf('setTimeout(function () {
+					window.location.href = "%s";
+				 }, %s);',$this->view->url($Route[0],$Route[1]), $Time);
+		endif;
         $this->inlineScript->captureEnd();
     }
     

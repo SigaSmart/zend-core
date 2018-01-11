@@ -30,7 +30,9 @@ class MenuTable extends AbstractTable
         $mode->offsetSet('updated_at', date("Y-m-d H:i:s"));
         //Descomentar se ouver url amigavel
        // $mode->offsetSet('route', $this->slugExists('route', $mode->offsetGet("name"), $mode->offsetGet("id")));
-       
+	   if (!$mode->offsetGet('parent')){
+		   $mode->offsetSet('parent',null);
+	   }
         return parent::save($mode);
     }
 

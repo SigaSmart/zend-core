@@ -22,7 +22,7 @@ class Img extends AbstractCellDecorator
 	protected $base;
 	protected $attrs = ['class'=>'img-md'];
 	protected $w = 100;
-	protected $h = 100;
+	protected $h = 85;
 	private $thumbnail =false;
 
 	/**

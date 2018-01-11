@@ -18,5 +18,9 @@ class Messages extends FlashMessenger
 	{
 		return parent::addMessage($url, "redirect", $hops);
 	}
+	public function addTime($Time, $hops = 1)
+	{
+		return parent::addMessage($Time, "time", $hops);
+	}
 
 }

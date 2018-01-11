@@ -31,6 +31,12 @@ class ModuleOptions extends AbstractOptions implements
     protected $showPagination = true;
 
     /**
+     * Show or hide pagination view
+     * @var boolean
+     */
+    protected $showParamsWrap = true;
+
+    /**
      * Show or hide quick search view
      * @var boolean
      */
@@ -428,4 +434,25 @@ class ModuleOptions extends AbstractOptions implements
     {
         $this->rowAction = $rowAction;
     }
+
+	/**
+	 * @return bool
+	 */
+	public function getShowParamsWrap()
+	{
+		return $this->showParamsWrap;
+	}
+
+	/**
+	 * @param bool $showParamsWrap
+	 *
+	 * @return ModuleOptions
+	 */
+	public function setShowParamsWrap(bool $showParamsWrap)
+	{
+		$this->showParamsWrap = $showParamsWrap;
+		return $this;
+	}
+
+
 }

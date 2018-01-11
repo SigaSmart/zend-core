@@ -83,7 +83,7 @@ class Navigation extends DefaultNavigationFactory
 					endif;
 					$configuration['navigation'][$this->getName()][$row['name']] = [
 						'label' => $row['name'],
-						'route' => $row['route'],
+						'route' =>sprintf("%s/default",$row['route']),
 						'controller' => $row['controller'],
 						'action' => $row['action'],
 						'privilege' => $row['action'],

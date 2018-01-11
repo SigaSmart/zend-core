@@ -36,6 +36,35 @@ class AbstractModel extends ArrayObject
 
 
 	public function getInputFilter(){
+		########################### status ####################
+		$this->inputFilter->add([
+			'name'=>'status',
+			'required'=>false,
+			'filters'=>$this->filters(),
+			'validators'=>[
+				$this->StringLength('Status')
+			]
+		]);
+		########################### id ####################
+		$this->inputFilter->add([
+			'name'=>'id',
+			'required'=>false,
+			'filters'=>$this->filters(),
+			'validators'=>[
+				$this->StringLength('Id')
+			]
+		]);
+		########################### id ####################
+		$this->inputFilter->add([
+			'name'=>'empresa',
+			'required'=>false,
+			'filters'=>$this->filters(),
+			'validators'=>[
+				$this->StringLength('Empresa'),
+			]
+		]);
+
+
 		return $this->inputFilter;
 	}
 

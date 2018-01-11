@@ -81,7 +81,7 @@ abstract class AbstractController extends AbstractActionController
 		'icon' => 'fa fa-warning',
 		'title' => 'OPPSS!',
 		'msg' => 'Não conseguimos atender a sua solicitação!',
-		'type' => 'danger',
+		'type' => 'error',
 	];
 
 
@@ -89,8 +89,9 @@ abstract class AbstractController extends AbstractActionController
 	/**
 	 * @var $imageManager ImageManager
 	 */
-	private $imageManager;
+	protected $imageManager;
 	protected $cover = "cover";
+	protected $terminal = false;
 
 	abstract public  function __construct(ContainerInterface $container);
 
@@ -100,7 +101,11 @@ abstract class AbstractController extends AbstractActionController
 	public function indexAction()
 	{
 		$this->auth();
-		return new ViewModel();
+		$view = new ViewModel();
+		$view->setTerminal($this->terminal);
+		$view->setVariable('route',$this->route);
+		$view->setVariable('controller',$this->controller);
+		return $view;
 	}
 	public function listarAction(){
 
@@ -130,17 +135,19 @@ abstract class AbstractController extends AbstractActionController
 
 	public function createAction(){
 		$this->auth();
-		if(!$this->getRequest()->isPost()):
+		$this->args['redirect'] = $this->url()->fromRoute($this->route,[
+			'controller' => $this->controller,
+			'action'=>'index'
+		]);
+		if (!$this->model || !$this->container->has($this->model)):
 			$this->args['msg'] = sprintf("Nenhuma model valida foi passada <b>%s</b>!", $this->user['first_name']);
-			return new JsonModel($this->args);
+			$this->helper->addMessage($this->args['msg'],$this->args['type']);
+		    return new JsonModel($this->args);
 		endif;
-		if (!$this->model):
-			$this->args['msg'] = sprintf("Nenhuma model valida foi passada <b>%s</b>!", $this->user['first_name']);
-			return new JsonModel($this->args);
-		endif;
-		if (!$this->table):
+		if (!$this->table || !$this->container->has($this->table)):
 			$this->args['msg'] = sprintf("Nenhuma table valida foi passada <b>%s</b>!", $this->user['first_name']);
-			return new JsonModel($this->args);
+			$this->helper->addMessage($this->args['msg'],$this->args['type']);
+		    return new JsonModel($this->args);
 		endif;
 		$this->getModel()->getTable();
 		$this->model->offsetSet('empresa', $this->user->empresa);
@@ -151,6 +158,8 @@ abstract class AbstractController extends AbstractActionController
 				'action'=>'editar',
 				'id'=>$this->args['result']
 			]);
+		else:
+		$this->helper->addMessage($this->args['msg'],$this->args['type']);
 		endif;
 		return new JsonModel($this->args);
 	}
@@ -159,6 +168,7 @@ abstract class AbstractController extends AbstractActionController
 			'route'=>$this->route,
 			'controller'=>$this->controller
 		]);
+		$view->setTerminal($this->terminal);
 		return $view;
 	}
 	public function editarformAction()
@@ -167,11 +177,11 @@ abstract class AbstractController extends AbstractActionController
 			'route'=>$this->route,
 			'controller'=>$this->controller
 		]);
-		if (!$this->model):
+		if (!$this->model || !$this->container->has($this->model)):
 			$this->args['msg'] = sprintf("Nenhuma model valida foi passada <b>%s</b>!", $this->user['first_name']);
-		elseif (!$this->table):
+		elseif (!$this->table || !$this->container->has($this->table)):
 			$this->args['msg'] = sprintf("Nenhuma table valida foi passada <b>%s</b>!", $this->user['first_name']);
-		elseif (!$this->form):
+		elseif (!$this->form || !$this->container->has($this->form)):
 			$this->args['msg'] = sprintf("Nenhum form valido foi passada <b>%s</b>!", $this->user['first_name']);
 		else:
 			$id = $this->params()->fromRoute("id",0);
@@ -182,6 +192,29 @@ abstract class AbstractController extends AbstractActionController
 			else:
 				$this->getForm();
 				$this->store();
+				if(isset($this->args['result']) && $this->args['result']):
+					$this->helper->addMessage($this->args['msg'],$this->args['type']);
+					$Register = $this->table->find($this->args['result']);
+				    if($this->params()->fromPost('save_copy')):
+						$this->model->offsetUnset('id');
+						$this->store();
+						$this->helper->addRedirect([$this->route,[
+							'controller' => $this->controller,
+							'action'=>'editar',
+							'id'=>$this->args['result']
+						]]);
+						$this->helper->addTime(1000);
+				    elseif ($this->params()->fromPost('save_close')):
+						$this->helper->addRedirect([$this->route,[
+							'controller' => $this->controller,
+							'action'=>'index'
+						]]);
+						$this->helper->addTime(1000);
+				    endif;
+					$this->form->setData($Register);
+					else:
+						$this->helper->addMessage($this->args['msg'],$this->args['type']);
+				endif;
 			endif;
 		endif;
 		$view->setTerminal(true);
@@ -198,7 +231,7 @@ abstract class AbstractController extends AbstractActionController
 			if ($this->form->isValid()):
 				//validamos a model
 				$this->args = array_merge($this->args, $this->table->save($this->model));
-				$this->helper->addMessage($this->args['msg'],$this->args['type']);
+
 				else:
 				d($this->form->getMessages());
 			endif;
@@ -468,7 +501,7 @@ abstract class AbstractController extends AbstractActionController
 	public function setData()
 	{
 		$this->data = $this->params()->fromPost();
-		unset($this->data['submit']);
+		unset($this->data['submit'],$this->data['save_copy'],$this->data['save_close'],$this->data['save_new']);
 		return $this;
 	}
 

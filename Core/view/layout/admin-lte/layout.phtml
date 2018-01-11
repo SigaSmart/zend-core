@@ -1,3 +1,8 @@
+<?php
+// Within your view
+$this->plugin('dateFormat')
+	->setTimezone('America/Sao_Paulo')
+	->setLocale('pt_BR');  ?>
 <?php $users = $this->identity();
 if(!$users)return ;?>
 <?php $acl = $this->Acl()->getAcl();?>
@@ -28,7 +33,9 @@ scratch. This page gets rid of all links and provides the needed markup only.
 		->prependStylesheet($this->basePath('assets/themes/explorer-fa/theme.css'))
 		->prependStylesheet($this->basePath('lte-admin/css/skins/skin-blue.min.css'))
 		->prependStylesheet($this->basePath('lte-admin/css/AdminLTE.min.css'))
-		->prependStylesheet($this->basePath('lte-admin/plugins/iCheck/square/_all.css'))
+        ->prependStylesheet($this->basePath('lte-admin/plugins/select2/css/select2.min.css'))
+        ->prependStylesheet($this->basePath('lte-admin/plugins/colorpicker/css/bootstrap-colorpicker.min.css'))
+        ->prependStylesheet($this->basePath('lte-admin/plugins/iCheck/square/_all.css'))
 		->prependStylesheet($this->basePath('lte-admin/Ionicons/css/ionicons.min.css'))
 		->prependStylesheet($this->basePath('lte-admin/font-awesome/css/font-awesome.min.css'))
 		->prependStylesheet($this->basePath('lte-admin/bootstrap/dist/css/bootstrap.min.css'))?>
@@ -178,8 +185,11 @@ scratch. This page gets rid of all links and provides the needed markup only.
 		['conditional' => 'lt IE 9']
 	)
     ->prependFile($this->basePath('js/app.js'))
+	->prependFile($this->basePath('js/pdv.js'))
+    ->prependFile($this->basePath('js/app-estoque.js'))
 	->prependFile($this->basePath('js/upload.init.js'))
 	->prependFile($this->basePath('js/zf-table.js'))
+	->prependFile($this->basePath('js/formatCurrency.js'))
 	->prependFile($this->basePath('lte-admin/js/adminlte.js'))
 	->prependFile($this->basePath('assets/tinymce/tiny_mce.init.js'))
 	->prependFile($this->basePath('assets/tinymce/tinymce.min.js'))
@@ -189,6 +199,9 @@ scratch. This page gets rid of all links and provides the needed markup only.
 	->prependFile($this->basePath('assets/themes/explorer-fa/theme.js'))
 	->prependFile($this->basePath('assets/js/fileinput.js'))
 	->prependFile($this->basePath('js/jquery.form.min.js'))
+	->prependFile($this->basePath('lte-admin/plugins/select2/js/i18n/pt-BR.js'))
+	->prependFile($this->basePath('lte-admin/plugins/select2/js/select2.full.js'))
+	->prependFile($this->basePath('lte-admin/plugins/colorpicker/js/bootstrap-colorpicker.min.js'))
 	->prependFile($this->basePath('lte-admin/plugins/iCheck/icheck.min.js'))
 	->prependFile($this->basePath('lte-admin/bootstrap/dist/js/bootstrap.min.js'))
     ->prependFile($this->basePath('lte-admin/jquery/dist/jquery.min.js'))

@@ -411,7 +411,7 @@ class AbstractTable extends Utils
 	 */
 	public function save(AbstractModel $mode) {
 		$Data = $this->clear($mode->getArrayCopy());
-		if (isset($Data[$this->id])):
+		if (isset($Data[$this->id]) && (int)$Data[$this->id]):
 			$Query = $this->Sql->update()
 				->table($this->table)
 				->set($Data)

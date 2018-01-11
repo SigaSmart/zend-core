@@ -34,12 +34,14 @@ class AdminController extends AbstractController
 		$ModuleForm = $this->container->get(ModuleForm::class);
 		if($this->params()->fromPost()):
 			$Md = $this->params()->fromPost();
-			$module = explode("\\",$Md['module']);
+			$Md['status']=1;
 			$ModuleForm->setData($Md);
 			if($ModuleForm->isValid()):
-				$Msg = copiar_diretorio("./data/Demo","./module/{$module[0]}",$Md['classe']);
+				$Msg = copiar_diretorio("../data/Demo","../module/{$Md['module']}",$Md['classe']);
 				$this->helper->addMessage($Msg,'success');
 				return $this->redirect()->refresh();
+				else:
+				d($ModuleForm->getMessages());
 			endif;
 		endif;
 		$view->setVariable('form',$ModuleForm);

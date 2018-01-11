@@ -20,6 +20,7 @@ class Menu extends AbstractTable
 		'showItemPerPage' => true,
 		'itemCountPerPage' => 12,
 		'showColumnFilters' => true,
+		'showParamsWrap' => true,
 		'showExportToCSV' => true,
 		'valuesOfItemPerPage' => [6, 12, 24, 48 , 96 , 192],
 		'showButtonsActions' => true,

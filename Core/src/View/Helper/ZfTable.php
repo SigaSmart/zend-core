@@ -47,7 +47,7 @@ class ZfTable extends AbstractHelper
 
 		$Rota = $Url($route,array_filter($Params));
 		$this->inlineScript->captureStart();
-		echo "$('#{$Container}').zfTable({$Rota});";
+		echo "$('#{$Container}').zfTable('{$Rota}');";
 		$this->inlineScript->captureEnd();
 	}
     
